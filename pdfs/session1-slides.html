@@ -182,6 +182,8 @@
   .vs li { font-size: 17px; line-height: 1.55; color: var(--body); padding: 8px 0 8px 30px; position: relative; }
   .vs li::before { content: "✓"; position: absolute; left: 0; top: 9px; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; background: var(--blue-soft); color: var(--blue); }
   .vs > div.no li::before { content: "✕"; background: #f3f4f6; color: var(--faint); }
+  .vs li.x::before { content: "✕"; background: #f3f4f6; color: var(--faint); }
+  .vs .mini { font-family: "Fragment Mono", monospace; font-size: 12.5px; color: var(--faint); margin: 14px 0 2px; }
 
   /* 프로세스 */
   .proc { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 13px; }
@@ -487,6 +489,48 @@
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
+<!-- 만들 수 있는게 뭔지 판단하는 기준 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 도구를 보는 안목</span>
+    <h2>만들 수 있는게 뭔지 판단하는 기준</h2>
+  </div>
+  <div class="body" style="top:196px">
+    <div class="vs">
+      <div class="hi">
+        <h3><span class="tag">기준 1 — 획득</span>컴퓨터가 획득할 수 있는 데이터인가?</h3>
+        <p class="mini">O — 획득할 수 있는 데이터</p>
+        <ul>
+          <li>사진 · 영상 · 위치(GPS) · 센서 값</li>
+          <li>사용자가 직접 입력한 글과 신고</li>
+          <li>공개된 웹페이지의 일정 · 공고 · 통계</li>
+        </ul>
+        <p class="mini">X — 획득할 수 없는 데이터</p>
+        <ul>
+          <li class="x">냄새 · 촉감 같은 감각 정보</li>
+          <li class="x">사람의 속마음, 기록되지 않은 현장 상황</li>
+        </ul>
+      </div>
+      <div class="hi">
+        <h3><span class="tag">기준 2 — 가공</span>컴퓨터로 가공할 수 있는 데이터인가?</h3>
+        <p class="mini">O — 가공할 수 있는 일</p>
+        <ul>
+          <li>계산 · 통계 · 조건 비교 · 분류</li>
+          <li>검색 · 요약 · 지도 표시 · 알림</li>
+        </ul>
+        <p class="mini">X — 가공으로 해결되지 않는 일</p>
+        <ul>
+          <li class="x">무엇이 더 중요한지에 대한 가치 판단</li>
+          <li class="x">미래를 확정하는 일 (예측은 오차가 있는 추정)</li>
+          <li class="x">쓰레기 치우기 같은 물리적 행동</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">두 질문에 모두 '예'라면 — 만들 수 있습니다. 이제 직접 판단해봅시다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
 <!-- 연습 ① 질문 -->
 <section class="slide tint">
   <div class="center">
@@ -504,8 +548,7 @@
     <span class="pill"><span class="dot"></span>02 — 연습 ①</span>
     <h2>축제·행사 일정 모음 사이트</h2>
   </div>
-  <div class="body" style="top:196px">
-    <p class="verdict">판단 — <b>바로 만들 수 있습니다.</b> 오늘 밤 여러분이 만들 것이 바로 이런 유형입니다.</p>
+  <div class="body">
     <div class="vs">
       <div class="hi">
         <h3><span class="tag">WHY</span>왜 바로 가능한가</h3>
