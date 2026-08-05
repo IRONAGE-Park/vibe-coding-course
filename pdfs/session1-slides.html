@@ -112,6 +112,8 @@
   .cardbody.split2 .src { font-family: "Fragment Mono", monospace; font-size: 12px; color: var(--faint); margin-top: 10px; text-align: right; }
   .toolrow { display: flex; align-items: center; gap: 34px; margin: 26px 0 6px; }
   .toolrow img { height: 32px; }
+  .vs .ref { width: 100%; height: 140px; object-fit: contain; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-top: 14px; padding: 6px; }
+  .vs .refsrc { font-family: "Fragment Mono", monospace; font-size: 11px; color: var(--faint); margin-top: 8px; text-align: right; }
 
   /* 소제목 블록 */
   .blocks .blk { margin-bottom: 36px; max-width: 1010px; }
@@ -232,9 +234,13 @@
           <div class="t">어떤 문제를 해결해야 할까</div>
           <div class="s">일을 '시키는' 사람이란 · 문제를 정의하자 · 항상 잘게 쪼개기</div>
         </div>
-        <div class="item" style="border-bottom:none">
+        <div class="item">
           <div class="n">05</div>
           <div class="t">Q&amp;A</div>
+        </div>
+        <div class="item" style="border-bottom:none">
+          <div class="n">06</div>
+          <div class="t">실습</div>
         </div>
       </div>
     </div>
@@ -279,10 +285,16 @@
     <span class="badge">02 — 컴퓨터와 코딩</span>
     <h2>컴퓨터의 <span class="blue">탄생 이유</span></h2>
   </div>
-  <div class="cardbody">
-    <p class="line">인간이 하기 번거롭고, 실수의 위험이 있는 <b>계산을 대신 해줄 수 있는 기계</b></p>
-    <p class="line">컴퓨터의 등장으로 사람들은 복잡한 수학 계산에서 비로소 자유로워졌습니다</p>
-    <p class="fn">이 컴퓨터를 잘 쓰기 위해 GUI, 운영체제, 웹 브라우저가 —<br>그걸 또 잘 쓰기 위해 더 많은 프로그램이 지금도 태어나는 중</p>
+  <div class="cardbody split2">
+    <div class="col">
+      <p class="line">인간이 하기 번거롭고, 실수의 위험이 있는<br><b>계산을 대신 해줄 수 있는 기계</b></p>
+      <p class="line">컴퓨터의 등장으로 사람들은<br>복잡한 수학 계산에서 비로소 자유로워졌습니다</p>
+      <p class="fn">이 컴퓨터를 잘 쓰기 위해 GUI, 운영체제, 웹 브라우저가 —<br>그걸 또 잘 쓰기 위해 더 많은 프로그램이 지금도 태어나는 중</p>
+    </div>
+    <div>
+      <img class="shot" src="assets/eniac.jpg" alt="ENIAC을 프로그래밍하는 모습, 1940년대">
+      <p class="src">ENIAC (1945) — U.S. Army · Public Domain</p>
+    </div>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">05</span></div>
 </section>
@@ -416,6 +428,11 @@
   <div class="cardbody">
     <p class="line">언어를 입력받으면 통계학적으로 <b>가장 적절한 출력</b>을 내도록 학습된 AI 모델</p>
     <p class="line">GPT-5, Gemini 3.0, Claude Fable / Mythos —<br>"AI 성능이 좋다"는 말은 보통 <b>모델의 성능</b>을 가리킵니다</p>
+    <div class="toolrow">
+      <img src="assets/openai.svg" alt="OpenAI GPT">
+      <img src="assets/googlegemini.svg" alt="Google Gemini">
+      <img src="assets/claude.svg" alt="Anthropic Claude">
+    </div>
     <p class="fn">생성형 AI가 더 큰 범위 — 이미지·영상·음성 생성 모델을 포괄하고, LLM은 그중 언어에 특화된 분류</p>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">12</span></div>
@@ -431,6 +448,11 @@
     <p class="line">사람이 설정한 목표를 달성하기 위해 <b>스스로 전략을 짜고 행동하는</b> 시스템</p>
     <p class="line">컴퓨터 자동화, 업무, 코딩, 자율주행 — <b>목적에 따라</b> 구분됩니다</p>
     <p class="line">Cursor, Claude Code, Codex — 모두 <b>코딩 에이전트</b>입니다</p>
+    <div class="toolrow">
+      <img src="assets/cursor.svg" alt="Cursor">
+      <img src="assets/claude.svg" alt="Claude Code">
+      <img src="assets/openai.svg" alt="OpenAI Codex">
+    </div>
     <p class="fn">Computer Use — 사용자 컴퓨터를 실제로 조작하는 에이전트. 귀찮은 테스트도 자동으로 수행합니다</p>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">13</span></div>
@@ -464,33 +486,29 @@
     <span class="pill"><span class="dot"></span>03 — 개발 프로세스</span>
     <h2>Waterfall / Agile</h2>
   </div>
-  <div class="body" style="top:196px">
-    <div class="proc" style="margin-bottom:34px">
-      <span class="p">요구 분석</span><span class="a">-&gt;</span>
-      <span class="p">설계</span><span class="a">-&gt;</span>
-      <span class="p">개발</span><span class="a">-&gt;</span>
-      <span class="p">테스트</span><span class="a">-&gt;</span>
-      <span class="p">배포</span>
-    </div>
+  <div class="body" style="top:190px">
     <div class="vs">
       <div>
-        <h3><span class="tag">WATERFALL</span>한 번에, 완벽하게</h3>
+        <h3><span class="tag">WATERFALL — 한 번에, 완벽하게</span>요구 분석 → 설계 → 개발 → 테스트 → 배포</h3>
         <ul>
           <li>소프트웨어를 패키지로 개발하던 시대의 방식</li>
           <li>다섯 단계를 한 호흡에, 최초 기획을 거의 완벽하게 구현하는 것이 목표</li>
         </ul>
+        <img class="ref" src="assets/waterfall-model.png" alt="Waterfall 모델 다이어그램 — Requirements, Design, Implementation, Verification, Maintenance">
+        <p class="refsrc">Waterfall model — Wikimedia Commons · CC BY 3.0</p>
       </div>
       <div class="hi">
-        <h3><span class="tag">AGILE</span>잘게, 자주</h3>
+        <h3><span class="tag">AGILE — 잘게, 자주</span>고객 피드백 중심의 짧은 반복</h3>
         <ul>
-          <li>배포와 업데이트가 간단해지며 도입</li>
-          <li>고객 피드백 중심으로 작동 가능한 앱을 빠르게 배포</li>
+          <li>배포와 업데이트가 간단해지며 도입, 작동 가능한 앱을 빠르게 배포</li>
           <li>앱스토어의 앱이 수시로 업데이트되는 이유</li>
         </ul>
+        <img class="ref" src="assets/agilemanifesto.png" alt="Manifesto for Agile Software Development 원문 (2001)">
+        <p class="refsrc">Manifesto for Agile Software Development (2001) — agilemanifesto.org</p>
       </div>
     </div>
   </div>
-  <p class="fnote">AI 등장 전까지는 프로그램의 속성에 따라 두 방법론 중 적절한 것을 택하는 것이 트렌드</p>
+  <p class="fnote" style="bottom:66px">AI 등장 전까지는 프로그램의 속성에 따라 두 방법론 중 적절한 것을 택하는 것이 트렌드</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">15</span></div>
 </section>
 
@@ -619,10 +637,29 @@
     <span class="badge">03 — 오늘의 선택 02</span>
     <h2>버전 관리 — <span class="blue">Git</span></h2>
   </div>
-  <div class="cardbody">
-    <p class="line">짧아진 프로세스 주기를 관리하기 위한 <b>필수 도구</b></p>
-    <p class="line">버전 관리 프로그램의 <b>압도적 1등</b> — 이 생태계를 이길 도구는 당분간 없습니다</p>
-    <p class="fn">"어제 버전으로 되돌리기", "팀원 작업과 합치기"가 가능해지는 안전장치</p>
+  <div class="cardbody split2">
+    <div class="col">
+      <p class="line">짧아진 프로세스 주기를 관리하기 위한 <b>필수 도구</b></p>
+      <p class="line">버전 관리 프로그램의 <b>압도적 1등</b> —<br>이 생태계를 이길 도구는 당분간 없습니다</p>
+      <p class="fn">"어제 버전으로 되돌리기", "팀원 작업과 합치기"가 가능해지는 안전장치</p>
+    </div>
+    <div>
+      <svg class="shot" viewBox="0 0 440 250" style="background:#fff" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40,180 H400" stroke="#111827" stroke-width="3" fill="none"/>
+        <path d="M110,180 C145,180 140,90 175,90 H265 C300,90 295,180 330,180" stroke="#3182f6" stroke-width="3" fill="none"/>
+        <circle cx="60" cy="180" r="10" fill="#fff" stroke="#111827" stroke-width="3"/>
+        <circle cx="110" cy="180" r="10" fill="#fff" stroke="#111827" stroke-width="3"/>
+        <circle cx="330" cy="180" r="10" fill="#e6f0ff" stroke="#3182f6" stroke-width="3"/>
+        <circle cx="395" cy="180" r="10" fill="#fff" stroke="#111827" stroke-width="3"/>
+        <circle cx="190" cy="90" r="10" fill="#fff" stroke="#3182f6" stroke-width="3"/>
+        <circle cx="250" cy="90" r="10" fill="#fff" stroke="#3182f6" stroke-width="3"/>
+        <text x="40" y="218" font-family="Fragment Mono, monospace" font-size="14" fill="#6b7280">main</text>
+        <text x="163" y="62" font-family="Fragment Mono, monospace" font-size="14" fill="#3182f6">새 기능 작업</text>
+        <text x="306" y="218" font-family="Fragment Mono, monospace" font-size="14" fill="#3182f6">합치기</text>
+        <text x="86" y="150" font-family="Fragment Mono, monospace" font-size="13" fill="#9ca3af">복사</text>
+      </svg>
+      <p class="src">commit — branch — merge : 언제든 되돌릴 수 있는 기록</p>
+    </div>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">21</span></div>
 </section>
@@ -762,6 +799,17 @@
     <p class="sub" style="font-size:16px; margin-top:28px">(주)인바이즈 박철현</p>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">28</span></div>
+</section>
+
+<!-- 29. 인터스티셜: 실습 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">Chapter 06</span>
+    <h1>실습</h1>
+    <p class="sub">이제 직접 만들 시간입니다</p>
+  </div>
+  <div class="ghost">06</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">29</span></div>
 </section>
 
 </body>
