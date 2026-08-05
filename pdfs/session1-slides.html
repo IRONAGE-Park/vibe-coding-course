@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>바이브 코딩 — 1교시 강의 슬라이드</title>
+<title>바이브 코딩과 함께 살아남기 — 1교시 강의 슬라이드</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -144,11 +144,6 @@
   }
 
   /* 연습문제 */
-  .quiz-opts { display: flex; gap: 12px; margin-top: 38px; flex-wrap: wrap; justify-content: center; }
-  .quiz-opts span {
-    font-family: "Fragment Mono", monospace; font-size: 14px; color: var(--gray);
-    border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 9px 18px;
-  }
   .verdict { font-size: 23px; font-weight: 800; margin-bottom: 26px; }
   .verdict b { color: var(--blue); }
   .vs .ref { width: 100%; height: 140px; object-fit: contain; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-top: 14px; padding: 6px; }
@@ -234,8 +229,8 @@
 <!-- 1. 표지 -->
 <section class="slide tint">
   <div class="center">
-    <span class="pill"><span class="dot"></span>경상국립대학교 지역혁신 프로젝트 — 2026.08.06</span>
-    <h1 class="cover-title">바이브 <span class="hl">코딩</span></h1>
+    <span class="pill"><span class="dot"></span>경상대학교 학생 대상 강의 — 2026.08.06</span>
+    <h1 class="cover-title" style="font-size:76px; line-height:1.25">바이브 코딩과 함께<br><span class="hl">살아남기</span></h1>
     <p class="cover-kick">코딩 없이 서비스를 만드는</p>
     <p class="cover-by">(주)인바이즈 박철현</p>
   </div>
@@ -496,11 +491,8 @@
 <section class="slide tint">
   <div class="center">
     <span class="badge">연습 ① — 함께 생각해봅시다</span>
-    <h1>동네의 위험한 보도블록을<br><span class="blue">자동으로 찾아주는</span> 서비스</h1>
-    <p class="sub">실행만 하면 위험 지점이 지도에 표시됩니다 — 만들 수 있을까요?</p>
-    <div class="quiz-opts">
-      <span>바로 가능</span><span>조건부 가능</span><span>정책상 제한</span><span>만들어도 해결 안 됨</span>
-    </div>
+    <h1>진주의 축제·행사 일정을<br><span class="blue">한 페이지에 모아 보여주는</span> 웹사이트</h1>
+    <p class="sub">기관마다 흩어진 일정을 모아 달력으로 보여줍니다 — 만들 수 있을까요?</p>
   </div>
   <div class="ghost">Q1</div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
@@ -510,6 +502,48 @@
 <section class="slide">
   <div class="head">
     <span class="pill"><span class="dot"></span>02 — 연습 ①</span>
+    <h2>축제·행사 일정 모음 사이트</h2>
+  </div>
+  <div class="body" style="top:196px">
+    <p class="verdict">판단 — <b>바로 만들 수 있습니다.</b> 오늘 밤 여러분이 만들 것이 바로 이런 유형입니다.</p>
+    <div class="vs">
+      <div class="hi">
+        <h3><span class="tag">WHY</span>왜 바로 가능한가</h3>
+        <ul>
+          <li>필요한 데이터가 이미 공개되어 있다 — 시청·축제 홈페이지의 일정</li>
+          <li>모아서 보기 좋게 보여주는 일은 컴퓨터의 본업</li>
+          <li>화면 밖에서 누군가 행동해줄 필요가 없다</li>
+        </ul>
+      </div>
+      <div>
+        <h3><span class="tag">SAME TYPE</span>같은 유형의 아이디어</h3>
+        <ul>
+          <li>팀 벤치마킹 사진·메모 아카이브 페이지</li>
+          <li>지역 가게 메뉴판·소개 웹페이지</li>
+          <li>청년 지원사업 마감일 모음 페이지</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">세 가지 질문을 모두 통과 — 데이터가 있고 · 써도 되고 · 정보 접근 문제를 실제로 해결합니다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 ② 질문 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">연습 ② — 함께 생각해봅시다</span>
+    <h1>동네의 위험한 보도블록을<br><span class="blue">자동으로 찾아주는</span> 서비스</h1>
+    <p class="sub">실행만 하면 위험 지점이 지도에 표시됩니다 — 만들 수 있을까요?</p>
+  </div>
+  <div class="ghost">Q2</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 ② 판단 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 연습 ②</span>
     <h2>위험한 보도블록 자동 탐지</h2>
   </div>
   <div class="body" style="top:196px">
@@ -539,21 +573,18 @@
 <!-- 연습 ② 질문 -->
 <section class="slide tint">
   <div class="center">
-    <span class="badge">연습 ② — 함께 생각해봅시다</span>
+    <span class="badge">연습 ③ — 함께 생각해봅시다</span>
     <h1>인기 공연의 취소표를<br><span class="blue">자동으로 결제까지</span> 해주는 프로그램</h1>
     <p class="sub">사람이 새로고침하는 일을 컴퓨터가 대신하면 될 것 같은데 — 만들 수 있을까요?</p>
-    <div class="quiz-opts">
-      <span>바로 가능</span><span>조건부 가능</span><span>정책상 제한</span><span>만들어도 해결 안 됨</span>
-    </div>
   </div>
-  <div class="ghost">Q2</div>
+  <div class="ghost">Q3</div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 연습 ② 판단 -->
 <section class="slide">
   <div class="head">
-    <span class="pill"><span class="dot"></span>02 — 연습 ②</span>
+    <span class="pill"><span class="dot"></span>02 — 연습 ③</span>
     <h2>취소표 자동 구매 프로그램</h2>
   </div>
   <div class="body" style="top:196px">
@@ -582,21 +613,18 @@
 <!-- 연습 ③ 질문 -->
 <section class="slide tint">
   <div class="center">
-    <span class="badge">연습 ③ — 함께 생각해봅시다</span>
+    <span class="badge">연습 ④ — 함께 생각해봅시다</span>
     <h1>농촌 어르신을 위한<br><span class="blue">실시간 버스 도착정보</span> 앱</h1>
     <p class="sub">버스가 언제 오는지 몰라 불편합니다 — 앱을 만들면 문제가 해결될까요?</p>
-    <div class="quiz-opts">
-      <span>바로 가능</span><span>조건부 가능</span><span>정책상 제한</span><span>만들어도 해결 안 됨</span>
-    </div>
   </div>
-  <div class="ghost">Q3</div>
+  <div class="ghost">Q4</div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 연습 ③ 판단 -->
 <section class="slide">
   <div class="head">
-    <span class="pill"><span class="dot"></span>02 — 연습 ③</span>
+    <span class="pill"><span class="dot"></span>02 — 연습 ④</span>
     <h2>실시간 버스 도착정보 앱</h2>
   </div>
   <div class="body" style="top:196px">
@@ -632,19 +660,19 @@
   <div class="body" style="top:250px">
     <div class="stats">
       <div>
-        <div class="n">연습 ①</div>
+        <div class="n">연습 ① · ②</div>
         <div class="cat">기술과 데이터</div>
         <div class="name">만들 수 있는가?</div>
         <p>컴퓨터가 알 수 있는 데이터가 있는가 — 없다면 사진·센서·사람의 입력으로 채워야 합니다</p>
       </div>
       <div>
-        <div class="n">연습 ②</div>
+        <div class="n">연습 ③</div>
         <div class="cat">정책과 권한</div>
         <div class="name">만들어도 되는가?</div>
         <p>약관 · 개인정보 · 권한 — 코드를 작성할 수 있다는 것과 사용해도 된다는 것은 다른 문제입니다</p>
       </div>
       <div>
-        <div class="n">연습 ③</div>
+        <div class="n">연습 ④</div>
         <div class="cat">현실의 변화</div>
         <div class="name">만들면 해결되는가?</div>
         <p>프로그램 뒤에 현실의 행동이 이어져야 문제가 풀립니다 — 앱은 해결책의 일부입니다</p>
