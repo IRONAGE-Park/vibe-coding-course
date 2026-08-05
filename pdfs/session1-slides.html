@@ -206,6 +206,11 @@
   .cases .n { font-family: "Fragment Mono", monospace; font-size: 13px; color: var(--blue); background: var(--blue-soft); border-radius: 999px; padding: 6px 14px; display: inline-block; }
   .cases h4 { font-size: 20px; font-weight: 800; margin-top: 18px; }
   .cases p { font-size: 16.5px; line-height: 1.65; color: var(--body); margin-top: 12px; }
+  .cases .ln { font-size: 15.5px; line-height: 1.55; color: var(--body); margin-top: 10px; }
+  .cases .ln .m { font-family: "Fragment Mono", monospace; font-weight: 700; color: var(--blue); margin-right: 6px; }
+  .cases .ln .m.x { color: var(--faint); }
+  .cases .q { margin-top: 16px; font-size: 15.5px; font-weight: 700; color: var(--ink); line-height: 1.5; }
+  .cases .q::before { content: "Q. "; color: var(--blue); }
 
   .fnote { position: absolute; left: 72px; right: 72px; bottom: 104px; text-align: center; font-size: 15px; color: var(--faint); }
 
@@ -1128,6 +1133,135 @@
     <p class="line">쪼갤 방법을 모르겠다면, 다양한 방법과 방향으로 <b>재해석</b>해보세요</p>
     <p class="punch">문제를 잘 정의하는 순간,<br>그건 더 이상 문제가 아니라 <span class="blue">등대</span>가 됩니다</p>
   </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 인터스티셜: 국내 사례 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">04 — 국내 사례</span>
+    <h1>국내 지역문제 해결 사례</h1>
+    <p class="sub">바이브 코딩은 이미 어디까지 왔나 — 성공과 실패</p>
+  </div>
+  <div class="ghost">V</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 바이브코딩 제작 확인 사례 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>04 — 국내 사례</span>
+    <h2>바이브 코딩 제작이 확인된 사례</h2>
+  </div>
+  <div class="body">
+    <div class="vs">
+      <div class="hi">
+        <h3><span class="tag">V — 공개 웹서비스 · 관광</span>서울 벚꽃 혼잡도 지도</h3>
+        <ul>
+          <li>비개발자가 <b>Claude Code를 처음 사용한 날</b> 만든 공개 웹서비스</li>
+          <li>명소 30곳의 혼잡도·개화 상태·교통 정보를 60분 주기로 갱신</li>
+          <li>오늘 실습과 같은 스택 — <b>Claude로 만들고 Vercel로 배포</b></li>
+        </ul>
+      </div>
+      <div>
+        <h3><span class="tag">V — 현장 운영 · 돌봄</span>발달장애인 맞춤형 시간표</h3>
+        <ul>
+          <li><b>사회복지사가 바이브 코딩으로 제작</b>, 통합돌봄 현장에서 사용 중</li>
+          <li>이용자가 색과 활동을 직접 골라 하루 일정을 스스로 결정</li>
+          <li>작은 대상 · 명확한 행동 · 눈에 보이는 결과</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">거대한 플랫폼이 아니라 한 관광객의 판단, 한 사람의 하루처럼 작은 문제에서 시작했습니다 — blossom-map-eight.vercel.app · seoulcbid.or.kr</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 성공·실패 대비 3쌍 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>04 — 국내 사례</span>
+    <h2>같은 주제, 다른 결과</h2>
+  </div>
+  <div class="body" style="top:210px">
+    <div class="cases">
+      <div>
+        <span class="n">청년 정착</span>
+        <h4>괜찮아마을 ↔ 달빛포레스트</h4>
+        <p class="ln"><span class="m">O</span>목포 — 정착 시도 30명 중 8년 뒤에도 20여 명이 지역에 잔류</p>
+        <p class="ln"><span class="m x">X</span>영암 — 참가자 118명 중 실제 전입은 2명</p>
+        <p class="q">참가자 수가 아니라, 주거와 소득을 확보하고 남은 사람이 몇 명인가?</p>
+      </div>
+      <div>
+        <span class="n">관광 · 로컬 상권</span>
+        <h4>스마트 마켓 메이커 ↔ 대형 플랫폼</h4>
+        <p class="ln"><span class="m">O</span>서초 — 사진+설명을 상세페이지로 바꿔주는 한 가지 문제에 집중</p>
+        <p class="ln"><span class="m x">X</span>전환 측정 없는 대규모 플랫폼은 효과 판단이 어려움</p>
+        <p class="q">몇 개를 만들었는가가 아니라, 실제 주문과 방문으로 이어졌는가?</p>
+      </div>
+      <div>
+        <span class="n">고령자 · 교통약자</span>
+        <h4>똑버스 ↔ 은평모두로</h4>
+        <p class="ln"><span class="m">O</span>경기 — 누적 1,197만 명, 앱과 <b>전화호출</b>을 함께 제공</p>
+        <p class="ln"><span class="m x">X</span>은평 — 6억 원 투입, 반년간 다운로드 10여 건</p>
+        <p class="q">기능이 많은가가 아니라, 대상자가 실제로 호출하고 이동을 완료하는가?</p>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">출처 — 국내 지역문제 바이브코딩·디지털 서비스 사례집 (2026.08.05 기준 공개자료)</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 성공 공식 -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">04 — 국내 사례</span>
+    <h2>성공 가능성이 높은 <span class="blue">공식</span></h2>
+  </div>
+  <div class="cardbody">
+    <div class="proc" style="margin-bottom:26px">
+      <span class="p">반복 작업</span><span class="a">+</span>
+      <span class="p">명확한 입력</span><span class="a">+</span>
+      <span class="p">검증 가능한 출력</span><span class="a">+</span>
+      <span class="p">되돌릴 수 있음</span><span class="a">+</span>
+      <span class="p">적은 사용자·권한</span>
+    </div>
+    <p class="line">새로운 대형 플랫폼보다 <b>기존 서비스의 작은 빈틈</b>을 연결합니다</p>
+    <p class="line">참가자·설치 수보다 <b>전입 · 구매 · 이동 완료 · 잔류</b>를 봅니다</p>
+    <p class="line">고령자 대상 서비스에는 전화·종이 같은 <b>비디지털 대체수단</b>을 함께 둡니다</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 세 주제에 적합한 작은 과제 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>04 — 국내 사례</span>
+    <h2>세 주제에 적합한 작은 과제</h2>
+  </div>
+  <div class="body" style="top:210px">
+    <div class="cases">
+      <div>
+        <span class="n">청년 정착</span>
+        <h4>정착 후속관리 도구</h4>
+        <p>참가자의 주거·일자리·프로젝트를 매칭하고 30·90·180일 체류를 관리하는 도구</p>
+        <p class="q">신청자 수가 아니라 실제 전입 · 잔류 · 소득활동을 측정</p>
+      </div>
+      <div>
+        <span class="n">관광 · 로컬 상권</span>
+        <h4>지금 열려있는 가게 지도</h4>
+        <p>현재 위치 기준 영업 중인 점포·체험·화장실 정보를 보여주고 QR 쿠폰을 발급하는 웹앱</p>
+        <p class="q">QR 발급 → 실제 방문 → 구매로 이어지는지 측정</p>
+      </div>
+      <div>
+        <span class="n">고령자 · 교통약자</span>
+        <h4>이동 요청 운영도구</h4>
+        <p>전화로 받은 이동 요청을 지도에 표시하고 마을버스·봉사차량 운행표를 만드는 도구</p>
+        <p class="q">요청 대비 완료율 · 평균 대기시간 · 전화 이용 비율을 측정</p>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">가장 잘 맞는 문제의 형태 — 범위가 작고, 결과를 곧바로 확인할 수 있는 문제</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
