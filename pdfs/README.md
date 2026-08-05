@@ -8,8 +8,10 @@
 - `slides-structure.json` — 슬라이드별 내용·레이아웃 구조 정의 (내용 수정 시 이 파일 기준으로 논의)
 - `DARFT.md` — 강의 내용 초안 (원본)
 - `assets/` — 슬라이드에 삽입되는 로컬 에셋
-  - `claude.svg` `git.svg` `supabase.svg` `vercel.svg` — 공식 브랜드 아이콘 (Simple Icons CDN)
+  - 브랜드 아이콘 (Simple Icons CDN): `claude` `git` `supabase` `vercel` `githubcopilot` `cursor` `googlegemini` `windsurf` `v0` (.svg)
   - `stateofai-agents.png` — State of AI 2026 Agents & Assistants 순위 차트 캡처 (출처: 2026.stateofai.dev)
+  - `supabase-home.png` — Supabase 홈페이지 캡처 (출처: supabase.com)
+  - `vercel-home.png` — Vercel 홈페이지 캡처 (출처: vercel.com)
 
 ## PDF로 내보내는 방법
 

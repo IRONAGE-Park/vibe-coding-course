@@ -110,6 +110,8 @@
   .cardbody.split2 .col { flex: 1; }
   .cardbody.split2 .shot { width: 440px; flex-shrink: 0; border-radius: 14px; border: 1px solid var(--line); display: block; }
   .cardbody.split2 .src { font-family: "Fragment Mono", monospace; font-size: 12px; color: var(--faint); margin-top: 10px; text-align: right; }
+  .toolrow { display: flex; align-items: center; gap: 34px; margin: 26px 0 6px; }
+  .toolrow img { height: 32px; }
 
   /* 소제목 블록 */
   .blocks .blk { margin-bottom: 36px; max-width: 1010px; }
@@ -443,6 +445,14 @@
   <div class="cardbody">
     <p class="line">코드 작성을 AI에 위탁하고, 사람은 <b>자연어로</b> 프로그램을 개발하는 방법론</p>
     <p class="line">숙련자에게는 <b>시간 절약</b>, 초보자에게는 <b>진입장벽의 소멸</b></p>
+    <div class="toolrow">
+      <img src="assets/githubcopilot.svg" alt="GitHub Copilot">
+      <img src="assets/cursor.svg" alt="Cursor">
+      <img src="assets/claude.svg" alt="Claude Code">
+      <img src="assets/googlegemini.svg" alt="Gemini CLI">
+      <img src="assets/windsurf.svg" alt="Windsurf">
+      <img src="assets/v0.svg" alt="v0">
+    </div>
     <p class="fn">GitHub Copilot · Cursor · Codex · Claude Code · Gemini CLI · Antigravity · Opencode · Windsurf · v0 · Lovable</p>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">14</span></div>
@@ -623,11 +633,17 @@
     <span class="badge">03 — 오늘의 선택 03</span>
     <h2>데이터베이스 — <span class="blue">Supabase</span></h2>
   </div>
-  <div class="cardbody">
-    <p class="line">필수는 아닙니다 — 애플리케이션의 성격에 따라 필요할 수도, 아닐 수도</p>
-    <p class="line">쉽게 말해 <b>서비스를 위한 외장하드</b>를 하나 사는 것</p>
-    <p class="line">킬러 기능은 <b>로그인 및 인증</b> — 잘못 만들면 위험한 부분을 대신 관리해줍니다</p>
-    <p class="fn">Google 로그인 같은 소셜 로그인도 지원</p>
+  <div class="cardbody split2">
+    <div class="col">
+      <p class="line">필수는 아닙니다 — 성격에 따라 필요할 수도, 아닐 수도</p>
+      <p class="line">쉽게 말해 <b>서비스를 위한 외장하드</b>를 하나 사는 것</p>
+      <p class="line">킬러 기능은 <b>로그인 및 인증</b> —<br>잘못 만들면 위험한 부분을 대신 관리해줍니다</p>
+      <p class="fn">Google 로그인 같은 소셜 로그인도 지원</p>
+    </div>
+    <div>
+      <img class="shot" src="assets/supabase-home.png" alt="Supabase 홈페이지 — Postgres, Authentication, Storage 제품 소개">
+      <p class="src">출처 — supabase.com</p>
+    </div>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">22</span></div>
 </section>
@@ -638,11 +654,17 @@
     <span class="badge">03 — 오늘의 선택 04</span>
     <h2>호스팅 / 배포 — <span class="blue">Vercel</span></h2>
   </div>
-  <div class="cardbody">
-    <p class="line">모든 프로그램은 그것이 실행되는 컴퓨터가 필요합니다</p>
-    <p class="line">그 컴퓨터를 켜두는 게 <b>호스팅</b>, 그 컴퓨터에 프로그램을 설치하는 게 <b>배포</b></p>
-    <p class="line">오늘은 웹 애플리케이션 — 웹 배포 생태계 1위 <b>Vercel</b></p>
-    <p class="fn">AWS · GCP · Azure도 있지만 초보자에게는 아직 너무 어렵습니다</p>
+  <div class="cardbody split2">
+    <div class="col">
+      <p class="line">모든 프로그램은 그것이 실행되는 컴퓨터가 필요합니다</p>
+      <p class="line">그 컴퓨터를 켜두는 게 <b>호스팅</b>,<br>그 컴퓨터에 프로그램을 설치하는 게 <b>배포</b></p>
+      <p class="line">오늘은 웹 애플리케이션 —<br>웹 배포 생태계 1위 <b>Vercel</b></p>
+      <p class="fn">AWS · GCP · Azure도 있지만 초보자에게는 아직 너무 어렵습니다</p>
+    </div>
+    <div>
+      <img class="shot" src="assets/vercel-home.png" alt="Vercel 홈페이지 — Agentic Infrastructure">
+      <p class="src">출처 — vercel.com</p>
+    </div>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">23</span></div>
 </section>
