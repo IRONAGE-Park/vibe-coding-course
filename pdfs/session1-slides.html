@@ -24,6 +24,7 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { background: #3c4048; }
+  body { counter-reset: slide; }
   body {
     font-family: "Pretendard Variable", Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
@@ -35,6 +36,7 @@
     width: 1280px; height: 720px; margin: 24px auto;
     position: relative; overflow: hidden; background: #fff;
     box-shadow: 0 8px 30px rgba(0,0,0,.4);
+    counter-increment: slide;
   }
   .slide.tint { background: var(--tint); }
   @media print {
@@ -50,6 +52,7 @@
   }
   .foot .logo { font-weight: 700; font-size: 13.5px; letter-spacing: .1em; color: #b6bcc6; }
   .foot .pg { font-family: "Fragment Mono", monospace; font-size: 12px; color: #b6bcc6; }
+  .foot .pg::before { content: counter(slide, decimal-leading-zero); }
 
   /* 라벨 두 종: 흰 페이지 = 보더 필 / 틴트 페이지 = 블루 배지 */
   .pill {
@@ -112,6 +115,33 @@
   .cardbody.split2 .src { font-family: "Fragment Mono", monospace; font-size: 12px; color: var(--faint); margin-top: 10px; text-align: right; }
   .toolrow { display: flex; align-items: center; gap: 34px; margin: 26px 0 6px; }
   .toolrow img { height: 32px; }
+
+  /* 아이콘 클라우드 (우측 비정형 배치) */
+  .cardbody.withcloud { padding-right: 430px; }
+  .iconcloud { position: absolute; right: 66px; top: 50%; transform: translateY(-50%); width: 310px; height: 300px; }
+  .iconcloud .chipc {
+    position: absolute; border-radius: 50%; background: #fff;
+    border: 1px solid var(--line); box-shadow: 0 16px 36px rgba(17,24,39,.10);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .iconcloud .chipc img { width: 46%; }
+  .iconcloud .chipc.soft { background: #f4f8ff; border-color: #d7e6ff; }
+
+  /* 비유 그래픽 (전기 ≠ 수도) */
+  .analogy { display: flex; align-items: center; justify-content: center; gap: 54px; padding-top: 26px; }
+  .analogy .abox { text-align: center; width: 300px; }
+  .analogy .acircle { width: 200px; height: 200px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+  .analogy .acircle img { width: 88px; }
+  .analogy .acircle.ok { background: var(--blue-soft); }
+  .analogy .acircle.nope { background: #f3f4f6; }
+  .analogy .alabel { margin-top: 22px; font-size: 21px; font-weight: 800; }
+  .analogy .asub { font-size: 16px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
+  .analogy .neq { font-family: "Fragment Mono", monospace; font-size: 64px; color: #c3c8d1; }
+
+  .proc .loop {
+    font-family: "Fragment Mono", monospace; font-size: 16px; font-weight: 700;
+    color: var(--blue); background: var(--blue-soft); border-radius: 999px; padding: 11px 20px;
+  }
   .vs .ref { width: 100%; height: 140px; object-fit: contain; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-top: 14px; padding: 6px; }
   .vs .refsrc { font-family: "Fragment Mono", monospace; font-size: 11px; color: var(--faint); margin-top: 8px; text-align: right; }
 
@@ -132,8 +162,8 @@
   /* 목차 */
   .toc { display: flex; gap: 80px; }
   .toc .col { flex: 1; }
-  .toc .item { padding: 22px 0; border-bottom: 1px solid #f1f2f4; }
-  .toc .item:first-child { padding-top: 6px; }
+  .toc .item { padding: 22px 0; border-bottom: 1px solid #f1f2f4; min-height: 132px; }
+  .toc .item:first-child { padding-top: 6px; min-height: 116px; }
   .toc .n { font-family: "Fragment Mono", monospace; font-size: 15px; color: var(--blue); }
   .toc .t { font-size: 25px; font-weight: 800; letter-spacing: -0.01em; margin-top: 6px; }
   .toc .s { font-size: 15.5px; color: var(--faint); margin-top: 8px; line-height: 1.6; }
@@ -200,7 +230,7 @@
     <p class="cover-kick">코딩 없이 서비스를 만드는</p>
     <p class="cover-by">(주)인바이즈 박철현</p>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">01</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 2. 목차 -->
@@ -245,7 +275,7 @@
       </div>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">02</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 3. 강사 소개 -->
@@ -255,7 +285,7 @@
     <h2>강사 소개</h2>
   </div>
   <div class="body" style="top:200px">
-    <div class="panel cv">
+    <div class="panel cv" style="max-width:920px; margin-left:110px">
       <div><span class="yr">18.06</span><span class="tx">삼성 / 카카오 코딩테스트 본선 진출</span></div>
       <div><span class="yr">19.02</span><span class="tx">동아대학교 컴퓨터공학과 졸업</span></div>
       <div><span class="yr">19.07</span><span class="tx">(주)인바이즈 창업</span></div>
@@ -266,7 +296,7 @@
       <div><span class="yr">25.06</span><span class="tx">특허 5개 등록</span></div>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">03</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 4. 인터스티셜: 컴퓨터와 코딩 -->
@@ -276,7 +306,7 @@
     <h1>컴퓨터와 코딩</h1>
   </div>
   <div class="ghost">02</div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">04</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 5. 컴퓨터의 탄생 이유 -->
@@ -296,7 +326,7 @@
       <p class="src">ENIAC (1945) — U.S. Army · Public Domain</p>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">05</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 6. 코딩의 가치 -->
@@ -305,13 +335,37 @@
     <span class="badge">02 — 컴퓨터와 코딩</span>
     <h2>코딩의 <span class="blue">가치</span></h2>
   </div>
-  <div class="cardbody">
-    <p class="line">성능이 좋아진 컴퓨터에게 이제는 <b>인간이 하지 않아도 되는 일</b>을 맡기기 시작했습니다</p>
-    <p class="line">프로그램도, 그걸 쓰는 환경도 폭발적으로 늘었습니다 — 휴대폰, IoT, 태블릿, 자동차</p>
-    <p class="line">수요가 커진 만큼 <b>언어, 프레임워크, 라이브러리 생태계</b>도 계속 진화했습니다</p>
-    <p class="fn">프로그램을 만드는 일 자체가 계속 쉬워져 온 역사</p>
+  <div class="cardbody split2">
+    <div class="col">
+      <p class="line">성능이 좋아진 컴퓨터에게 이제는<br><b>인간이 하지 않아도 되는 일</b>을 맡기기 시작했습니다</p>
+      <p class="line">프로그램도, 그걸 쓰는 환경도 폭발적으로 늘었습니다<br>휴대폰, IoT, 태블릿, 자동차 &hellip;</p>
+      <p class="line">수요가 커진 만큼 <b>언어, 프레임워크, 라이브러리 생태계</b>도<br>계속 진화했습니다</p>
+      <p class="fn">프로그램을 만드는 일 자체가 계속 쉬워져 온 역사</p>
+    </div>
+    <div>
+      <svg class="shot" viewBox="0 0 460 270" style="background:#fff" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="lad" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+          </marker>
+        </defs>
+        <rect x="24"  y="196" width="76" height="44"  rx="8" fill="#e5e7eb"/>
+        <rect x="108" y="166" width="76" height="74"  rx="8" fill="#d8dce3"/>
+        <rect x="192" y="136" width="76" height="104" rx="8" fill="#c3c9d4"/>
+        <rect x="276" y="106" width="76" height="134" rx="8" fill="#8ab8ff"/>
+        <rect x="360" y="76"  width="76" height="164" rx="8" fill="#3182f6"/>
+        <text x="62"  y="185" font-family="Fragment Mono, monospace" font-size="13" fill="#6b7280" text-anchor="middle">기계어</text>
+        <text x="146" y="155" font-family="Fragment Mono, monospace" font-size="13" fill="#6b7280" text-anchor="middle">어셈블리</text>
+        <text x="230" y="125" font-family="Fragment Mono, monospace" font-size="13" fill="#6b7280" text-anchor="middle">고급 언어</text>
+        <text x="314" y="95"  font-family="Fragment Mono, monospace" font-size="13" fill="#3182f6" text-anchor="middle">프레임워크</text>
+        <text x="398" y="65"  font-family="Fragment Mono, monospace" font-size="13" fill="#3182f6" font-weight="bold" text-anchor="middle">자연어</text>
+        <path d="M62,160 L390,42" stroke="#9ca3af" stroke-width="2" stroke-dasharray="5 5" fill="none" marker-end="url(#lad)"/>
+        <text x="180" y="70" font-family="Fragment Mono, monospace" font-size="12" fill="#9ca3af">점점 사람의 말에 가까워진다</text>
+      </svg>
+      <p class="src">프로그래밍 추상화의 계단 — 도구는 계속 쉬워져 왔다</p>
+    </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">06</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 7. 컴퓨터공학/과학 -->
@@ -336,7 +390,7 @@
       </div>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">07</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 8. 생성형 AI와 AI Agent의 등장 -->
@@ -361,7 +415,7 @@
       </div>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">08</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 9. 인터스티셜: 컴퓨터는 무얼 할 수 있는가 -->
@@ -371,20 +425,41 @@
     <h1>컴퓨터는 <span class="blue">무얼</span> 할 수 있는가</h1>
   </div>
   <div class="ghost">?</div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">09</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
-<!-- 10. 컴퓨터는 무얼 할 수 있는가 (내용) -->
+<!-- 10. 컴퓨터는 무얼 할 수 있는가 — 비유 -->
 <section class="slide">
   <div class="head">
     <span class="pill"><span class="dot"></span>02 — 도구를 보는 안목</span>
     <h2>컴퓨터는 무얼 할 수 있는가</h2>
   </div>
-  <div class="body" style="top:196px">
-    <p style="font-size:18.5px; line-height:1.6; color:var(--body); max-width:1000px; margin-bottom:30px">
-      전기 배선을 할 줄 안다고 수도꼭지를 설치할 수는 없습니다.
-      도구가 아무리 좋아져도, <b style="color:var(--ink)">할 수 있는 것과 할 수 없는 것을 구분하는 안목</b>이 필요합니다.
-    </p>
+  <div class="body" style="top:190px">
+    <div class="analogy">
+      <div class="abox">
+        <div class="acircle ok"><img src="assets/ic-plug.svg" alt="전기 배선"></div>
+        <p class="alabel">전기 배선</p>
+        <p class="asub">할 줄 아는 일</p>
+      </div>
+      <span class="neq">&ne;</span>
+      <div class="abox">
+        <div class="acircle nope"><img src="assets/ic-shower.svg" alt="수도꼭지 설치"></div>
+        <p class="alabel" style="color:var(--gray)">수도꼭지 설치</p>
+        <p class="asub">할 수 없는 일</p>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">전기 배선을 할 줄 안다고 수도꼭지를 설치할 수는 없다 —<br>도구가 아무리 좋아져도, 할 수 있는 것과 없는 것을 구분하는 <b>안목</b>은 사람의 몫입니다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 11. 컴퓨터는 무얼 할 수 있는가 — 구분 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 도구를 보는 안목</span>
+    <h2>컴퓨터는 무얼 할 수 있는가</h2>
+  </div>
+  <div class="body">
     <div class="vs">
       <div class="hi">
         <h3><span class="tag">CAN — 반복과 기억</span>컴퓨터가 잘하는 일</h3>
@@ -397,7 +472,7 @@
       <div class="no">
         <h3><span class="tag">CANNOT — 발견과 판단</span>컴퓨터가 못하는 일</h3>
         <ul>
-          <li>정류장 계단 앞 어르신의 불편을 발견하는 일</li>
+          <li>현장에서 사람들이 겪는 불편을 발견하는 일</li>
           <li>두 기능 중 무엇이 더 가치 있는지 결정하는 일</li>
           <li>세상에 기록되지 않은 정보를 다루는 일</li>
         </ul>
@@ -405,7 +480,7 @@
     </div>
   </div>
   <p class="fnote">왼쪽은 AI에게, 오른쪽은 여러분에게 — 오늘 실습의 역할 분담이기도 합니다</p>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">10</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 11. 인터스티셜: AI Agent? Vibe coding? -->
@@ -416,7 +491,7 @@
     <p class="sub">한 번 알기만 하면 누구나 할 수 있습니다</p>
   </div>
   <div class="ghost">03</div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">11</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 12. LLM -->
@@ -425,17 +500,17 @@
     <span class="badge">03 — 바이브 코딩</span>
     <h2><span class="blue">LLM</span> (Large Language Model)</h2>
   </div>
-  <div class="cardbody">
+  <div class="cardbody withcloud">
     <p class="line">언어를 입력받으면 통계학적으로 <b>가장 적절한 출력</b>을 내도록 학습된 AI 모델</p>
     <p class="line">GPT-5, Gemini 3.0, Claude Fable / Mythos —<br>"AI 성능이 좋다"는 말은 보통 <b>모델의 성능</b>을 가리킵니다</p>
-    <div class="toolrow">
-      <img src="assets/openai.svg" alt="OpenAI GPT">
-      <img src="assets/googlegemini.svg" alt="Google Gemini">
-      <img src="assets/claude.svg" alt="Anthropic Claude">
+    <p class="fn">생성형 AI가 더 큰 범위 — 이미지·영상·음성 생성 모델을 포괄하고,<br>LLM은 그중 언어에 특화된 분류</p>
+    <div class="iconcloud">
+      <div class="chipc" style="width:104px;height:104px;left:24px;top:16px"><img src="assets/openai.svg" alt="OpenAI GPT"></div>
+      <div class="chipc soft" style="width:82px;height:82px;left:196px;top:64px"><img src="assets/googlegemini.svg" alt="Google Gemini"></div>
+      <div class="chipc" style="width:124px;height:124px;left:92px;top:150px"><img src="assets/claude.svg" alt="Anthropic Claude"></div>
     </div>
-    <p class="fn">생성형 AI가 더 큰 범위 — 이미지·영상·음성 생성 모델을 포괄하고, LLM은 그중 언어에 특화된 분류</p>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">12</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 13. AI Agent -->
@@ -444,18 +519,18 @@
     <span class="badge">03 — 바이브 코딩</span>
     <h2><span class="blue">AI Agent</span></h2>
   </div>
-  <div class="cardbody">
+  <div class="cardbody withcloud">
     <p class="line">사람이 설정한 목표를 달성하기 위해 <b>스스로 전략을 짜고 행동하는</b> 시스템</p>
     <p class="line">컴퓨터 자동화, 업무, 코딩, 자율주행 — <b>목적에 따라</b> 구분됩니다</p>
     <p class="line">Cursor, Claude Code, Codex — 모두 <b>코딩 에이전트</b>입니다</p>
-    <div class="toolrow">
-      <img src="assets/cursor.svg" alt="Cursor">
-      <img src="assets/claude.svg" alt="Claude Code">
-      <img src="assets/openai.svg" alt="OpenAI Codex">
+    <p class="fn">Computer Use — 사용자 컴퓨터를 실제로 조작하는 에이전트.<br>귀찮은 테스트도 자동으로 수행합니다</p>
+    <div class="iconcloud">
+      <div class="chipc soft" style="width:112px;height:112px;left:34px;top:12px"><img src="assets/cursor.svg" alt="Cursor"></div>
+      <div class="chipc" style="width:92px;height:92px;left:198px;top:88px"><img src="assets/claude.svg" alt="Claude Code"></div>
+      <div class="chipc" style="width:102px;height:102px;left:78px;top:172px"><img src="assets/openai.svg" alt="OpenAI Codex"></div>
     </div>
-    <p class="fn">Computer Use — 사용자 컴퓨터를 실제로 조작하는 에이전트. 귀찮은 테스트도 자동으로 수행합니다</p>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">13</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 14. Vibe coding -->
@@ -464,20 +539,20 @@
     <span class="badge">03 — 바이브 코딩</span>
     <h2><span class="blue">Vibe coding</span></h2>
   </div>
-  <div class="cardbody">
+  <div class="cardbody withcloud">
     <p class="line">코드 작성을 AI에 위탁하고, 사람은 <b>자연어로</b> 프로그램을 개발하는 방법론</p>
-    <p class="line">숙련자에게는 <b>시간 절약</b>, 초보자에게는 <b>진입장벽의 소멸</b></p>
-    <div class="toolrow">
-      <img src="assets/githubcopilot.svg" alt="GitHub Copilot">
-      <img src="assets/cursor.svg" alt="Cursor">
-      <img src="assets/claude.svg" alt="Claude Code">
-      <img src="assets/googlegemini.svg" alt="Gemini CLI">
-      <img src="assets/windsurf.svg" alt="Windsurf">
-      <img src="assets/v0.svg" alt="v0">
+    <p class="line">숙련자에게는 <b>시간 절약</b>,<br>초보자에게는 <b>진입장벽의 소멸</b></p>
+    <p class="fn">GitHub Copilot · Cursor · Codex · Claude Code · Gemini CLI<br>Antigravity · Opencode · Windsurf · v0 · Lovable</p>
+    <div class="iconcloud">
+      <div class="chipc" style="width:96px;height:96px;left:10px;top:0px"><img src="assets/githubcopilot.svg" alt="GitHub Copilot"></div>
+      <div class="chipc soft" style="width:74px;height:74px;left:176px;top:30px"><img src="assets/cursor.svg" alt="Cursor"></div>
+      <div class="chipc" style="width:112px;height:112px;left:64px;top:112px"><img src="assets/claude.svg" alt="Claude Code"></div>
+      <div class="chipc" style="width:70px;height:70px;left:226px;top:128px"><img src="assets/googlegemini.svg" alt="Gemini CLI"></div>
+      <div class="chipc soft" style="width:86px;height:86px;left:150px;top:212px"><img src="assets/windsurf.svg" alt="Windsurf"></div>
+      <div class="chipc" style="width:64px;height:64px;left:22px;top:228px"><img src="assets/v0.svg" alt="v0"></div>
     </div>
-    <p class="fn">GitHub Copilot · Cursor · Codex · Claude Code · Gemini CLI · Antigravity · Opencode · Windsurf · v0 · Lovable</p>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">14</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 15. Waterfall / Agile -->
@@ -503,13 +578,33 @@
           <li>배포와 업데이트가 간단해지며 도입, 작동 가능한 앱을 빠르게 배포</li>
           <li>앱스토어의 앱이 수시로 업데이트되는 이유</li>
         </ul>
-        <img class="ref" src="assets/agilemanifesto.png" alt="Manifesto for Agile Software Development 원문 (2001)">
-        <p class="refsrc">Manifesto for Agile Software Development (2001) — agilemanifesto.org</p>
+        <svg class="ref" viewBox="0 0 440 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="agar" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#3182f6"/>
+            </marker>
+          </defs>
+          <path d="M262,52 A 150 74 0 0 1 356,86"  stroke="#3182f6" stroke-width="2.5" fill="none" marker-end="url(#agar)"/>
+          <path d="M368,152 A 150 74 0 0 1 268,190" stroke="#3182f6" stroke-width="2.5" fill="none" marker-end="url(#agar)"/>
+          <path d="M178,190 A 150 74 0 0 1 80,156"  stroke="#3182f6" stroke-width="2.5" fill="none" marker-end="url(#agar)"/>
+          <path d="M74,88  A 150 74 0 0 1 172,50"   stroke="#3182f6" stroke-width="2.5" fill="none" marker-end="url(#agar)"/>
+          <rect x="178" y="28"  width="84" height="34" rx="17" fill="#fff" stroke="#e5e7eb"/>
+          <rect x="330" y="103" width="84" height="34" rx="17" fill="#fff" stroke="#e5e7eb"/>
+          <rect x="178" y="178" width="84" height="34" rx="17" fill="#fff" stroke="#e5e7eb"/>
+          <rect x="26"  y="103" width="84" height="34" rx="17" fill="#e6f0ff" stroke="#d7e6ff"/>
+          <text x="220" y="50"  font-family="Pretendard, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">계획</text>
+          <text x="372" y="125" font-family="Pretendard, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">개발</text>
+          <text x="220" y="200" font-family="Pretendard, sans-serif" font-size="15" font-weight="700" fill="#111827" text-anchor="middle">테스트</text>
+          <text x="68"  y="125" font-family="Pretendard, sans-serif" font-size="15" font-weight="700" fill="#3182f6" text-anchor="middle">배포·피드백</text>
+          <text x="220" y="115" font-family="Fragment Mono, monospace" font-size="13" fill="#9ca3af" text-anchor="middle">짧은 주기로</text>
+          <text x="220" y="133" font-family="Fragment Mono, monospace" font-size="13" fill="#9ca3af" text-anchor="middle">계속 반복</text>
+        </svg>
+        <p class="refsrc">Agile 반복 주기 (도식) — cf. Manifesto for Agile Software Development, 2001</p>
       </div>
     </div>
   </div>
   <p class="fnote" style="bottom:66px">AI 등장 전까지는 프로그램의 속성에 따라 두 방법론 중 적절한 것을 택하는 것이 트렌드</p>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">15</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 16. 인터스티셜: 바이브 코딩에 어울리는 프로세스는? -->
@@ -519,7 +614,7 @@
     <h1>바이브 코딩에 어울리는 <span class="blue">프로세스</span>는?</h1>
   </div>
   <div class="ghost">?</div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">16</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 17. 바이브 코딩 프로세스 (내용) -->
@@ -532,9 +627,10 @@
     <div class="proc" style="margin-bottom:34px">
       <span class="p">문제 정의</span><span class="a">-&gt;</span>
       <span class="p">AI와 검토·기획</span><span class="a">-&gt;</span>
-      <span class="p hl">수정 명령</span><span class="a">-&gt;</span>
+      <span class="p">수정 명령</span><span class="a">-&gt;</span>
       <span class="p">테스트</span><span class="a">-&gt;</span>
-      <span class="p">배포 가능 버전</span><span class="a">&lt;-</span>
+      <span class="p">배포 가능 버전</span>
+      <span class="loop">&#8635; 반복</span>
     </div>
     <div class="blocks">
       <div class="blk">
@@ -551,7 +647,7 @@
       </div>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">17</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 18. 고민되는 점 -->
@@ -560,13 +656,18 @@
     <span class="badge">03 — 바이브 코딩 필수 사항</span>
     <h2>고민되는 점</h2>
   </div>
-  <div class="cardbody">
-    <p class="line">어떤 모델? Cursor? Codex? 하네스 프로그래밍? 프롬프트 엔지니어링?</p>
-    <p class="line">잘못 고르면 뒤처질 것 같지만 — <b>그렇게 깊게 고민할 문제가 없습니다</b></p>
-    <p class="punch">AI 시대에서는 <span class="blue">행동하지 않는 게</span> 가장 치명적인 손해</p>
-    <p class="fn">하나 골라 써보고 마음에 안 들면 그때 바꾸면 됩니다. 이제 그 '아무거나'를 함께 골라봅시다</p>
+  <div class="cardbody withcloud">
+    <p class="line">어떤 모델? Cursor? Codex?<br>하네스 프로그래밍? 프롬프트 엔지니어링?</p>
+    <p class="line">잘못 고르면 뒤처질 것 같지만 —<br><b>그렇게 깊게 고민할 문제가 없습니다</b></p>
+    <p class="punch">AI 시대에서는 <span class="blue">행동하지 않는 게</span><br>가장 치명적인 손해</p>
+    <p class="fn">하나 골라 써보고 마음에 안 들면 그때 바꾸면 됩니다.<br>이제 그 '아무거나'를 함께 골라봅시다</p>
+    <div class="iconcloud">
+      <div class="chipc soft" style="width:128px;height:128px;left:60px;top:40px"><img src="assets/ic-help.svg" alt="고민"></div>
+      <div class="chipc" style="width:92px;height:92px;left:200px;top:130px"><img src="assets/ic-brain.svg" alt="생각"></div>
+      <div class="chipc" style="width:76px;height:76px;left:40px;top:196px"><img src="assets/ic-bulb.svg" alt="아이디어"></div>
+    </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">18</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 19. 바이브 코딩 필수 사항 -->
@@ -607,7 +708,7 @@
       </div>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">19</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 20. AI Agent 선정 -->
@@ -628,7 +729,7 @@
       <p class="src">출처 — State of AI 2026 · 2026.stateofai.dev</p>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">20</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 21. Git -->
@@ -661,7 +762,7 @@
       <p class="src">commit — branch — merge : 언제든 되돌릴 수 있는 기록</p>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">21</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 22. Supabase -->
@@ -678,11 +779,11 @@
       <p class="fn">Google 로그인 같은 소셜 로그인도 지원</p>
     </div>
     <div>
-      <img class="shot" src="assets/supabase-home.png" alt="Supabase 홈페이지 — Postgres, Authentication, Storage 제품 소개">
-      <p class="src">출처 — supabase.com</p>
+      <img class="shot" src="assets/supabase-table.png" alt="Supabase 테이블 에디터 — 엑셀처럼 보이는 데이터베이스 화면">
+      <p class="src">Supabase 테이블 에디터 — 출처: supabase.com/database</p>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">22</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 23. Vercel -->
@@ -699,11 +800,11 @@
       <p class="fn">AWS · GCP · Azure도 있지만 초보자에게는 아직 너무 어렵습니다</p>
     </div>
     <div>
-      <img class="shot" src="assets/vercel-home.png" alt="Vercel 홈페이지 — Agentic Infrastructure">
-      <p class="src">출처 — vercel.com</p>
+      <img class="shot" src="assets/vercel-new.png" alt="Vercel 새 프로젝트 화면 — 드래그 앤 드롭 배포와 템플릿">
+      <p class="src">Vercel 배포 화면 — 출처: vercel.com/new</p>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">23</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 24. 인터스티셜: 어떤 문제를 해결해야 할까 -->
@@ -714,7 +815,7 @@
     <p class="sub">청년정착 · 관광로컬상권 · 고령자교통약자</p>
   </div>
   <div class="ghost">04</div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">24</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 25. 일을 '시키는' 사람이란 -->
@@ -739,7 +840,7 @@
       </div>
     </div>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">25</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 26. 문제를 정의하자 -->
@@ -768,7 +869,7 @@
     </div>
   </div>
   <p class="fnote">세 문장의 공통점 — 누가 · 언제 · 무엇 때문에 불편한지가 한 문장에 담겨 있다</p>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">26</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 27. 항상 잘게 쪼개기 -->
@@ -783,7 +884,7 @@
     <p class="line">쪼갤 방법을 모르겠다면, 다양한 방법과 방향으로 <b>재해석</b>해보세요</p>
     <p class="punch">문제를 잘 정의하는 순간,<br>그건 더 이상 문제가 아니라 <span class="blue">등대</span>가 됩니다</p>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">27</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 28. 감사합니다 -->
@@ -794,11 +895,10 @@
     <p class="sub">추가 질문이 있으시면 언제든지 연락주세요</p>
     <div class="contact-card" style="margin-top:44px">
       <div><span class="k">EMAIL</span><span class="v">iron@invaiz.com</span></div>
-      <div><span class="k">2교시 실습 가이드</span><span class="v"><span class="placeholder">【배포 후 URL 기입】</span></span></div>
     </div>
     <p class="sub" style="font-size:16px; margin-top:28px">(주)인바이즈 박철현</p>
   </div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">28</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 29. 인터스티셜: 실습 -->
@@ -807,9 +907,10 @@
     <span class="badge">Chapter 06</span>
     <h1>실습</h1>
     <p class="sub">이제 직접 만들 시간입니다</p>
+    <p class="sub" style="font-weight:700; margin-top:16px"><span class="placeholder">【2교시 실습 가이드 URL — 배포 후 기입】</span></p>
   </div>
   <div class="ghost">06</div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">29</span></div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 </body>
