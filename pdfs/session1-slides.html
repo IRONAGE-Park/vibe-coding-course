@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>바이브 코딩 — 1교시 강의 슬라이드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ── PDF 내보내기: Chrome → Ctrl+P → 'PDF로 저장' → 여백 '없음' → '배경 그래픽' 체크 ── */
+  @page { size: 1280px 720px; margin: 0; }
+
+  :root {
+    --ink: #111827;
+    --body: #4b5563;
+    --gray: #6b7280;
+    --faint: #9ca3af;
+    --line: #e5e7eb;
+    --blue: #3182f6;
+    --blue-soft: #e6f0ff;
+    --tint: #f5f6f8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #3c4048; }
+  body {
+    font-family: "Pretendard Variable", Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    color: var(--ink);
+  }
+  .mono { font-family: "Fragment Mono", ui-monospace, monospace; }
+
+  .slide {
+    width: 1280px; height: 720px; margin: 24px auto;
+    position: relative; overflow: hidden; background: #fff;
+    box-shadow: 0 8px 30px rgba(0,0,0,.4);
+  }
+  .slide.tint { background: var(--tint); }
+  @media print {
+    html, body { background: #fff; }
+    .slide { margin: 0; box-shadow: none; page-break-after: always; }
+    .toolbar { display: none; }
+  }
+
+  /* 푸터: 워터마크 + 페이지 */
+  .foot {
+    position: absolute; left: 72px; right: 72px; bottom: 40px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .foot .logo { font-weight: 700; font-size: 13.5px; letter-spacing: .1em; color: #b6bcc6; }
+  .foot .pg { font-family: "Fragment Mono", monospace; font-size: 12px; color: #b6bcc6; }
+
+  /* 라벨 두 종: 흰 페이지 = 보더 필 / 틴트 페이지 = 블루 배지 */
+  .pill {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-family: "Fragment Mono", monospace; font-size: 13.5px; color: var(--gray);
+    background: #fff; border: 1px solid var(--line); border-radius: 999px;
+    padding: 8px 18px;
+  }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); }
+  .badge {
+    display: inline-block; font-family: "Fragment Mono", monospace; font-size: 13.5px;
+    color: var(--blue); background: var(--blue-soft); border-radius: 999px; padding: 8px 18px;
+  }
+
+  .blue { color: var(--blue); }
+
+  /* ═══ 공통 헤더: 모든 템플릿에서 제목 위치 동일 ═══ */
+  .head { position: absolute; left: 72px; top: 62px; right: 72px; }
+  .head h2 { font-size: 40px; font-weight: 800; letter-spacing: -0.02em; margin-top: 18px; }
+  .head h2.xl { font-size: 62px; letter-spacing: -0.025em; }
+  .head .sub { font-size: 21px; color: var(--gray); margin-top: 20px; }
+
+  .body { position: absolute; left: 72px; right: 72px; top: 214px; bottom: 96px; }
+
+  /* 중앙 정렬 (표지 · 장 전환 등 제목만 있는 페이지) */
+  .center { position: absolute; inset: 0 100px 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .center h1 { font-size: 58px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.3; margin-top: 30px; }
+  .center .sub { font-size: 21px; color: var(--gray); margin-top: 22px; line-height: 1.6; }
+  .center .cover-title { font-size: 96px; margin-top: 34px; }
+  .center .cover-kick { margin-top: 38px; }
+
+  /* 챕터 전환: 고스트 넘버 */
+  .ghost {
+    position: absolute; right: 56px; bottom: 76px;
+    font-family: "Fragment Mono", monospace; font-size: 300px; line-height: 1;
+    color: #e9edf3; letter-spacing: -0.05em;
+  }
+
+  /* 표지 */
+  .cover-title { font-size: 88px; font-weight: 900; letter-spacing: -0.03em; margin-top: 26px; }
+  .cover-title .hl { display: inline-block; background: var(--blue); color: #fff; padding: 0 28px 8px; border-radius: 10px; transform: rotate(-1.5deg); }
+  .cover-kick { font-size: 25px; font-weight: 600; color: var(--body); margin-top: 36px; }
+  .cover-by { font-size: 18px; font-weight: 600; color: var(--gray); margin-top: 14px; }
+
+  /* 틴트 페이지: 흰 카드 본문 */
+  .cardbody {
+    position: absolute; left: 72px; right: 72px; top: 214px; bottom: 96px;
+    background: #fff; border: 1px solid var(--line); border-radius: 24px;
+    box-shadow: 0 18px 50px rgba(17,24,39,.06);
+    padding: 42px 56px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .cardbody .line { font-size: 20.5px; line-height: 1.6; color: var(--body); margin: 10px 0; }
+  .cardbody .line b { color: var(--ink); }
+  .cardbody .punch { font-size: 26px; font-weight: 800; color: var(--ink); margin-top: 24px; }
+  .cardbody .fn { font-size: 14.5px; color: var(--faint); line-height: 1.65; margin-top: 28px; padding-top: 22px; border-top: 1px solid #f1f2f4; }
+  .cardbody .bignum { font-size: 58px; font-weight: 900; color: var(--blue); letter-spacing: -0.02em; margin: 10px 0 6px; }
+  .cardbody.split2 { flex-direction: row; align-items: center; gap: 48px; }
+  .cardbody.split2 .col { flex: 1; }
+  .cardbody.split2 .shot { width: 440px; flex-shrink: 0; border-radius: 14px; border: 1px solid var(--line); display: block; }
+  .cardbody.split2 .src { font-family: "Fragment Mono", monospace; font-size: 12px; color: var(--faint); margin-top: 10px; text-align: right; }
+
+  /* 소제목 블록 */
+  .blocks .blk { margin-bottom: 36px; max-width: 1010px; }
+  .blocks .blk h3 { font-size: 22.5px; font-weight: 800; margin-bottom: 9px; display: flex; align-items: baseline; gap: 12px; }
+  .blocks .blk h3::before { content: "✓"; flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--blue-soft); color: var(--blue); font-size: 14px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; transform: translateY(-2px); }
+  .blocks .blk p { font-size: 18px; line-height: 1.65; color: var(--body); padding-left: 38px; }
+
+  /* 타임라인 카드 */
+  .panel { background: #fff; border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 14px 44px rgba(17,24,39,.05); }
+  .cv { padding: 14px 44px; }
+  .cv > div { display: flex; gap: 36px; align-items: baseline; padding: 13.5px 0; border-bottom: 1px solid #f1f2f4; }
+  .cv > div:last-child { border-bottom: none; }
+  .cv .yr { font-family: "Fragment Mono", monospace; width: 80px; flex-shrink: 0; font-size: 17px; color: var(--blue); }
+  .cv .tx { font-size: 19.5px; color: #374151; font-weight: 500; }
+
+  /* 목차 */
+  .toc { display: flex; gap: 80px; }
+  .toc .col { flex: 1; }
+  .toc .item { padding: 22px 0; border-bottom: 1px solid #f1f2f4; }
+  .toc .item:first-child { padding-top: 6px; }
+  .toc .n { font-family: "Fragment Mono", monospace; font-size: 15px; color: var(--blue); }
+  .toc .t { font-size: 25px; font-weight: 800; letter-spacing: -0.01em; margin-top: 6px; }
+  .toc .s { font-size: 15.5px; color: var(--faint); margin-top: 8px; line-height: 1.6; }
+
+  /* 좌우 2단 */
+  .vs { display: flex; gap: 28px; }
+  .vs > div { flex: 1; border: 1px solid var(--line); border-radius: 20px; padding: 30px 34px; background: #fff; }
+  .vs > div.hi { background: #f4f8ff; border-color: #d7e6ff; }
+  .vs h3 { font-size: 21px; font-weight: 800; margin-bottom: 18px; }
+  .vs h3 .tag { font-family: "Fragment Mono", monospace; display: block; font-size: 12.5px; color: var(--blue); margin-bottom: 8px; font-weight: 400; }
+  .vs ul { list-style: none; }
+  .vs li { font-size: 17px; line-height: 1.55; color: var(--body); padding: 8px 0 8px 30px; position: relative; }
+  .vs li::before { content: "✓"; position: absolute; left: 0; top: 9px; width: 20px; height: 20px; border-radius: 50%; font-size: 11px; font-weight: 900; display: flex; align-items: center; justify-content: center; background: var(--blue-soft); color: var(--blue); }
+  .vs > div.no li::before { content: "✕"; background: #f3f4f6; color: var(--faint); }
+
+  /* 프로세스 */
+  .proc { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 13px; }
+  .proc .p { font-size: 19px; font-weight: 700; padding: 12px 22px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: #374151; }
+  .proc .p.hl { background: var(--blue); border-color: var(--blue); color: #fff; }
+  .proc .a { font-family: "Fragment Mono", monospace; font-size: 18px; color: #c3c8d1; }
+
+  /* 스탯 4열 */
+  .stats { display: flex; gap: 28px; }
+  .stats > div { flex: 1; border-top: 3px solid var(--ink); padding-top: 26px; }
+  .stats .n { font-family: "Fragment Mono", monospace; font-size: 14px; color: var(--blue); }
+  .stats .ic { height: 36px; display: block; margin-top: 22px; }
+  .stats .cat { font-size: 15.5px; color: var(--gray); margin-top: 16px; }
+  .stats .name { font-size: 31px; font-weight: 900; letter-spacing: -0.01em; margin-top: 6px; }
+  .stats p { font-size: 15px; color: var(--faint); line-height: 1.6; margin-top: 14px; }
+
+  /* 사례 3열 */
+  .cases { display: flex; gap: 28px; }
+  .cases > div { flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 30px 32px; }
+  .cases .n { font-family: "Fragment Mono", monospace; font-size: 13px; color: var(--blue); background: var(--blue-soft); border-radius: 999px; padding: 6px 14px; display: inline-block; }
+  .cases h4 { font-size: 20px; font-weight: 800; margin-top: 18px; }
+  .cases p { font-size: 16.5px; line-height: 1.65; color: var(--body); margin-top: 12px; }
+
+  .fnote { position: absolute; left: 72px; right: 72px; bottom: 104px; text-align: center; font-size: 15px; color: var(--faint); }
+
+  /* 연락처 카드 */
+  .contact-card { background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: 0 14px 44px rgba(17,24,39,.05); padding: 10px 54px; width: 680px; }
+  .contact-card > div { display: flex; justify-content: space-between; align-items: baseline; gap: 60px; padding: 20px 0; border-bottom: 1px solid #f1f2f4; }
+  .contact-card > div:last-child { border-bottom: none; }
+  .contact-card .k { font-family: "Fragment Mono", monospace; font-size: 14px; color: var(--blue); }
+  .contact-card .v { font-size: 19px; font-weight: 600; color: var(--ink); }
+
+  .placeholder { color: #8c6a1d; background: #f6ecd2; border-radius: 4px; padding: 0 8px; }
+
+  .toolbar { max-width: 1280px; margin: 20px auto 0; color: #d6d6d6; font-size: 14px; padding: 12px 16px; background: #4a4e56; border-radius: 10px; }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  📄 <b>PDF 내보내기:</b> Chrome에서 열기 → <b>Ctrl+P</b> → 대상 <b>"PDF로 저장"</b> → 여백 <b>"없음"</b> → <b>"배경 그래픽"</b> 체크 → 저장. (인터넷 연결 시 폰트 정상 적용)
+  &nbsp;|&nbsp; <span style="color:#e8c76f">하이라이트</span>는 배포 후 채울 부분입니다.
+</div>
+
+<!-- 1. 표지 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="pill"><span class="dot"></span>경상국립대학교 지역혁신 프로젝트 — 2026.08.06</span>
+    <h1 class="cover-title">바이브 <span class="hl">코딩</span></h1>
+    <p class="cover-kick">코딩 없이 서비스를 만드는</p>
+    <p class="cover-by">(주)인바이즈 박철현</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">01</span></div>
+</section>
+
+<!-- 2. 목차 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>Contents</span>
+    <h2>목 차</h2>
+  </div>
+  <div class="body">
+    <div class="toc">
+      <div class="col">
+        <div class="item">
+          <div class="n">01</div>
+          <div class="t">강사 소개</div>
+          <div class="s">약력</div>
+        </div>
+        <div class="item">
+          <div class="n">02</div>
+          <div class="t">컴퓨터와 코딩</div>
+          <div class="s">컴퓨터의 탄생 이유 · 코딩의 가치 · 컴퓨터는 무얼 할 수 있는가</div>
+        </div>
+        <div class="item" style="border-bottom:none">
+          <div class="n">03</div>
+          <div class="t">바이브 코딩</div>
+          <div class="s">LLM · AI Agent · Vibe coding · 개발 프로세스 · 필수 사항</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="item">
+          <div class="n">04</div>
+          <div class="t">어떤 문제를 해결해야 할까</div>
+          <div class="s">일을 '시키는' 사람이란 · 문제를 정의하자 · 항상 잘게 쪼개기</div>
+        </div>
+        <div class="item" style="border-bottom:none">
+          <div class="n">05</div>
+          <div class="t">Q&amp;A</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">02</span></div>
+</section>
+
+<!-- 3. 강사 소개 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>Profile — 약력</span>
+    <h2>강사 소개</h2>
+  </div>
+  <div class="body" style="top:200px">
+    <div class="panel cv">
+      <div><span class="yr">18.06</span><span class="tx">삼성 / 카카오 코딩테스트 본선 진출</span></div>
+      <div><span class="yr">19.02</span><span class="tx">동아대학교 컴퓨터공학과 졸업</span></div>
+      <div><span class="yr">19.07</span><span class="tx">(주)인바이즈 창업</span></div>
+      <div><span class="yr">21.09</span><span class="tx">법인 전환 및 CTO</span></div>
+      <div><span class="yr">22.01</span><span class="tx">동아대학교 실증 React 아카데미 수업</span></div>
+      <div><span class="yr">24.02</span><span class="tx">4개 R&amp;D 연구개발 총괄</span></div>
+      <div><span class="yr">24.08</span><span class="tx">LG전자 On-Device 챌린지</span></div>
+      <div><span class="yr">25.06</span><span class="tx">특허 5개 등록</span></div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">03</span></div>
+</section>
+
+<!-- 4. 인터스티셜: 컴퓨터와 코딩 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">Chapter 02</span>
+    <h1>컴퓨터와 코딩</h1>
+  </div>
+  <div class="ghost">02</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">04</span></div>
+</section>
+
+<!-- 5. 컴퓨터의 탄생 이유 -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">02 — 컴퓨터와 코딩</span>
+    <h2>컴퓨터의 <span class="blue">탄생 이유</span></h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">인간이 하기 번거롭고, 실수의 위험이 있는 <b>계산을 대신 해줄 수 있는 기계</b></p>
+    <p class="line">컴퓨터의 등장으로 사람들은 복잡한 수학 계산에서 비로소 자유로워졌습니다</p>
+    <p class="fn">이 컴퓨터를 잘 쓰기 위해 GUI, 운영체제, 웹 브라우저가 —<br>그걸 또 잘 쓰기 위해 더 많은 프로그램이 지금도 태어나는 중</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">05</span></div>
+</section>
+
+<!-- 6. 코딩의 가치 -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">02 — 컴퓨터와 코딩</span>
+    <h2>코딩의 <span class="blue">가치</span></h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">성능이 좋아진 컴퓨터에게 이제는 <b>인간이 하지 않아도 되는 일</b>을 맡기기 시작했습니다</p>
+    <p class="line">프로그램도, 그걸 쓰는 환경도 폭발적으로 늘었습니다 — 휴대폰, IoT, 태블릿, 자동차</p>
+    <p class="line">수요가 커진 만큼 <b>언어, 프레임워크, 라이브러리 생태계</b>도 계속 진화했습니다</p>
+    <p class="fn">프로그램을 만드는 일 자체가 계속 쉬워져 온 역사</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">06</span></div>
+</section>
+
+<!-- 7. 컴퓨터공학/과학 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 코딩의 가치</span>
+    <h2>컴퓨터공학/과학</h2>
+  </div>
+  <div class="body">
+    <div class="blocks">
+      <div class="blk">
+        <h3>코딩은 원래부터 누구나 할 수 있었다</h3>
+        <p>AI가 나오기 전에도 생태계의 성장 덕분에 전공하지 않은 사람이 코딩하는 일은 드물지 않았고, 진입장벽은 꾸준히 낮아지고 있었습니다.</p>
+      </div>
+      <div class="blk">
+        <h3>컴퓨터공학은 코드 작성 그 이상</h3>
+        <p>소프트웨어를 만들어가는 방법, 여러 사람이 합심해 하나의 프로젝트를 수행하는 방법, 수학적 메커니즘으로 버그 없이 원하는 결과를 만드는 알고리즘을 연구하는 학문으로 변화했습니다.</p>
+      </div>
+      <div class="blk">
+        <h3>전공자의 핵심 가치</h3>
+        <p>더 깊고 복잡한 문제를 정의하고 해결하는 것. 단순히 개발만 할 줄 아는 전공자는 일반인과 큰 차이가 없습니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">07</span></div>
+</section>
+
+<!-- 8. 생성형 AI와 AI Agent의 등장 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 코딩의 가치</span>
+    <h2>생성형 AI(LLM model)와 AI Agent의 등장</h2>
+  </div>
+  <div class="body">
+    <div class="blocks">
+      <div class="blk">
+        <h3>코딩을 대신해주는 모델들</h3>
+        <p>ChatGPT와 Claude, 그리고 미국과 중국에서 만들어지는 다양한 모델이 코딩을 해주기 시작했고, 남아 있던 진입장벽을 완전히 허물었습니다.</p>
+      </div>
+      <div class="blk">
+        <h3>'코딩을 어떻게 하지?'라는 고민의 소멸</h3>
+        <p>과거 집안 전선이나 전화기를 연결해주던 기술자가 사라진 것처럼, 숙련자의 분야에 초심자가 바로 접근할 수 있는 도구가 생겼습니다.</p>
+      </div>
+      <div class="blk">
+        <h3>누구나 손을 뻗을 수 있는 영역으로</h3>
+        <p>셀프 인테리어, 차량 개조, 자가진단 키트가 가능해진 것처럼 — 쉽사리 손댈 수 없었던 프로그램 개발도 이제 직접 손댈 수 있는 영역이 됐습니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">08</span></div>
+</section>
+
+<!-- 9. 인터스티셜: 컴퓨터는 무얼 할 수 있는가 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">02 — 컴퓨터와 코딩</span>
+    <h1>컴퓨터는 <span class="blue">무얼</span> 할 수 있는가</h1>
+  </div>
+  <div class="ghost">?</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">09</span></div>
+</section>
+
+<!-- 10. 컴퓨터는 무얼 할 수 있는가 (내용) -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 도구를 보는 안목</span>
+    <h2>컴퓨터는 무얼 할 수 있는가</h2>
+  </div>
+  <div class="body" style="top:196px">
+    <p style="font-size:18.5px; line-height:1.6; color:var(--body); max-width:1000px; margin-bottom:30px">
+      전기 배선을 할 줄 안다고 수도꼭지를 설치할 수는 없습니다.
+      도구가 아무리 좋아져도, <b style="color:var(--ink)">할 수 있는 것과 할 수 없는 것을 구분하는 안목</b>이 필요합니다.
+    </p>
+    <div class="vs">
+      <div class="hi">
+        <h3><span class="tag">CAN — 반복과 기억</span>컴퓨터가 잘하는 일</h3>
+        <ul>
+          <li>버스 도착 데이터를 매일 같은 규칙으로 수집·정리</li>
+          <li>축제 후기 수천 건에서 특정 단어를 즉시 검색</li>
+          <li>조건이 맞는 순간, 24시간 언제든 알림</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3><span class="tag">CANNOT — 발견과 판단</span>컴퓨터가 못하는 일</h3>
+        <ul>
+          <li>정류장 계단 앞 어르신의 불편을 발견하는 일</li>
+          <li>두 기능 중 무엇이 더 가치 있는지 결정하는 일</li>
+          <li>세상에 기록되지 않은 정보를 다루는 일</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">왼쪽은 AI에게, 오른쪽은 여러분에게 — 오늘 실습의 역할 분담이기도 합니다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">10</span></div>
+</section>
+
+<!-- 11. 인터스티셜: AI Agent? Vibe coding? -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">Chapter 03</span>
+    <h1>AI Agent? <span class="blue">Vibe coding?</span></h1>
+    <p class="sub">한 번 알기만 하면 누구나 할 수 있습니다</p>
+  </div>
+  <div class="ghost">03</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">11</span></div>
+</section>
+
+<!-- 12. LLM -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">03 — 바이브 코딩</span>
+    <h2><span class="blue">LLM</span> (Large Language Model)</h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">언어를 입력받으면 통계학적으로 <b>가장 적절한 출력</b>을 내도록 학습된 AI 모델</p>
+    <p class="line">GPT-5, Gemini 3.0, Claude Fable / Mythos —<br>"AI 성능이 좋다"는 말은 보통 <b>모델의 성능</b>을 가리킵니다</p>
+    <p class="fn">생성형 AI가 더 큰 범위 — 이미지·영상·음성 생성 모델을 포괄하고, LLM은 그중 언어에 특화된 분류</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">12</span></div>
+</section>
+
+<!-- 13. AI Agent -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">03 — 바이브 코딩</span>
+    <h2><span class="blue">AI Agent</span></h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">사람이 설정한 목표를 달성하기 위해 <b>스스로 전략을 짜고 행동하는</b> 시스템</p>
+    <p class="line">컴퓨터 자동화, 업무, 코딩, 자율주행 — <b>목적에 따라</b> 구분됩니다</p>
+    <p class="line">Cursor, Claude Code, Codex — 모두 <b>코딩 에이전트</b>입니다</p>
+    <p class="fn">Computer Use — 사용자 컴퓨터를 실제로 조작하는 에이전트. 귀찮은 테스트도 자동으로 수행합니다</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">13</span></div>
+</section>
+
+<!-- 14. Vibe coding -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">03 — 바이브 코딩</span>
+    <h2><span class="blue">Vibe coding</span></h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">코드 작성을 AI에 위탁하고, 사람은 <b>자연어로</b> 프로그램을 개발하는 방법론</p>
+    <p class="line">숙련자에게는 <b>시간 절약</b>, 초보자에게는 <b>진입장벽의 소멸</b></p>
+    <p class="fn">GitHub Copilot · Cursor · Codex · Claude Code · Gemini CLI · Antigravity · Opencode · Windsurf · v0 · Lovable</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">14</span></div>
+</section>
+
+<!-- 15. Waterfall / Agile -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>03 — 개발 프로세스</span>
+    <h2>Waterfall / Agile</h2>
+  </div>
+  <div class="body" style="top:196px">
+    <div class="proc" style="margin-bottom:34px">
+      <span class="p">요구 분석</span><span class="a">-&gt;</span>
+      <span class="p">설계</span><span class="a">-&gt;</span>
+      <span class="p">개발</span><span class="a">-&gt;</span>
+      <span class="p">테스트</span><span class="a">-&gt;</span>
+      <span class="p">배포</span>
+    </div>
+    <div class="vs">
+      <div>
+        <h3><span class="tag">WATERFALL</span>한 번에, 완벽하게</h3>
+        <ul>
+          <li>소프트웨어를 패키지로 개발하던 시대의 방식</li>
+          <li>다섯 단계를 한 호흡에, 최초 기획을 거의 완벽하게 구현하는 것이 목표</li>
+        </ul>
+      </div>
+      <div class="hi">
+        <h3><span class="tag">AGILE</span>잘게, 자주</h3>
+        <ul>
+          <li>배포와 업데이트가 간단해지며 도입</li>
+          <li>고객 피드백 중심으로 작동 가능한 앱을 빠르게 배포</li>
+          <li>앱스토어의 앱이 수시로 업데이트되는 이유</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">AI 등장 전까지는 프로그램의 속성에 따라 두 방법론 중 적절한 것을 택하는 것이 트렌드</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">15</span></div>
+</section>
+
+<!-- 16. 인터스티셜: 바이브 코딩에 어울리는 프로세스는? -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">03 — 개발 프로세스</span>
+    <h1>바이브 코딩에 어울리는 <span class="blue">프로세스</span>는?</h1>
+  </div>
+  <div class="ghost">?</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">16</span></div>
+</section>
+
+<!-- 17. 바이브 코딩 프로세스 (내용) -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>03 — 개발 프로세스</span>
+    <h2>바이브 코딩에 어울리는 프로세스는?</h2>
+  </div>
+  <div class="body" style="top:196px">
+    <div class="proc" style="margin-bottom:34px">
+      <span class="p">문제 정의</span><span class="a">-&gt;</span>
+      <span class="p">AI와 검토·기획</span><span class="a">-&gt;</span>
+      <span class="p hl">수정 명령</span><span class="a">-&gt;</span>
+      <span class="p">테스트</span><span class="a">-&gt;</span>
+      <span class="p">배포 가능 버전</span><span class="a">&lt;-</span>
+    </div>
+    <div class="blocks">
+      <div class="blk">
+        <h3>기본적으로는 Agile에 가깝다</h3>
+        <p>Waterfall보다 Agile의 주기가 짧아졌던 것처럼, 바이브 코딩의 주기는 Agile보다 더 짧아졌습니다.</p>
+      </div>
+      <div class="blk">
+        <h3>AI는 거대한 작업을 한 번에 수행하는 것에 취약하다</h3>
+        <p>작은 기능을 하나하나 점진적으로 실행시키고, 테스트해야 합니다.</p>
+      </div>
+      <div class="blk">
+        <h3>하루에도 몇 번씩 업데이트 가능한 상태 유지</h3>
+        <p>이 상태를 유지하며 만드는 것이 바이브 코딩의 리듬입니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">17</span></div>
+</section>
+
+<!-- 18. 고민되는 점 -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">03 — 바이브 코딩 필수 사항</span>
+    <h2>고민되는 점</h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">어떤 모델? Cursor? Codex? 하네스 프로그래밍? 프롬프트 엔지니어링?</p>
+    <p class="line">잘못 고르면 뒤처질 것 같지만 — <b>그렇게 깊게 고민할 문제가 없습니다</b></p>
+    <p class="punch">AI 시대에서는 <span class="blue">행동하지 않는 게</span> 가장 치명적인 손해</p>
+    <p class="fn">하나 골라 써보고 마음에 안 들면 그때 바꾸면 됩니다. 이제 그 '아무거나'를 함께 골라봅시다</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">18</span></div>
+</section>
+
+<!-- 19. 바이브 코딩 필수 사항 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>03 — 오늘의 선택</span>
+    <h2>바이브 코딩 필수 사항</h2>
+  </div>
+  <div class="body" style="top:250px">
+    <div class="stats">
+      <div>
+        <div class="n">01</div>
+        <img class="ic" src="assets/claude.svg" alt="Claude">
+        <div class="cat">AI Agent</div>
+        <div class="name">Claude Code</div>
+        <p>개발자 평가 1위, 가장 큰 생태계</p>
+      </div>
+      <div>
+        <div class="n">02</div>
+        <img class="ic" src="assets/git.svg" alt="Git">
+        <div class="cat">버전 관리</div>
+        <div class="name">Git</div>
+        <p>버전 관리의 압도적 표준</p>
+      </div>
+      <div>
+        <div class="n">03</div>
+        <img class="ic" src="assets/supabase.svg" alt="Supabase">
+        <div class="cat">데이터베이스</div>
+        <div class="name">Supabase</div>
+        <p>초보자에게 '그나마' 쉬운 선택 (필수 아님)</p>
+      </div>
+      <div>
+        <div class="n">04</div>
+        <img class="ic" src="assets/vercel.svg" alt="Vercel">
+        <div class="cat">호스팅 / 배포</div>
+        <div class="name">Vercel</div>
+        <p>웹 배포 생태계 1위</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">19</span></div>
+</section>
+
+<!-- 20. AI Agent 선정 -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">03 — 오늘의 선택 01</span>
+    <h2>AI Agent 선정</h2>
+  </div>
+  <div class="cardbody split2">
+    <div class="col">
+      <p class="line">추천 기준은 <b>생태계의 크기</b></p>
+      <div class="bignum">Claude Code</div>
+      <p class="line">State of AI 2026 설문 기준, 개발자 <b>평가 랭킹 1위</b> —<br>사용자 수도 GitHub Copilot과 1·2위를 다툽니다</p>
+      <p class="fn">강사의 경험 — Cursor로 시작했다가<br>무거운 설치가 싫어 가벼운 Claude Code로</p>
+    </div>
+    <div>
+      <img class="shot" src="assets/stateofai-agents.png" alt="State of AI 2026 — Coding Agents/Assistants 순위 차트">
+      <p class="src">출처 — State of AI 2026 · 2026.stateofai.dev</p>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">20</span></div>
+</section>
+
+<!-- 21. Git -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">03 — 오늘의 선택 02</span>
+    <h2>버전 관리 — <span class="blue">Git</span></h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">짧아진 프로세스 주기를 관리하기 위한 <b>필수 도구</b></p>
+    <p class="line">버전 관리 프로그램의 <b>압도적 1등</b> — 이 생태계를 이길 도구는 당분간 없습니다</p>
+    <p class="fn">"어제 버전으로 되돌리기", "팀원 작업과 합치기"가 가능해지는 안전장치</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">21</span></div>
+</section>
+
+<!-- 22. Supabase -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">03 — 오늘의 선택 03</span>
+    <h2>데이터베이스 — <span class="blue">Supabase</span></h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">필수는 아닙니다 — 애플리케이션의 성격에 따라 필요할 수도, 아닐 수도</p>
+    <p class="line">쉽게 말해 <b>서비스를 위한 외장하드</b>를 하나 사는 것</p>
+    <p class="line">킬러 기능은 <b>로그인 및 인증</b> — 잘못 만들면 위험한 부분을 대신 관리해줍니다</p>
+    <p class="fn">Google 로그인 같은 소셜 로그인도 지원</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">22</span></div>
+</section>
+
+<!-- 23. Vercel -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">03 — 오늘의 선택 04</span>
+    <h2>호스팅 / 배포 — <span class="blue">Vercel</span></h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">모든 프로그램은 그것이 실행되는 컴퓨터가 필요합니다</p>
+    <p class="line">그 컴퓨터를 켜두는 게 <b>호스팅</b>, 그 컴퓨터에 프로그램을 설치하는 게 <b>배포</b></p>
+    <p class="line">오늘은 웹 애플리케이션 — 웹 배포 생태계 1위 <b>Vercel</b></p>
+    <p class="fn">AWS · GCP · Azure도 있지만 초보자에게는 아직 너무 어렵습니다</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">23</span></div>
+</section>
+
+<!-- 24. 인터스티셜: 어떤 문제를 해결해야 할까 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">Chapter 04</span>
+    <h1>어떤 <span class="blue">문제</span>를 해결해야 할까</h1>
+    <p class="sub">청년정착 · 관광로컬상권 · 고령자교통약자</p>
+  </div>
+  <div class="ghost">04</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">24</span></div>
+</section>
+
+<!-- 25. 일을 '시키는' 사람이란 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>04 — 문제 정의</span>
+    <h2>일을 '시키는' 사람이란</h2>
+  </div>
+  <div class="body">
+    <div class="blocks">
+      <div class="blk">
+        <h3>여러분은 AI Agent라는 부하 직원을 둔 사람</h3>
+        <p>일을 할당해야 부하 직원이 움직입니다. "내가 A를 원하니까 그거 만들어와"라는 지시로는 원하는 결과를 얻을 수 없습니다.</p>
+      </div>
+      <div class="blk">
+        <h3>일을 '잘' 시키는 방법</h3>
+        <p>올바르고 적절한 문제를 정의해서 제시하는 것. 그것이 전부입니다.</p>
+      </div>
+      <div class="blk">
+        <h3>여러분은 출제자가 되어야 합니다</h3>
+        <p>아무리 읽어도 이해되지 않는 문제가 있고, 한 번만 읽어도 바로 이해되는 문제가 있습니다. 여러분이 내야 할 문제는 후자입니다.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">25</span></div>
+</section>
+
+<!-- 26. 문제를 정의하자 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>04 — 문제 정의</span>
+    <h2>문제를 정의하자</h2>
+  </div>
+  <div class="body" style="top:210px">
+    <div class="cases">
+      <div>
+        <span class="n">01 — 청년 정착</span>
+        <h4>흩어진 청년 지원 정보</h4>
+        <p>"진주의 청년 지원 정책은 기관마다 흩어져 있어, 20대 구직자가 받을 수 있는 지원을 한자리에서 확인할 수 없다"</p>
+      </div>
+      <div>
+        <span class="n">02 — 관광 · 로컬 상권</span>
+        <h4>진주성 다음이 없는 여행</h4>
+        <p>"진주성을 둘러본 관광객은 다음 행선지 정보를 찾지 못해, 근처 상권을 놓친 채 도시를 일찍 떠난다"</p>
+      </div>
+      <div>
+        <span class="n">03 — 고령자 · 교통약자</span>
+        <h4>기약 없는 저상버스 기다림</h4>
+        <p>"거동이 불편한 어르신은 저상버스가 언제 오는지 알 수 없어, 정류장에서 무작정 기다린다"</p>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">세 문장의 공통점 — 누가 · 언제 · 무엇 때문에 불편한지가 한 문장에 담겨 있다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">26</span></div>
+</section>
+
+<!-- 27. 항상 잘게 쪼개기 -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">04 — 문제 정의</span>
+    <h2>항상 <span class="blue">잘게 쪼개기</span></h2>
+  </div>
+  <div class="cardbody">
+    <p class="line">모든 문제는 가능한 <b>가장 작은 단위</b>로 — 쪼갤수록 쉬운 문제가 됩니다</p>
+    <p class="line">"이쯤이면 잘게 쪼갰는데?" 싶더라도 <b>한 번 더</b></p>
+    <p class="line">쪼갤 방법을 모르겠다면, 다양한 방법과 방향으로 <b>재해석</b>해보세요</p>
+    <p class="punch">문제를 잘 정의하는 순간,<br>그건 더 이상 문제가 아니라 <span class="blue">등대</span>가 됩니다</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">27</span></div>
+</section>
+
+<!-- 28. 감사합니다 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">Q&amp;A</span>
+    <h1>감사합니다</h1>
+    <p class="sub">추가 질문이 있으시면 언제든지 연락주세요</p>
+    <div class="contact-card" style="margin-top:44px">
+      <div><span class="k">EMAIL</span><span class="v">iron@invaiz.com</span></div>
+      <div><span class="k">2교시 실습 가이드</span><span class="v"><span class="placeholder">【배포 후 URL 기입】</span></span></div>
+    </div>
+    <p class="sub" style="font-size:16px; margin-top:28px">(주)인바이즈 박철현</p>
+  </div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg">28</span></div>
+</section>
+
+</body>
+</html>
