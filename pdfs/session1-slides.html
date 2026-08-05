@@ -78,7 +78,7 @@
   .body { position: absolute; left: 72px; right: 72px; top: 214px; bottom: 96px; }
 
   /* 중앙 정렬 (표지 · 장 전환 등 제목만 있는 페이지) */
-  .center { position: absolute; inset: 0 100px 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .center { position: absolute; inset: 0 100px 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 1; }
   .center h1 { font-size: 58px; font-weight: 800; letter-spacing: -0.025em; line-height: 1.3; margin-top: 30px; }
   .center .sub { font-size: 21px; color: var(--gray); margin-top: 22px; line-height: 1.6; }
   .center .cover-title { font-size: 96px; margin-top: 34px; }
@@ -88,7 +88,7 @@
   .ghost {
     position: absolute; right: 56px; bottom: 76px;
     font-family: "Fragment Mono", monospace; font-size: 300px; line-height: 1;
-    color: #e9edf3; letter-spacing: -0.05em;
+    color: #e9edf3; letter-spacing: -0.05em; z-index: 0;
   }
 
   /* 표지 */
@@ -142,6 +142,15 @@
     font-family: "Fragment Mono", monospace; font-size: 16px; font-weight: 700;
     color: var(--blue); background: var(--blue-soft); border-radius: 999px; padding: 11px 20px;
   }
+
+  /* 연습문제 */
+  .quiz-opts { display: flex; gap: 12px; margin-top: 38px; flex-wrap: wrap; justify-content: center; }
+  .quiz-opts span {
+    font-family: "Fragment Mono", monospace; font-size: 14px; color: var(--gray);
+    border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 9px 18px;
+  }
+  .verdict { font-size: 23px; font-weight: 800; margin-bottom: 26px; }
+  .verdict b { color: var(--blue); }
   .vs .ref { width: 100%; height: 140px; object-fit: contain; background: #fff; border: 1px solid var(--line); border-radius: 12px; margin-top: 14px; padding: 6px; }
   .vs .refsrc { font-family: "Fragment Mono", monospace; font-size: 11px; color: var(--faint); margin-top: 8px; text-align: right; }
 
@@ -250,7 +259,7 @@
         <div class="item">
           <div class="n">02</div>
           <div class="t">컴퓨터와 코딩</div>
-          <div class="s">컴퓨터의 탄생 이유 · 코딩의 가치 · 컴퓨터는 무얼 할 수 있는가</div>
+          <div class="s">컴퓨터의 탄생 이유 · 코딩의 가치 · 컴퓨터는 무얼 할 수 있는가 · 연습문제</div>
         </div>
         <div class="item" style="border-bottom:none">
           <div class="n">03</div>
@@ -480,6 +489,169 @@
     </div>
   </div>
   <p class="fnote">왼쪽은 AI에게, 오른쪽은 여러분에게 — 오늘 실습의 역할 분담이기도 합니다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 ① 질문 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">연습 ① — 함께 생각해봅시다</span>
+    <h1>동네의 위험한 보도블록을<br><span class="blue">자동으로 찾아주는</span> 서비스</h1>
+    <p class="sub">실행만 하면 위험 지점이 지도에 표시됩니다 — 만들 수 있을까요?</p>
+    <div class="quiz-opts">
+      <span>바로 가능</span><span>조건부 가능</span><span>정책상 제한</span><span>만들어도 해결 안 됨</span>
+    </div>
+  </div>
+  <div class="ghost">Q1</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 ① 판단 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 연습 ①</span>
+    <h2>위험한 보도블록 자동 탐지</h2>
+  </div>
+  <div class="body" style="top:196px">
+    <p class="verdict">판단 — <b>조건부로 가능</b>합니다. 컴퓨터가 '볼 수 있게' 만들어줘야 합니다.</p>
+    <div class="vs">
+      <div class="no">
+        <h3><span class="tag">WHY NOT</span>컴퓨터가 할 수 없는 것</h3>
+        <ul>
+          <li>동네를 직접 돌아다니며 보도블록을 보는 일</li>
+          <li>아무 데이터 없이 위험 지점을 알아내는 일</li>
+        </ul>
+      </div>
+      <div class="hi">
+        <h3><span class="tag">HOW</span>데이터가 있다면 가능</h3>
+        <ul>
+          <li>주민이 촬영한 사진 + 위치 신고</li>
+          <li>사진에서 파손 흔적을 분석</li>
+          <li>신고가 많은 위치를 지도에 표시</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">바꿔볼 아이디어 — 주민 신고 앱 · 사진 분석 프로그램 · 신고 밀집 지도 · 담당 부서 전달 시스템</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 ② 질문 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">연습 ② — 함께 생각해봅시다</span>
+    <h1>인기 공연의 취소표를<br><span class="blue">자동으로 결제까지</span> 해주는 프로그램</h1>
+    <p class="sub">사람이 새로고침하는 일을 컴퓨터가 대신하면 될 것 같은데 — 만들 수 있을까요?</p>
+    <div class="quiz-opts">
+      <span>바로 가능</span><span>조건부 가능</span><span>정책상 제한</span><span>만들어도 해결 안 됨</span>
+    </div>
+  </div>
+  <div class="ghost">Q2</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 ② 판단 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 연습 ②</span>
+    <h2>취소표 자동 구매 프로그램</h2>
+  </div>
+  <div class="body" style="top:196px">
+    <p class="verdict">판단 — 만들 수는 있습니다. 하지만 <b>써도 되는가는 다른 문제</b>입니다.</p>
+    <div class="vs">
+      <div class="hi">
+        <h3><span class="tag">TECH</span>기술적으로는 가능</h3>
+        <ul>
+          <li>브라우저 자동 조작, 좌석 선택, 결제까지 코드로 구현 가능</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3><span class="tag">POLICY</span>정책이 막습니다</h3>
+        <ul>
+          <li>예매처 약관이 매크로·자동 구매를 금지</li>
+          <li>일반 사용자의 공정한 이용을 방해</li>
+          <li>적발 시 계정 정지 · 예매 취소 · 결제 제한</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">자동으로 알려주는 것과 자동으로 구매하는 것은 서로 다른 문제 — 취소표 알림까지만 만들고, 결제는 사람이 직접</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 ③ 질문 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">연습 ③ — 함께 생각해봅시다</span>
+    <h1>농촌 어르신을 위한<br><span class="blue">실시간 버스 도착정보</span> 앱</h1>
+    <p class="sub">버스가 언제 오는지 몰라 불편합니다 — 앱을 만들면 문제가 해결될까요?</p>
+    <div class="quiz-opts">
+      <span>바로 가능</span><span>조건부 가능</span><span>정책상 제한</span><span>만들어도 해결 안 됨</span>
+    </div>
+  </div>
+  <div class="ghost">Q3</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 ③ 판단 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 연습 ③</span>
+    <h2>실시간 버스 도착정보 앱</h2>
+  </div>
+  <div class="body" style="top:196px">
+    <p class="verdict">판단 — '언제 오는지 모르는 문제'는 풀지만, <b>'버스가 없는 문제'는 그대로</b>입니다.</p>
+    <div class="vs">
+      <div class="hi">
+        <h3><span class="tag">SOLVED</span>앱이 해결하는 것</h3>
+        <ul>
+          <li>도착 시간의 불확실성</li>
+          <li>정류장에서 무작정 기다리는 시간</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3><span class="tag">UNSOLVED</span>앱이 풀지 못하는 것</h3>
+        <ul>
+          <li>하루 두세 번뿐인 운행 횟수</li>
+          <li>원하는 시간에 병원·시장에 갈 수 없는 현실</li>
+          <li>스마트폰 사용이 어려운 어르신에게는 앱 자체가 장벽</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">진짜 해결책과 함께 가야 합니다 — 수요응답형 교통 · 마을택시 연계 · 전화 예약 병행</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 연습 정리: 바이브코딩을 시작하기 전에 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 연습문제 정리</span>
+    <h2>바이브코딩을 시작하기 전에</h2>
+  </div>
+  <div class="body" style="top:250px">
+    <div class="stats">
+      <div>
+        <div class="n">연습 ①</div>
+        <div class="cat">기술과 데이터</div>
+        <div class="name">만들 수 있는가?</div>
+        <p>컴퓨터가 알 수 있는 데이터가 있는가 — 없다면 사진·센서·사람의 입력으로 채워야 합니다</p>
+      </div>
+      <div>
+        <div class="n">연습 ②</div>
+        <div class="cat">정책과 권한</div>
+        <div class="name">만들어도 되는가?</div>
+        <p>약관 · 개인정보 · 권한 — 코드를 작성할 수 있다는 것과 사용해도 된다는 것은 다른 문제입니다</p>
+      </div>
+      <div>
+        <div class="n">연습 ③</div>
+        <div class="cat">현실의 변화</div>
+        <div class="name">만들면 해결되는가?</div>
+        <p>프로그램 뒤에 현실의 행동이 이어져야 문제가 풀립니다 — 앱은 해결책의 일부입니다</p>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">이 세 가지를 구분할 수 있을 때, 바이브 코딩은 현실의 문제를 해결하는 도구가 됩니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
