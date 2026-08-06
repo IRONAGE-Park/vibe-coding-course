@@ -16,3 +16,120 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+html {
+  scroll-padding-top: 84px;
+}
+
+/* ── 실습 가이드 디자인 토큰 ──────────────────────────────
+   1교시 슬라이드 디자인 시스템: Pretendard + Fragment Mono,
+   단일 블루 액센트. 라이트가 기본, [data-theme="dark"]로 전환 */
+.s2 {
+  /* 텍스트 */
+  --s2-ink: #111827;
+  --s2-body: #4b5563;
+  --s2-strong: #374151;
+  --s2-gray: #6b7280;
+  --s2-faint: #9ca3af;
+  --s2-footer: #b6bcc6;
+  --s2-arrow: #c3c8d1;
+
+  /* 면 */
+  --s2-bg: #ffffff;
+  --s2-card: #ffffff;
+  --s2-tint: #f5f6f8;
+  --s2-line: #e5e7eb;
+  --s2-divider: #f1f2f4;
+  --s2-ghost: #e9edf3;
+
+  /* 액센트 */
+  --s2-blue: #3182f6;
+  --s2-blue-soft: #e6f0ff;
+
+  /* 상태 박스 */
+  --s2-info-bg: #f4f8ff;
+  --s2-info-line: #d7e6ff;
+  --s2-warn-bg: #fdf8ec;
+  --s2-warn-line: #f0e0b0;
+  --s2-warn-ink: #8c6a1d;
+  --s2-warn-dot: #d9a514;
+  --s2-bad-bg: #fdf3f3;
+  --s2-bad-line: #f3c9c9;
+  --s2-bad-ink: #b54545;
+  --s2-bad-body: #8a5555;
+  --s2-good-bg: #f2faf4;
+  --s2-good-line: #c4e3cc;
+  --s2-good-ink: #2c7a44;
+  --s2-good-body: #4a7057;
+  --s2-ph-bg: #f6ecd2;
+  --s2-ph-line: #e3d5a8;
+
+  /* 그림자 */
+  --s2-shadow-lg: 0 18px 50px rgba(17, 24, 39, 0.06);
+  --s2-shadow-md: 0 14px 44px rgba(17, 24, 39, 0.06);
+
+  --font-sans: "Pretendard Variable", Pretendard, var(--font-noto-sans-kr),
+    "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --font-mono: var(--font-fragment-mono), ui-monospace, "Cascadia Mono",
+    monospace;
+  font-family: var(--font-sans);
+  color: var(--s2-ink);
+  background: var(--s2-bg);
+  letter-spacing: -0.01em;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+[data-theme="dark"] .s2 {
+  --s2-ink: #f2f4f7;
+  --s2-body: #b4bbc6;
+  --s2-strong: #d5dae2;
+  --s2-gray: #98a0ad;
+  --s2-faint: #6f7885;
+  --s2-footer: #5c646f;
+  --s2-arrow: #4d5561;
+
+  --s2-bg: #0f1116;
+  --s2-card: #171a21;
+  --s2-tint: #14171d;
+  --s2-line: #2a2f3a;
+  --s2-divider: #23272f;
+  --s2-ghost: #1a1e26;
+
+  --s2-blue: #61a0ff;
+  --s2-blue-soft: #16233a;
+
+  --s2-info-bg: #131c2e;
+  --s2-info-line: #26375a;
+  --s2-warn-bg: #2a2314;
+  --s2-warn-line: #4b3d1c;
+  --s2-warn-ink: #d9b45c;
+  --s2-warn-dot: #b78f2a;
+  --s2-bad-bg: #2a1719;
+  --s2-bad-line: #4d2a2d;
+  --s2-bad-ink: #ef9a9a;
+  --s2-bad-body: #c99a9a;
+  --s2-good-bg: #13251b;
+  --s2-good-line: #29452f;
+  --s2-good-ink: #7fd39a;
+  --s2-good-body: #9dbfa8;
+  --s2-ph-bg: #2a2314;
+  --s2-ph-line: #4b3d1c;
+
+  --s2-shadow-lg: 0 18px 50px rgba(0, 0, 0, 0.45);
+  --s2-shadow-md: 0 14px 44px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+[data-theme="dark"] body {
+  --background: #0f1116;
+  --foreground: #f2f4f7;
+}
+
+/* 테마 전환 시 카드·테두리도 부드럽게 */
+.s2 [class*="bg-"],
+.s2 [class*="border-"] {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
