@@ -6,6 +6,7 @@ import {
   Callout,
   CheckList,
   Ext,
+  MiniSteps,
   PageHero,
   Pager,
   Shot,
@@ -41,9 +42,203 @@ export default function ToolsPage() {
       />
 
       <main className="mx-auto flex max-w-5xl flex-col gap-8 px-5 py-12 md:px-8">
-        {/* 1. CLAUDE.md */}
+        {/* 1. Supabase 연동 */}
         <StepCard
           no={1}
+          title={
+            <>
+              Supabase 연동 — <Blue>데이터를 저장하고 싶을 때</Blue>
+            </>
+          }
+          intro={
+            <>
+              화면만 있는 서비스는 새로고침하면 입력한 게 사라집니다.{" "}
+              <b>글·신청·후기처럼 남아야 하는 정보</b>가 생기면 그때
+              데이터베이스가 필요해요. 아래는 실제로 만들어 본 과정입니다.
+            </>
+          }
+        >
+          <div className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-6">
+            <p className="mb-2 text-[15.5px] font-extrabold">
+              먼저, 지금 꼭 필요한가요?
+            </p>
+            <p className="text-[14.5px] leading-[1.7] text-[var(--s2-body)]">
+              1교시에서 말한 대로 <b>Supabase는 필수가 아닙니다</b>. 안내·지도·
+              계산기처럼 <b>보여주기만</b> 하는 서비스라면 건너뛰세요. 회원가입,
+              글쓰기, 신청 내역처럼 <b>저장이 필요할 때</b>만 붙이면 됩니다.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] font-extrabold">
+              ① <Blue>조직(Organization)</Blue> 만들기
+            </p>
+            <Shot
+              src="/captures/supabase/1-organizations.png"
+              width={2894}
+              height={560}
+              alt="Supabase 조직 목록 화면 — 오른쪽 위 New organization 버튼"
+              url="supabase.com/dashboard/organizations"
+              href="https://supabase.com/dashboard/organizations"
+              highlight={{
+                top: "45%",
+                left: "71%",
+                width: "8%",
+                height: "6.5%",
+                label: "여기서 시작",
+              }}
+            />
+            <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
+              조직은 <b>프로젝트를 담는 상자</b>입니다. 팀 이름이나 수업
+              이름으로 하나 만들어 두면 됩니다.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] font-extrabold">
+              ② 이름과 <Blue>Free 플랜</Blue> 선택
+            </p>
+            <Shot
+              src="/captures/supabase/2-new-organization.png"
+              width={2894}
+              height={830}
+              alt="새 조직 만들기 폼 — 이름, 유형, 플랜"
+              url="supabase.com/dashboard/new"
+            />
+            <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
+              Type은 <b>Personal</b>, Plan은 <b>Free - $0/month</b> 그대로 두고{" "}
+              <b>Create organization</b>. 카드 등록이 필요 없습니다.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] font-extrabold">
+              ③ <Blue>프로젝트</Blue> 만들기 — 여기가 진짜 데이터베이스
+            </p>
+            <Shot
+              src="/captures/supabase/3-new-project.png"
+              width={2894}
+              height={1560}
+              alt="새 프로젝트 만들기 — 이름, 데이터베이스 비밀번호, 리전"
+              url="supabase.com/dashboard/new/..."
+            />
+            <MiniSteps
+              items={[
+                <>
+                  <b>Project name</b> — 내 저장소와 같은 이름으로 두면 헷갈리지
+                  않습니다.
+                </>,
+                <>
+                  <b>Database password</b> — <b>Generate a password</b>를 눌러
+                  자동 생성하고, 나온 값을 <b>따로 저장</b>해 두세요. (나중에
+                  재설정도 가능합니다)
+                </>,
+                <>
+                  <b>Region</b> — 한국 사용자라면 <b>Northeast Asia (Seoul 또는
+                  Tokyo)</b>가 가장 빠릅니다.
+                </>,
+                <>
+                  <b>Create new project</b>를 누르면 1~2분 뒤 준비됩니다.
+                </>,
+              ]}
+            />
+          </div>
+
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] font-extrabold">
+              ④ <Blue>Healthy</Blue>가 뜨면 준비 완료
+            </p>
+            <Shot
+              src="/captures/supabase/4-project-created.png"
+              width={2894}
+              height={1300}
+              alt="생성된 Supabase 프로젝트 대시보드 — 상태 Healthy"
+              url="supabase.com/dashboard/project/..."
+            />
+            <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
+              <b>STATUS: Healthy</b>면 내 전용 데이터베이스가 켜진 것입니다.
+              표를 만들고 싶으면 왼쪽 <b>Table Editor</b>에서 엑셀처럼 만들 수
+              있어요.
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] font-extrabold">
+              ⑤ <Blue>Vercel과 연결</Blue> — 환경 변수 자동 동기화
+            </p>
+            <Shot
+              src="/captures/supabase/5-vercel-integration.png"
+              width={2894}
+              height={1450}
+              alt="Supabase 프로젝트 설정의 Integrations — Install Vercel integration"
+              url="Project Settings → Integrations"
+              highlight={{
+                top: "55.5%",
+                left: "52.5%",
+                width: "10.5%",
+                height: "3.2%",
+                label: "여기 클릭",
+              }}
+            />
+            <Shot
+              src="/captures/supabase/7-vercel-marketplace.png"
+              width={2894}
+              height={420}
+              alt="Vercel 마켓플레이스의 Supabase 통합 페이지 — 왼쪽 위 Install 버튼"
+              url="vercel.com/integrations/supabase"
+              href="https://vercel.com/integrations/supabase"
+              highlight={{
+                top: "42%",
+                left: "63.5%",
+                width: "4.5%",
+                height: "12%",
+                label: "Install",
+              }}
+            />
+            <Callout title="이걸 왜 하나요? — 키를 직접 복사하지 않아도 됩니다">
+              연결해 두면 Supabase가 <b>내 Vercel 프로젝트의 환경 변수를 알아서
+              채워주고 최신으로 유지</b>합니다. 안 하면 배포할 때마다 주소와
+              키를 손으로 옮겨 적어야 해요. <b>Install</b> → Vercel 로그인 →
+              연결할 프로젝트 선택, 이 세 단계면 끝입니다.
+            </Callout>
+          </div>
+
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] font-extrabold">
+              ⑥ 내 서비스에 붙이기 — <Blue>Connect</Blue> 버튼
+            </p>
+            <Shot
+              src="/captures/supabase/6-connect-app.png"
+              width={1346}
+              height={1731}
+              alt="Connect 대화상자 — Next.js App Router용 설치 명령과 환경 변수"
+              url="상단 Connect → Framework → Next.js"
+            />
+            <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
+              위쪽 <b>Connect</b>를 누르고 <b>Framework → Next.js</b>를 고르면,
+              내 프로젝트에 그대로 붙여넣을 <b>설치 명령과 환경 변수</b>가
+              나옵니다. 오른쪽 위 <b>Copy prompt</b>를 눌러 <b>Claude에게 통째로
+              붙여넣으면</b> 알아서 연결해 줍니다.
+            </p>
+            <CopyBlock
+              label="Claude Code에 이렇게 시키면 됩니다"
+              command="Supabase Connect 화면에서 복사한 내용이야. 이 프로젝트에 Supabase를 연결해줘."
+            />
+          </div>
+
+          <Callout tone="warn" title="키는 코드에 직접 쓰지 마세요">
+            주소와 키는 반드시{" "}
+            <code className="font-mono text-[13px]">.env.local</code> 파일에
+            넣습니다 — 1장에서 붙여넣은 CLAUDE.md에도 적어둔 규칙이에요. 이
+            파일은 GitHub에 올라가지 않으니, <b>Vercel에는 프로젝트 설정의
+            Environment Variables</b>에 같은 값을 넣어주면 됩니다. (⑤번 연동을
+            해두면 이것도 자동입니다)
+          </Callout>
+        </StepCard>
+
+        {/* 2. CLAUDE.md */}
+        <StepCard
+          no={2}
           title={
             <>
               CLAUDE.md — <Blue>프로젝트의 사용설명서</Blue>
@@ -98,7 +293,7 @@ export default function ToolsPage() {
 
         {/* 2. Skills */}
         <StepCard
-          no={2}
+          no={3}
           title={
             <>
               Skills — <Blue>명령어로 부르는 작업 절차</Blue>
@@ -151,7 +346,7 @@ export default function ToolsPage() {
 
         {/* 3. Harness */}
         <StepCard
-          no={3}
+          no={4}
           title={
             <>
               Harness — <Blue>AI에게 손발을 달아주는 틀</Blue>
@@ -214,7 +409,7 @@ export default function ToolsPage() {
 
         {/* 4. 참고 & 뉴스 */}
         <StepCard
-          no={4}
+          no={5}
           title={
             <>
               다른 프로젝트 <Blue>참고</Blue>하고, 뉴스로 <Blue>따라잡기</Blue>
@@ -271,7 +466,7 @@ export default function ToolsPage() {
 
         {/* 5. AI Agent */}
         <StepCard
-          no={5}
+          no={6}
           title={
             <>
               코딩을 넘어 — <Blue>AI 에이전트</Blue>로 일상 업무까지
