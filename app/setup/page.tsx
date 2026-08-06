@@ -155,7 +155,7 @@ export default function SetupPage() {
           <div className="grid gap-3 md:grid-cols-2">
             <CopyBlock
               label="Windows — PowerShell에 붙여넣기"
-              command="irm https://claude.ai/install.ps1 | iex"
+              command="winget install Anthropic.ClaudeCode"
             />
             <CopyBlock
               label="macOS — 터미널에 붙여넣기"
