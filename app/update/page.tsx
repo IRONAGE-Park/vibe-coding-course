@@ -9,7 +9,6 @@ import {
   MiniSteps,
   PageHero,
   Pager,
-  Placeholder,
   Shot,
   SiteFooter,
   StepCard,
@@ -355,10 +354,26 @@ export default function UpdatePage() {
               </>,
             ]}
           />
-          <Placeholder>
-            📸 실습 화면 캡처 추가 예정 — Vercel Deployments 탭의 자동 배포 진행
-            화면 (진행자 제공)
-          </Placeholder>
+          <Shot
+            src="/captures/update/6-vercel-deployments.png"
+            width={2800}
+            height={1072}
+            alt="Vercel Deployments 탭 — 푸시한 커밋마다 Ready 상태로 쌓여 있고, ⋯ 메뉴에 Instant Rollback과 Promote가 보인다"
+            url="vercel.com — Deployments"
+            highlight={{
+              top: "40%",
+              left: "83.5%",
+              width: "15%",
+              height: "56%",
+              label: "되돌리기 메뉴",
+            }}
+          />
+          <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
+            푸시할 때마다 커밋 메시지 그대로 한 줄씩 쌓이고, 전부{" "}
+            <b>Ready</b> — 배포에 걸린 시간은 <b>15~20초</b>뿐입니다. 각 줄
+            오른쪽 <b>⋯ 메뉴</b>를 열면 이전 버전으로 되돌리는 메뉴가 바로
+            나옵니다.
+          </p>
           <Callout title="잘못돼도 괜찮습니다 — 되돌리면 되니까">
             배포된 화면이 이상하면 Deployments 목록에서 이전 버전의{" "}
             <b>⋯ 메뉴 → Promote to Production</b>을 누르세요. 몇 초 만에 예전

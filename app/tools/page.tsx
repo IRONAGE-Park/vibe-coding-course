@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import CopyBlock from "../components/CopyBlock";
+import StepRail from "../components/StepRail";
 import {
   Blue,
   Callout,
@@ -20,6 +21,17 @@ export const metadata: Metadata = {
   description:
     "CLAUDE.md, Skills, Harness, 프로젝트 참고와 뉴스, AI 에이전트 활용 — 다음 단계로 가는 다섯 가지.",
 };
+
+const TOTAL = 6;
+
+const RAIL = [
+  { id: "tools-1", num: "01", label: "Supabase 연동" },
+  { id: "tools-2", num: "02", label: "CLAUDE.md" },
+  { id: "tools-3", num: "03", label: "Skills" },
+  { id: "tools-4", num: "04", label: "Harness" },
+  { id: "tools-5", num: "05", label: "참고 & 뉴스" },
+  { id: "tools-6", num: "06", label: "AI 에이전트" },
+];
 
 export default function ToolsPage() {
   return (
@@ -41,10 +53,14 @@ export default function ToolsPage() {
         }
       />
 
+      <StepRail items={RAIL} />
+
       <main className="mx-auto flex max-w-5xl flex-col gap-8 px-5 py-12 md:px-8">
         {/* 1. Supabase 연동 */}
         <StepCard
           no={1}
+          total={TOTAL}
+          id="tools-1"
           title={
             <>
               Supabase 연동 — <Blue>데이터를 저장하고 싶을 때</Blue>
@@ -239,6 +255,8 @@ export default function ToolsPage() {
         {/* 2. CLAUDE.md */}
         <StepCard
           no={2}
+          total={TOTAL}
+          id="tools-2"
           title={
             <>
               CLAUDE.md — <Blue>프로젝트의 사용설명서</Blue>
@@ -291,9 +309,11 @@ export default function ToolsPage() {
           </div>
         </StepCard>
 
-        {/* 2. Skills */}
+        {/* 3. Skills */}
         <StepCard
           no={3}
+          total={TOTAL}
+          id="tools-3"
           title={
             <>
               Skills — <Blue>명령어로 부르는 작업 절차</Blue>
@@ -341,12 +361,23 @@ export default function ToolsPage() {
               <b className="font-mono">/</b> 를 치면 지금 쓸 수 있는 명령어와
               설명이 전부 뜹니다 — 궁금한 건 눌러보면 됩니다.
             </Callout>
+            <Callout title="테스트까지 스킬에게 — computer-use & orca-cli">
+              기능을 만들 때마다 <b>하나하나 직접 눌러보며 확인하는 건 꽤 힘든
+              일</b>입니다. 이럴 때{" "}
+              <b className="font-mono text-[13.5px]">computer-use</b> 스킬이나{" "}
+              <b className="font-mono text-[13.5px]">orca-cli</b> 스킬을 쓰면
+              Claude가 <b>직접 브라우저를 열고 클릭해 가며</b> 방금 작업한
+              내용을 대신 테스트해 줍니다 — &ldquo;방금 만든 다크 모드 버튼,
+              직접 눌러서 확인해줘&rdquo;라고 시키면 됩니다.
+            </Callout>
           </div>
         </StepCard>
 
-        {/* 3. Harness */}
+        {/* 4. Harness */}
         <StepCard
           no={4}
+          total={TOTAL}
+          id="tools-4"
           title={
             <>
               Harness — <Blue>AI에게 손발을 달아주는 틀</Blue>
@@ -407,9 +438,11 @@ export default function ToolsPage() {
           </Callout>
         </StepCard>
 
-        {/* 4. 참고 & 뉴스 */}
+        {/* 5. 참고 & 뉴스 */}
         <StepCard
           no={5}
+          total={TOTAL}
+          id="tools-5"
           title={
             <>
               다른 프로젝트 <Blue>참고</Blue>하고, 뉴스로 <Blue>따라잡기</Blue>
@@ -464,9 +497,11 @@ export default function ToolsPage() {
           </div>
         </StepCard>
 
-        {/* 5. AI Agent */}
+        {/* 6. AI Agent */}
         <StepCard
           no={6}
+          total={TOTAL}
+          id="tools-6"
           title={
             <>
               코딩을 넘어 — <Blue>AI 에이전트</Blue>로 일상 업무까지
