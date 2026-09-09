@@ -33,11 +33,11 @@ export default function Nav() {
               href={i.href}
               className={`rounded-full px-2.5 py-1.5 text-[13px] font-semibold transition-colors md:px-3.5 md:text-[13.5px] ${
                 pathname === i.href
-                  ? "bg-[var(--s2-blue)] text-white"
+                  ? "bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
                   : "text-[var(--s2-gray)] hover:bg-[var(--s2-tint)] hover:text-[var(--s2-ink)]"
               }`}
             >
-              <span className="font-mono mr-1 hidden text-[11px] opacity-70 lg:inline">
+              <span className="font-mono mr-1 hidden text-[11px] lg:inline">
                 {i.num}
               </span>
               {i.label}
@@ -47,7 +47,7 @@ export default function Nav() {
             href="/help"
             className={`ml-1 rounded-full border px-2.5 py-1.5 text-[13px] font-semibold transition-colors md:px-3.5 md:text-[13.5px] ${
               pathname === "/help"
-                ? "border-[var(--s2-blue)] bg-[var(--s2-blue)] text-white"
+                ? "border-[var(--s2-blue)] bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
                 : "border-[var(--s2-line)] text-[var(--s2-gray)] hover:border-[var(--s2-blue)] hover:text-[var(--s2-blue)]"
             }`}
           >

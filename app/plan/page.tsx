@@ -475,7 +475,7 @@ export default function PlanPage() {
           </Callout>
           <div className="rounded-[16px] border border-[var(--s2-info-line)] bg-[var(--s2-info-bg)] p-5">
             <p className="mb-3 flex items-center gap-2 text-[14.5px] font-extrabold">
-              <span className="flex h-5.5 w-5.5 items-center justify-center rounded-full bg-[var(--s2-blue)] text-[11px] font-black text-white">
+              <span className="flex h-5.5 w-5.5 items-center justify-center rounded-full bg-[var(--s2-blue)] text-[11px] font-black text-[var(--s2-on-blue)]">
                 ✓
               </span>
               2장 완료 확인 — 이 두 파일이 있으면 성공

@@ -29,10 +29,10 @@ html {
   --s2-ink: #111827;
   --s2-body: #4b5563;
   --s2-strong: #374151;
-  --s2-gray: #6b7280;
-  --s2-faint: #9ca3af;
-  --s2-footer: #b6bcc6;
-  --s2-arrow: #c3c8d1;
+  --s2-gray: #666c7a;
+  --s2-faint: #6c7079;
+  --s2-footer: #73767d;
+  --s2-arrow: #6d7076;
 
   /* 면 */
   --s2-bg: #ffffff;
@@ -43,8 +43,13 @@ html {
   --s2-ghost: #e9edf3;
 
   /* 액센트 */
-  --s2-blue: #3182f6;
-  --s2-blue-soft: #e6f0ff;
+  --s2-blue: #2a6fd1;
+  /* 액센트 면 위에 올라가는 글자색. 테마마다 뒤집혀야 읽힙니다 */
+  --s2-on-blue: #ffffff;
+  --s2-on-ink: #ffffff;
+  --s2-on-warn: #0b1220;
+
+  --s2-blue-soft: #f0f6ff;
 
   /* 상태 박스 */
   --s2-info-bg: #f4f8ff;
@@ -84,9 +89,9 @@ html {
   --s2-body: #b4bbc6;
   --s2-strong: #d5dae2;
   --s2-gray: #98a0ad;
-  --s2-faint: #6f7885;
-  --s2-footer: #5c646f;
-  --s2-arrow: #4d5561;
+  --s2-faint: #7d8591;
+  --s2-footer: #7d838c;
+  --s2-arrow: #7d838c;
 
   --s2-bg: #0f1116;
   --s2-card: #171a21;
@@ -96,6 +101,10 @@ html {
   --s2-ghost: #1a1e26;
 
   --s2-blue: #61a0ff;
+  --s2-on-blue: #0b1220;
+  --s2-on-ink: #0b1220;
+  --s2-on-warn: #0b1220;
+
   --s2-blue-soft: #16233a;
 
   --s2-info-bg: #131c2e;
@@ -137,9 +146,9 @@ html {
     --s2-body: #b4bbc6;
     --s2-strong: #d5dae2;
     --s2-gray: #98a0ad;
-    --s2-faint: #6f7885;
-    --s2-footer: #5c646f;
-    --s2-arrow: #4d5561;
+    --s2-faint: #7d8591;
+    --s2-footer: #7d838c;
+    --s2-arrow: #7d838c;
   
     --s2-bg: #0f1116;
     --s2-card: #171a21;
@@ -149,6 +158,10 @@ html {
     --s2-ghost: #1a1e26;
   
     --s2-blue: #61a0ff;
+    --s2-on-blue: #0b1220;
+    --s2-on-ink: #0b1220;
+    --s2-on-warn: #0b1220;
+  
     --s2-blue-soft: #16233a;
   
     --s2-info-bg: #131c2e;

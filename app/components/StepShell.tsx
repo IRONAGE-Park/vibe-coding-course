@@ -143,7 +143,7 @@ function Footer({
           className={`rounded-full px-5 py-2.5 text-[14px] font-bold transition-all ${
             state === "done"
               ? "bg-[var(--s2-good-bg)] text-[var(--s2-good-ink)] ring-1 ring-[var(--s2-good-line)]"
-              : "bg-[var(--s2-blue)] text-white hover:-translate-y-0.5"
+              : "bg-[var(--s2-blue)] text-[var(--s2-on-blue)] hover:-translate-y-0.5"
           }`}
         >
           {state === "done" ? "완료했어요 ✓" : "완료했어요!"}

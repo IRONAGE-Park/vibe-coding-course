@@ -131,7 +131,7 @@ function PasswordStep({
         <button
           type="submit"
           disabled={busy || !value}
-          className="mt-3 w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3.5 text-[15px] font-bold text-white disabled:opacity-40"
+          className="mt-3 w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3.5 text-[15px] font-bold text-[var(--s2-on-blue)] disabled:opacity-40"
         >
           {busy ? "확인 중" : "들어가기"}
         </button>
@@ -182,7 +182,7 @@ function NameStep({ reset }: { reset: boolean }) {
         <button
           type="submit"
           disabled={!value.trim()}
-          className="mt-3 w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3.5 text-[15px] font-bold text-white disabled:opacity-40"
+          className="mt-3 w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3.5 text-[15px] font-bold text-[var(--s2-on-blue)] disabled:opacity-40"
         >
           시작하기
         </button>

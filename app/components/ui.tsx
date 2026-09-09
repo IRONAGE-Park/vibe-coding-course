@@ -108,7 +108,7 @@ export function StepCard({
     <>
       <div className="mb-2 flex items-start justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3.5">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--s2-blue)] text-[17px] font-extrabold text-white">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--s2-blue)] text-[17px] font-extrabold text-[var(--s2-on-blue)]">
             {no}
           </span>
           <h2 className="text-[20px] font-extrabold tracking-[-0.01em] md:text-[22px]">
@@ -162,7 +162,7 @@ export function MiniSteps({ items }: { items: ReactNode[] }) {
           key={i}
           className="flex items-start gap-3 border-b border-[var(--s2-divider)] py-3 last:border-b-0"
         >
-          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--s2-ink)] text-[12px] font-extrabold text-white">
+          <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--s2-ink)] text-[12px] font-extrabold text-[var(--s2-on-ink)]">
             {i + 1}
           </span>
           <span className="text-[15px] leading-[1.6] text-[var(--s2-strong)]">
@@ -196,8 +196,10 @@ export function Callout({
     >
       <p className="mb-1.5 flex items-center gap-2 text-[14.5px] font-extrabold">
         <span
-          className={`flex h-5.5 w-5.5 items-center justify-center rounded-full text-[11px] font-black text-white ${
-            isWarn ? "bg-[var(--s2-warn-dot)]" : "bg-[var(--s2-blue)]"
+          className={`flex h-5.5 w-5.5 items-center justify-center rounded-full text-[11px] font-black ${
+            isWarn
+              ? "bg-[var(--s2-warn-dot)] text-[var(--s2-on-warn)]"
+              : "bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
           }`}
         >
           !
@@ -303,7 +305,7 @@ export function Shot({
               }}
             >
               {highlight.label && (
-                <span className="absolute -top-8 left-0 whitespace-nowrap rounded-full bg-[var(--s2-blue)] px-3 py-1 text-[12px] font-bold text-white shadow-md">
+                <span className="absolute -top-8 left-0 whitespace-nowrap rounded-full bg-[var(--s2-blue)] px-3 py-1 text-[12px] font-bold text-[var(--s2-on-blue)] shadow-md">
                   {highlight.label}
                 </span>
               )}

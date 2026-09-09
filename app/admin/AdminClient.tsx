@@ -96,7 +96,7 @@ function Login({
         <button
           type="submit"
           disabled={busy || !password}
-          className="mt-3 w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3.5 text-[15px] font-bold text-white disabled:opacity-40"
+          className="mt-3 w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3.5 text-[15px] font-bold text-[var(--s2-on-blue)] disabled:opacity-40"
         >
           {busy ? "확인 중" : "입장"}
         </button>
@@ -340,7 +340,7 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
             onClick={() => setTab(key)}
             className={`flex-1 rounded-full px-3 py-2 text-[13px] font-bold transition-colors ${
               tab === key
-                ? "bg-[var(--s2-blue)] text-white"
+                ? "bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
                 : "border border-[var(--s2-line)] text-[var(--s2-gray)]"
             }`}
           >
@@ -466,7 +466,7 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
               <button
                 onClick={startSession}
                 disabled={busy}
-                className="w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3 text-[14.5px] font-bold text-white disabled:opacity-40"
+                className="w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3 text-[14.5px] font-bold text-[var(--s2-on-blue)] disabled:opacity-40"
               >
                 강의 시작하기
               </button>

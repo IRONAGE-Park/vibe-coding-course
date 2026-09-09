@@ -31,7 +31,7 @@ export default function CopyDoc({
           onClick={copy}
           className={`shrink-0 rounded-full border px-3.5 py-1.5 text-[12px] font-bold transition-colors ${
             copied
-              ? "border-[var(--s2-blue)] bg-[var(--s2-blue)] text-white"
+              ? "border-[var(--s2-blue)] bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
               : "border-[var(--s2-line)] bg-[var(--s2-card)] text-[var(--s2-gray)] hover:border-[var(--s2-blue)] hover:text-[var(--s2-blue)]"
           }`}
         >

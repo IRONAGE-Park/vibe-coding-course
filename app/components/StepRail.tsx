@@ -45,7 +45,7 @@ export default function StepRail({ items }: { items: RailItem[] }) {
                 <span
                   className={`font-mono w-6 text-center text-[10.5px] ${
                     isActive
-                      ? "font-bold text-white"
+                      ? "font-bold text-[var(--s2-on-blue)]"
                       : "text-[var(--s2-faint)] group-hover:text-[var(--s2-blue)]"
                   }`}
                 >
@@ -54,7 +54,7 @@ export default function StepRail({ items }: { items: RailItem[] }) {
                 <span
                   className={`whitespace-nowrap text-[12px] font-bold ${
                     isActive
-                      ? "text-white"
+                      ? "text-[var(--s2-on-blue)]"
                       : "text-[var(--s2-gray)] group-hover:text-[var(--s2-ink)]"
                   }`}
                 >

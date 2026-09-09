@@ -67,7 +67,7 @@ export default function UpdatePage() {
                   <span
                     className={`rounded-full border px-4 py-2 text-[14px] font-bold ${
                       i === 3
-                        ? "border-[var(--s2-blue)] bg-[var(--s2-blue)] text-white"
+                        ? "border-[var(--s2-blue)] bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
                         : "border-[var(--s2-line)] bg-[var(--s2-card)] text-[var(--s2-strong)]"
                     }`}
                   >
