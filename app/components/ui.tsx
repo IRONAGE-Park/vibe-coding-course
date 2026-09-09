@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import StepDone from "./StepDone";
+import { isTrackedStep } from "@/app/lib/steps";
 
 /* ── 라벨/뱃지 ─────────────────────────────────────────── */
 
@@ -133,6 +135,7 @@ export function StepCard({
         </p>
       )}
       <div className="flex flex-col gap-5">{children}</div>
+      {isTrackedStep(id) && <StepDone stepId={id} />}
     </section>
   );
 }
