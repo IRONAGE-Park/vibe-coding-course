@@ -9,6 +9,7 @@ import {
   MiniSteps,
   PageHero,
   Pager,
+  Placeholder,
   Shot,
   SiteFooter,
   StepCard,
@@ -18,7 +19,7 @@ import {
 export const metadata: Metadata = {
   title: "04 업데이트 배포 | 바이브코딩과 함께 살아남기",
   description:
-    "이 사이트에 다크 모드를 추가한 실제 과정 — 요청, 확인, 커밋·푸시, 자동 배포와 롤백까지.",
+    "요청, 확인, 커밋·푸시, 자동 배포와 롤백까지 — 고치면 저절로 반영되는 사이클.",
 };
 
 const TOTAL = 5;
@@ -45,9 +46,8 @@ export default function UpdatePage() {
         }
         sub={
           <>
-            이 장은 <b>실제 사례</b>입니다 — 지금 보고 있는 이 사이트에{" "}
-            <b>다크 모드</b>를 추가한 과정을 그대로 옮겼습니다. 오른쪽 위{" "}
-            <b>☾ 버튼</b>이 그 결과예요. 눌러보고 오세요.
+            이 장은 <b>강의 중에 함께 만듭니다</b>. 지금 보고 있는 이 사이트를
+            그 자리에서 고쳐 배포하고, 화면이 바뀌는 것을 같이 확인합니다.
           </>
         }
       />
@@ -99,20 +99,16 @@ export default function UpdatePage() {
           title="무엇을 고칠지 한 문장으로 정하기"
           intro={
             <>
-              &ldquo;다크 모드를 넣고 싶다&rdquo;에서 멈추지 말고,{" "}
+              &ldquo;이걸 바꾸고 싶다&rdquo;에서 멈추지 말고,{" "}
               <b>어디에 · 어떻게 확인할지</b>까지 붙이면 한 번에 끝납니다.
             </>
           }
         >
-          <CopyBlock
-            label="이번에 실제로 보낸 요청"
-            command="화면을 어둡게 보는 다크 모드를 추가해줘. 헤더에 전환 버튼을 넣고, 새로고침해도 선택이 유지되게 해줘."
-          />
           <div className="grid gap-4 md:grid-cols-3">
             {[
-              { k: "무엇을", v: "다크 모드" },
-              { k: "어디에", v: "헤더에 전환 버튼" },
-              { k: "어떻게 확인", v: "새로고침해도 유지" },
+              { k: "무엇을", v: "바꿀 대상 하나" },
+              { k: "어디에", v: "화면의 어느 자리인지" },
+              { k: "어떻게 확인", v: "됐는지 판단할 기준" },
             ].map((c, i) => (
               <div
                 key={c.k}
@@ -128,17 +124,22 @@ export default function UpdatePage() {
               </div>
             ))}
           </div>
+          <Placeholder>
+            오늘 함께 고칠 내용은 강의 중에 정합니다.
+            <br />
+            정해지면 이 자리에 실제로 보낸 요청 문장이 들어갑니다.
+          </Placeholder>
           <p className="text-[14.5px] leading-[1.65] text-[var(--s2-body)]">
             3장에서 배운 <b className="font-mono">/goal</b> 도 함께 걸어두면
             중간에 멈추지 않습니다.
           </p>
           <CopyBlock
             label="완료 조건도 함께"
-            command="/goal 라이트·다크 두 화면이 모두 정상이고 npm run build 가 통과할 때까지"
+            command="/goal 화면이 의도대로 바뀌고 npm run build 가 통과할 때까지"
           />
           <Callout title="기존 화면을 지키는 한마디">
             수정 요청에는 늘 <b>&ldquo;지금 화면은 그대로 두고&rdquo;</b>를
-            붙이세요. 다크 모드를 넣으면서 라이트 화면이 망가지면 업데이트가
+            붙이세요. 새 기능을 넣다가 멀쩡하던 화면이 망가지면 업데이트가
             아니라 사고입니다.
           </Callout>
         </StepCard>
@@ -152,91 +153,28 @@ export default function UpdatePage() {
           intro={
             <>
               <b className="font-mono">npm run dev</b> 로 띄운 화면에서 바로
-              확인합니다. 아래는 실제 작업 전후입니다.
+              확인합니다. 배포된 화면이 아니라 <b>내 컴퓨터 화면</b>이 먼저입니다.
             </>
           }
         >
-          <div className="flex flex-col gap-5">
-            <p className="text-[15px] font-extrabold">
-              작업 전 — <Blue>라이트 모드뿐</Blue>
-            </p>
-            <Shot
-              src="/captures/update/1-before-light.png"
-              width={1440}
-              height={1500}
-              alt="다크 모드 추가 전 — 헤더에 전환 버튼이 없는 화면"
-              url="localhost:3000 — 작업 전"
-              eager
-            />
-          </div>
-          <div className="flex flex-col gap-5">
-            <p className="text-[15px] font-extrabold">
-              작업 후 ① — <Blue>기존 화면은 그대로</Blue>
-            </p>
-            <Shot
-              src="/captures/update/2-after-light.png"
-              width={1440}
-              height={1500}
-              alt="다크 모드 추가 후 라이트 모드 — 헤더 오른쪽에 전환 버튼이 생김"
-              url="localhost:3000 — 작업 후 (라이트)"
-            />
-            <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
-              색·간격·글자 크기가 <b>작업 전과 똑같습니다</b>. 달라진 건 오른쪽
-              위 버튼 하나뿐 — 이게 잘된 업데이트입니다.
-            </p>
-            <Shot
-              src="/captures/update/4-toggle-light.png"
-              width={1320}
-              height={66}
-              alt="헤더 오른쪽 끝에 생긴 달 모양 테마 전환 버튼"
-              url="헤더 — 라이트 모드일 때 ☾"
-              highlight={{
-                top: "24%",
-                left: "78.5%",
-                width: "3%",
-                height: "52%",
-              }}
-            />
-          </div>
-          <div className="flex flex-col gap-5">
-            <p className="text-[15px] font-extrabold">
-              작업 후 ② — <Blue>새로 생긴 다크 모드</Blue>
-            </p>
-            <Shot
-              src="/captures/update/3-after-dark.png"
-              width={1440}
-              height={1500}
-              alt="다크 모드가 적용된 화면 — 어두운 배경에 밝은 글자"
-              url="localhost:3000 — 작업 후 (다크)"
-            />
-            <Shot
-              src="/captures/update/5-toggle-dark.png"
-              width={1320}
-              height={66}
-              alt="다크 모드에서는 버튼이 해 모양으로 바뀐다"
-              url="헤더 — 다크 모드일 때 ☀"
-              highlight={{
-                top: "24%",
-                left: "78.5%",
-                width: "3%",
-                height: "52%",
-              }}
-            />
-            <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
-              버튼 모양도 <b>☾ ↔ ☀</b> 로 바뀝니다 — 지금 어느 모드인지가 아니라{" "}
-              <b>누르면 어떻게 되는지</b>를 보여주는 쪽이 덜 헷갈립니다.
-            </p>
-          </div>
+          <Placeholder>
+            강의 중에 작업 전후 화면을 여기에 나란히 넣습니다.
+          </Placeholder>
+          <p className="text-[14.5px] leading-[1.65] text-[var(--s2-body)]">
+            볼 때는 <b>바뀐 곳</b>보다 <b>안 바뀌어야 할 곳</b>을 먼저 보세요.
+            색·간격·글자 크기가 그대로이고 달라진 건 요청한 부분 하나뿐이라면
+            잘된 업데이트입니다.
+          </p>
           <CheckList
             items={[
               <>
-                <b>기존 화면이 안 망가졌는가</b> — 라이트 모드를 먼저 확인
+                <b>기존 화면이 안 망가졌는가</b> — 원래 있던 화면부터 확인
               </>,
               <>
-                <b>새 기능이 동작하는가</b> — 버튼을 눌러 두 모드 전환
+                <b>새로 요청한 것이 동작하는가</b> — 직접 눌러보고 움직여보기
               </>,
               <>
-                <b>요청한 조건을 지켰는가</b> — 새로고침해도 선택이 남아 있는지
+                <b>요청한 조건을 지켰는가</b> — 1단계에서 정한 확인 기준으로 판정
               </>,
             ]}
           />
@@ -247,24 +185,20 @@ export default function UpdatePage() {
           no={3}
           total={TOTAL}
           id="update-3"
-          title="막혔을 때 — 실제로 이런 게 나왔습니다"
+          title="막혔을 때 — 메시지를 그대로 옮기기"
           intro={
             <>
-              한 번에 깔끔하게 끝나는 일은 드뭅니다. 이번에도 화면 왼쪽 아래에{" "}
-              <b>빨간 &ldquo;1 Issue&rdquo;</b> 배지가 떴어요.
+              한 번에 깔끔하게 끝나는 일은 드뭅니다. 화면 아래에{" "}
+              <b>빨간 배지</b>가 뜨거나 터미널에 영어가 쏟아지는 게 보통입니다.
             </>
           }
         >
           <Term
-            title="개발 서버가 알려준 문제"
+            title="개발 서버는 이런 식으로 알려줍니다"
             lines={[
               { text: "⚠ 1 Issue" },
               { text: "" },
-              {
-                dim: true,
-                text: "Hydration failed because the server rendered HTML",
-              },
-              { dim: true, text: "didn't match the client." },
+              { dim: true, text: "…에러 메시지가 영어로 길게 나옵니다" },
             ]}
           />
           <MiniSteps
@@ -274,8 +208,9 @@ export default function UpdatePage() {
               </>,
               <>
                 Claude에게 그대로 붙여넣고 —{" "}
-                <b>&ldquo;이 오류가 났어. 원인이 뭐고 어떻게 고치면
-                돼?&rdquo;</b>
+                <b>
+                  &ldquo;이 오류가 났어. 원인이 뭐고 어떻게 고치면 돼?&rdquo;
+                </b>
               </>,
               <>
                 고친 뒤 화면을 새로고침해 <b>배지가 사라졌는지</b> 확인합니다.
@@ -283,10 +218,9 @@ export default function UpdatePage() {
             ]}
           />
           <Callout title="빨간 글씨는 실패가 아니라 힌트입니다">
-            이번 원인은 <b>테마를 미리 적용하는 코드</b>와 <b>화면을 그리는
-            순서</b>가 어긋난 것이었고, 한 줄 고쳐서 해결됐습니다. 여러분이
-            원인을 알 필요는 없습니다 — <b>메시지를 그대로 옮기는 것</b>까지가
-            여러분 몫이고, 해석은 AI 몫입니다.
+            여러분이 원인을 알 필요는 없습니다. <b>메시지를 그대로 옮기는 것</b>
+            까지가 여러분 몫이고, 해석은 AI 몫입니다. 요약하거나 &ldquo;뭔가
+            안 돼요&rdquo;로 바꾸지 말고 통째로 붙여넣으세요.
           </Callout>
         </StepCard>
 
@@ -306,18 +240,18 @@ export default function UpdatePage() {
           <Term
             title="Claude Code 안에서"
             lines={[
-              { dim: true, text: "> 다크 모드 작업 커밋하고 푸시해줘." },
+              { dim: true, text: "> 방금 작업 커밋하고 푸시해줘." },
               { dim: true, text: "> 커밋 메시지는 한국어로." },
               { text: "" },
-              { text: "✓ [main 8f2c1a9] feat: 다크/라이트 테마 전환 추가" },
+              { text: "✓ [main 8f2c1a9] feat: …" },
               { text: "✓ Pushed to origin/main" },
             ]}
           />
           <CheckList
             items={[
               <>
-                커밋은 <b>기능 하나 단위</b>로 — &ldquo;다크 모드 추가&rdquo;처럼
-                한 줄로 설명되면 좋은 크기입니다
+                커밋은 <b>기능 하나 단위</b>로 — 한 줄로 설명되면 좋은
+                크기입니다
               </>,
               <>
                 푸시 전에 <b className="font-mono">npm run build</b> 가
@@ -349,8 +283,8 @@ export default function UpdatePage() {
                 방금 푸시한 커밋이 <b>Building…</b> 상태로 올라옵니다.
               </>,
               <>
-                <b>Ready</b>로 바뀌면 내 서비스 주소를 새로고침 — 다크 모드
-                버튼이 실제 사이트에도 생겨 있습니다.
+                <b>Ready</b>로 바뀌면 내 서비스 주소를 새로고침 — 방금 고친
+                내용이 실제 사이트에도 반영돼 있습니다.
               </>,
             ]}
           />
@@ -385,7 +319,7 @@ export default function UpdatePage() {
         {/* 마무리 */}
         <section className="rounded-[24px] border border-[var(--s2-info-line)] bg-[var(--s2-info-bg)] p-7 md:p-9">
           <p className="text-[18px] font-extrabold leading-[1.5] md:text-[20px]">
-            이 페이지의 <Blue>☾ 버튼</Blue>이 방금 그 결과입니다
+            방금 <Blue>이 사이트가 바뀌는 것</Blue>을 함께 봤습니다
           </p>
           <p className="mt-3 text-[14.5px] leading-[1.7] text-[var(--s2-body)]">
             요청 한 문장 → 확인 → 오류 해결 → 커밋·푸시 → 자동 배포. 여러분의
