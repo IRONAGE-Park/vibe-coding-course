@@ -88,3 +88,65 @@ const STEP_ID_SET = new Set(STEP_IDS);
 export function isTrackedStep(id: string | undefined): id is string {
   return !!id && STEP_ID_SET.has(id);
 }
+
+/* ── 순서 판단 ──────────────────────────────────────────────
+   실습은 위에서부터 순서대로 하는 것을 전제로 합니다.
+   참가자 화면의 잠금과 관리자 화면의 "지금 어느 단계" 가 모두 이 기준을 씁니다. */
+
+export type StepInfo = {
+  id: string;
+  title: string;
+  /** 몇 번째 챕터인지 ("01" 같은 표시용 문자열) */
+  chapterNum: string;
+  chapterLabel: string;
+  /** 챕터 안에서 몇 번째인지 (1부터) */
+  indexInChapter: number;
+  /** 전체 31단계 중 몇 번째인지 (0부터) */
+  order: number;
+};
+
+const INFO = new Map<string, StepInfo>();
+let order = 0;
+for (const c of CHAPTERS) {
+  c.steps.forEach((s, i) => {
+    INFO.set(s.id, {
+      id: s.id,
+      title: s.title,
+      chapterNum: c.num,
+      chapterLabel: c.label,
+      indexInChapter: i + 1,
+      order: order++,
+    });
+  });
+}
+
+export function stepInfo(id: string): StepInfo | undefined {
+  return INFO.get(id);
+}
+
+/** 관리자 화면에 보여줄 한 줄 라벨 — "01 환경 설정 · 3. GitHub 가입" */
+export function stepLabel(id: string): string {
+  const s = INFO.get(id);
+  if (!s) return id;
+  return `${s.chapterNum} ${s.chapterLabel} · ${s.indexInChapter}. ${s.title}`;
+}
+
+/** 순서상 지금 해야 할 단계. 전부 끝냈으면 null */
+export function currentStepId(done: Iterable<string>): string | null {
+  const set = done instanceof Set ? done : new Set(done);
+  return STEP_IDS.find((id) => !set.has(id)) ?? null;
+}
+
+export type StepState = "done" | "current" | "locked";
+
+/** 이 단계가 지금 어떤 상태인지 */
+export function stepStateOf(id: string, done: Set<string>): StepState {
+  if (done.has(id)) return "done";
+  return currentStepId(done) === id ? "current" : "locked";
+}
+
+/** 이 단계 바로 다음 단계의 id */
+export function nextStepId(id: string): string | null {
+  const i = STEP_IDS.indexOf(id);
+  return i >= 0 && i + 1 < STEP_IDS.length ? STEP_IDS[i + 1] : null;
+}

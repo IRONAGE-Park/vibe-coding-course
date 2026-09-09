@@ -10,6 +10,8 @@ export type VisitorRow = {
   id: string;
   name: string | null;
   done: number;
+  /** 순서상 지금 하고 있는 단계. 전부 끝냈으면 null */
+  currentStep: string | null;
   firstSeen: string;
   lastSeen: string;
 };

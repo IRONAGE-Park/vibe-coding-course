@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getDb, getActiveSession, startOfTodayKST, TABLES } from "@/app/lib/db";
-import { TOTAL_STEPS } from "@/app/lib/steps";
+import { TOTAL_STEPS, currentStepId } from "@/app/lib/steps";
 import type { Stats, SessionRow, VisitorRow } from "@/app/lib/stats-types";
 
 const EMPTY: Omit<Stats, "updatedAt"> = {
@@ -77,7 +77,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
         .eq("session_id", target),
       db
         .from(TABLES.visitorProgress)
-        .select("visitor_id, name, done, first_seen, last_seen")
+        .select("visitor_id, name, done, step_ids, first_seen, last_seen")
         .eq("session_id", target)
         .order("done", { ascending: true })
         .order("first_seen", { ascending: true }),
@@ -101,6 +101,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
         visitor_id: string;
         name: string | null;
         done: number;
+        step_ids: string[] | null;
         first_seen: string;
         last_seen: string;
       }[]
@@ -108,6 +109,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
       id: row.visitor_id,
       name: row.name,
       done: row.done,
+      currentStep: currentStepId(row.step_ids ?? []),
       firstSeen: row.first_seen,
       lastSeen: row.last_seen,
     }));

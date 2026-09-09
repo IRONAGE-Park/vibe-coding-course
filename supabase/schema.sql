@@ -95,10 +95,15 @@ create view public.visitor_progress
     v.name,
     v.first_seen,
     v.last_seen,
-    coalesce(c.done, 0)::int as done
+    coalesce(c.done, 0)::int as done,
+    coalesce(c.step_ids, array[]::text[]) as step_ids
   from public.visitors v
   left join (
-    select session_id, visitor_id, count(*)::int as done
+    select
+      session_id,
+      visitor_id,
+      count(*)::int      as done,
+      array_agg(step_id) as step_ids
     from public.completions
     group by session_id, visitor_id
   ) c on c.session_id = v.session_id and c.visitor_id = v.visitor_id;

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import StepDone from "./StepDone";
+import StepShell from "./StepShell";
 import { isTrackedStep } from "@/app/lib/steps";
 
 /* ── 라벨/뱃지 ─────────────────────────────────────────── */
@@ -104,11 +104,8 @@ export function StepCard({
   children: ReactNode;
   id?: string;
 }) {
-  return (
-    <section
-      id={id}
-      className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-6 shadow-[var(--s2-shadow-lg)] md:p-9"
-    >
+  const head = (
+    <>
       <div className="mb-2 flex items-start justify-between gap-4">
         <div className="flex flex-wrap items-center gap-3.5">
           <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--s2-blue)] text-[17px] font-extrabold text-white">
@@ -130,12 +127,27 @@ export function StepCard({
         )}
       </div>
       {intro && (
-        <p className="mb-6 text-[15px] leading-[1.6] text-[var(--s2-body)]">
-          {intro}
-        </p>
+        <p className="text-[15px] leading-[1.6] text-[var(--s2-body)]">{intro}</p>
       )}
-      <div className="flex flex-col gap-5">{children}</div>
-      {isTrackedStep(id) && <StepDone stepId={id} />}
+    </>
+  );
+
+  // 집계 대상 단계는 순서·완료 상태를 입히는 껍데기로 감쌉니다.
+  if (isTrackedStep(id)) {
+    return (
+      <StepShell stepId={id} header={head}>
+        {children}
+      </StepShell>
+    );
+  }
+
+  return (
+    <section
+      id={id}
+      className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-6 shadow-[var(--s2-shadow-lg)] md:p-9"
+    >
+      {head}
+      <div className="mt-6 flex flex-col gap-5">{children}</div>
     </section>
   );
 }

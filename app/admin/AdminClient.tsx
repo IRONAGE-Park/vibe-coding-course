@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { CHAPTERS, TOTAL_STEPS } from "@/app/lib/steps";
+import { CHAPTERS, TOTAL_STEPS, stepLabel } from "@/app/lib/steps";
 import type { Stats, VisitorRow } from "@/app/lib/stats-types";
 
 const REFRESH_MS = 10_000;
@@ -187,7 +187,7 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
   async function newSession() {
     const name = window.prompt(
       "새 강의 회차 이름을 적어주세요.\n지금까지의 기록은 지난 회차로 남고, 참가자 화면은 이름부터 다시 시작합니다.",
-      `강의 ${new Date().toLocaleDateString("ko-KR")}`
+      `강의 ${todayKST()}`
     );
     if (name === null) return;
 
@@ -348,11 +348,23 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
                       <p className="truncate text-[15px] font-extrabold">
                         {v.name ?? "이름 안 밝힘"}
                       </p>
+                      <p className="mt-1 truncate text-[12.5px] text-[var(--s2-body)]">
+                        {v.currentStep ? (
+                          <>
+                            <span className="text-[var(--s2-faint)]">지금 </span>
+                            {stepLabel(v.currentStep)}
+                          </>
+                        ) : (
+                          <span className="font-bold text-[var(--s2-good-ink)]">
+                            전체 완료
+                          </span>
+                        )}
+                      </p>
                       <p className="font-mono mt-0.5 truncate whitespace-nowrap text-[11px] text-[var(--s2-faint)]">
                         {short(v.id)} · {when(v.firstSeen)} 접속
                       </p>
                     </div>
-                    <span className="font-mono shrink-0 text-[12.5px] text-[var(--s2-faint)]">
+                    <span className="font-mono shrink-0 text-[12.5px] font-bold text-[var(--s2-blue)]">
                       {v.done} / {stats.totalSteps}
                     </span>
                     <button
@@ -495,13 +507,25 @@ function short(id: string): string {
   return id.slice(0, 8);
 }
 
+/** 새 회차 기본 이름에 쓰는 오늘 날짜 (한국 시간) */
+function todayKST(): string {
+  const kst = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  return `${kst.getUTCFullYear()}.${kst.getUTCMonth() + 1}.${kst.getUTCDate()}`;
+}
+
+/**
+ * 날짜·시간 표시.
+ * toLocaleString 을 쓰면 서버(Node)와 브라우저의 로케일 데이터가 달라
+ * "오후"와 "PM"처럼 결과가 갈리고, 하이드레이션 불일치가 납니다.
+ * 그래서 한국 시간으로 직접 조립합니다. 어디서 실행해도 결과가 같습니다.
+ */
 function when(iso: string): string {
-  return new Date(iso).toLocaleString("ko-KR", {
-    month: "numeric",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const kst = new Date(new Date(iso).getTime() + 9 * 60 * 60 * 1000);
+  const mm = kst.getUTCMonth() + 1;
+  const dd = kst.getUTCDate();
+  const hh = String(kst.getUTCHours()).padStart(2, "0");
+  const mi = String(kst.getUTCMinutes()).padStart(2, "0");
+  return `${mm}/${dd} ${hh}:${mi}`;
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
