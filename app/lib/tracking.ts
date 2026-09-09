@@ -5,6 +5,7 @@ const NAME = "vcc.name";
 const ASKED = "vcc.asked";
 const DONE = "vcc.done";
 const SESSION = "vcc.session";
+const RESET = "vcc.reset";
 
 const CHANGED = "vcc:changed";
 
@@ -49,6 +50,8 @@ export function syncSession(activeId: string | null): boolean {
     localStorage.removeItem(DONE);
     localStorage.removeItem(NAME);
     localStorage.removeItem(ASKED);
+    // 안내 문구를 바꾸기 위한 표시. 이름을 다시 받으면 지웁니다.
+    localStorage.setItem(RESET, "1");
   } catch {
     /* 저장이 막힌 환경 */
   }
@@ -94,6 +97,13 @@ export function askedSnapshot(): string {
 /** 서버에서는 "물어봤다"로 취급해 첫 렌더에 모달이 스치지 않게 합니다 */
 export const askedServerSnapshot = () => "1";
 
+/** 방금 새 강의가 열려 초기화됐는지 */
+export function resetSnapshot(): string {
+  return safeGet(RESET) ?? "";
+}
+
+export const resetServerSnapshot = () => "";
+
 export function parseDone(raw: string): Set<string> {
   if (!raw) return new Set();
   try {
@@ -136,6 +146,11 @@ export function getName(): string {
 export function saveName(name: string) {
   if (name) safeSet(NAME, name);
   safeSet(ASKED, "1");
+  try {
+    localStorage.removeItem(RESET);
+  } catch {
+    /* noop */
+  }
   notify();
 }
 

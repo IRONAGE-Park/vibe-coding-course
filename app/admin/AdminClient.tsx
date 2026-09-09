@@ -184,18 +184,20 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
     }
   }
 
-  async function newSession() {
-    const name = window.prompt(
-      "새 강의 회차 이름을 적어주세요.\n지금까지의 기록은 지난 회차로 남고, 참가자 화면은 이름부터 다시 시작합니다.",
-      `강의 ${todayKST()}`
-    );
+  async function startSession() {
+    const name = window.prompt("강의 이름을 적어주세요.", `강의 ${todayKST()}`);
     if (name === null) return;
+
+    const password = window.prompt(
+      "참가자가 입장할 때 쓸 비밀번호를 정해주세요. 4자 이상이며, 강의 중에 참가자에게 알려주시면 됩니다."
+    );
+    if (password === null) return;
 
     if (
       await call("/api/admin/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ name, password }),
       })
     ) {
       setViewing(null);
@@ -204,16 +206,35 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
     }
   }
 
-  async function reopen(id: string) {
+  async function stopSession() {
     if (
-      !window.confirm("이 회차를 다시 열까요? 앞으로의 기록이 여기에 쌓입니다.")
+      !window.confirm(
+        "강의를 종료할까요? 기록은 그대로 남고, 참가자 화면은 비밀번호 없이 읽을 수 있는 안내서로 돌아갑니다."
+      )
     )
       return;
     if (
       await call("/api/admin/sessions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ activate: id }),
+        body: JSON.stringify({ stop: true }),
+      })
+    ) {
+      setViewing(null);
+      await refresh(null);
+    }
+  }
+
+  async function resume(id: string) {
+    const password = window.prompt(
+      "이 강의를 다시 시작합니다. 비밀번호를 새로 정하려면 입력하고, 예전 것을 그대로 쓰려면 비워두세요."
+    );
+    if (password === null) return;
+    if (
+      await call("/api/admin/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ activate: id, password }),
       })
     ) {
       setViewing(null);
@@ -253,9 +274,8 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
     }
   }
 
-  const isViewingActive =
-    !stats.session ||
-    (stats.sessions.find((s) => s.id === stats.session?.id)?.isActive ?? false);
+  const viewed = stats.sessions.find((s) => s.id === stats.session?.id);
+  const isViewingRunning = viewed?.isRunning ?? false;
 
   const avgPct = stats.totalSteps
     ? Math.round((stats.averageDone / stats.totalSteps) * 100)
@@ -272,7 +292,7 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
             {stats.session?.name ?? "진행 현황"}
           </h1>
           <p className="mt-1 text-[12px] text-[var(--s2-faint)]">
-            {isViewingActive ? "지금 열려 있는 회차" : "지난 회차를 보는 중"}
+            {isViewingRunning ? "진행 중" : "종료된 강의"}
             {stats.session ? ` · ${when(stats.session.createdAt)} 시작` : ""}
           </p>
         </div>
@@ -312,7 +332,7 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
           [
             ["people", `참가자 ${stats.totalVisitors}`],
             ["steps", "단계별"],
-            ["sessions", `회차 ${stats.sessions.length}`],
+            ["sessions", stats.running ? "강의 진행 중" : "강의"],
           ] as [Tab, string][]
         ).map(([key, label]) => (
           <button
@@ -369,11 +389,11 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
                     </span>
                     <button
                       onClick={() => removeVisitor(v)}
-                      disabled={busy || !isViewingActive}
+                      disabled={busy || !isViewingRunning}
                       title={
-                        isViewingActive
+                        isViewingRunning
                           ? ""
-                          : "열려 있는 회차에서만 지울 수 있습니다"
+                          : "진행 중인 강의에서만 지울 수 있습니다"
                       }
                       className="shrink-0 rounded-full border border-[var(--s2-bad-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-bad-ink)] disabled:opacity-30"
                     >
@@ -426,70 +446,93 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
         ))}
 
       {tab === "sessions" && (
-        <Section title="강의 회차">
-          <button
-            onClick={newSession}
-            disabled={busy}
-            className="w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3 text-[14.5px] font-bold text-white disabled:opacity-40"
-          >
-            새 회차 시작하기
-          </button>
-          <p className="mt-2 text-[12.5px] leading-[1.6] text-[var(--s2-body)]">
-            새 회차를 열면 지금까지의 기록은 지난 회차로 남고, 참가자 화면은
-            이름부터 다시 시작합니다.
-          </p>
+        <Section title="강의">
+          {stats.running ? (
+            <>
+              <button
+                onClick={stopSession}
+                disabled={busy}
+                className="w-full rounded-[14px] border border-[var(--s2-bad-line)] bg-[var(--s2-bad-bg)] px-5 py-3 text-[14.5px] font-bold text-[var(--s2-bad-ink)] disabled:opacity-40"
+              >
+                강의 종료하기
+              </button>
+              <p className="mt-2 text-[12.5px] leading-[1.6] text-[var(--s2-body)]">
+                종료하면 기록은 그대로 남고, 참가자 화면은 비밀번호 없이 읽을 수
+                있는 안내서로 돌아갑니다. 완료 버튼도 사라집니다.
+              </p>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={startSession}
+                disabled={busy}
+                className="w-full rounded-[14px] bg-[var(--s2-blue)] px-5 py-3 text-[14.5px] font-bold text-white disabled:opacity-40"
+              >
+                강의 시작하기
+              </button>
+              <p className="mt-2 text-[12.5px] leading-[1.6] text-[var(--s2-body)]">
+                이름과 참가자용 비밀번호를 정하면 강의가 열립니다. 그때부터
+                참가자는 비밀번호를 넣고 들어와 진행을 남길 수 있습니다.
+              </p>
+            </>
+          )}
 
-          <div className="mt-3 flex flex-col gap-2">
-            {stats.sessions.map((s) => {
-              const selected = s.id === stats.session?.id;
-              return (
-                <div
-                  key={s.id}
-                  className={`rounded-[14px] border p-3.5 ${
-                    selected
-                      ? "border-[var(--s2-blue)] bg-[var(--s2-info-bg)]"
-                      : "border-[var(--s2-line)] bg-[var(--s2-card)]"
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => {
-                        setViewing(s.id);
-                        void refresh(s.id);
-                      }}
-                      className="min-w-0 flex-1 text-left"
-                    >
-                      <span className="block truncate text-[14.5px] font-extrabold">
-                        {s.name}
-                      </span>
-                      <span className="mt-0.5 block text-[11.5px] text-[var(--s2-faint)]">
-                        {when(s.createdAt)} · 참가자 {s.visitors}
-                      </span>
-                    </button>
-                    {s.isActive ? (
-                      <span className="shrink-0 rounded-full bg-[var(--s2-good-bg)] px-2.5 py-1 text-[11px] font-bold text-[var(--s2-good-ink)]">
-                        열림
-                      </span>
-                    ) : (
+          <div className="mt-4 flex flex-col gap-2">
+            {stats.sessions.length === 0 ? (
+              <Empty>아직 연 강의가 없습니다.</Empty>
+            ) : (
+              stats.sessions.map((s) => {
+                const selected = s.id === stats.session?.id;
+                return (
+                  <div
+                    key={s.id}
+                    className={`rounded-[14px] border p-3.5 ${
+                      selected
+                        ? "border-[var(--s2-blue)] bg-[var(--s2-info-bg)]"
+                        : "border-[var(--s2-line)] bg-[var(--s2-card)]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
                       <button
-                        onClick={() => reopen(s.id)}
-                        disabled={busy}
-                        className="shrink-0 rounded-full border border-[var(--s2-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-gray)]"
+                        onClick={() => {
+                          setViewing(s.id);
+                          void refresh(s.id);
+                        }}
+                        className="min-w-0 flex-1 text-left"
                       >
-                        다시 열기
+                        <span className="block truncate text-[14.5px] font-extrabold">
+                          {s.name}
+                        </span>
+                        <span className="mt-0.5 block text-[11.5px] text-[var(--s2-faint)]">
+                          {when(s.startedAt ?? s.createdAt)} · 참가자{" "}
+                          {s.visitors}
+                        </span>
                       </button>
-                    )}
-                    <button
-                      onClick={() => removeSession(s.id, s.name)}
-                      disabled={busy || stats.sessions.length <= 1}
-                      className="shrink-0 rounded-full border border-[var(--s2-bad-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-bad-ink)] disabled:opacity-30"
-                    >
-                      삭제
-                    </button>
+                      {s.isRunning ? (
+                        <span className="shrink-0 rounded-full bg-[var(--s2-good-bg)] px-2.5 py-1 text-[11px] font-bold text-[var(--s2-good-ink)]">
+                          진행 중
+                        </span>
+                      ) : (
+                        <button
+                          onClick={() => resume(s.id)}
+                          disabled={busy}
+                          className="shrink-0 rounded-full border border-[var(--s2-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-gray)]"
+                        >
+                          다시 시작
+                        </button>
+                      )}
+                      <button
+                        onClick={() => removeSession(s.id, s.name)}
+                        disabled={busy}
+                        className="shrink-0 rounded-full border border-[var(--s2-bad-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-bad-ink)] disabled:opacity-30"
+                      >
+                        삭제
+                      </button>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </Section>
       )}

@@ -3,7 +3,9 @@ import { cookies } from "next/headers";
 import { THEME_COOKIE } from "./lib/theme";
 import { Noto_Sans_KR, Fragment_Mono } from "next/font/google";
 import "./globals.css";
-import NameGate from "./components/NameGate";
+import JoinGate from "./components/JoinGate";
+import { ParticipationProvider } from "./components/Participation";
+import { getParticipation } from "./lib/participation";
 
 const notoSansKr = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
@@ -38,6 +40,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   // prefers-color-scheme 블록이 처리합니다. 그래서 첫 페인트부터 깜빡임이 없습니다.
   const stored = (await cookies()).get(THEME_COOKIE)?.value;
   const theme = stored === "dark" || stored === "light" ? stored : undefined;
+
+  // 강의가 진행 중인지, 이 브라우저가 들어와 있는지도 서버에서 정합니다.
+  const participation = await getParticipation();
   return (
     <html
       lang="ko"
@@ -51,8 +56,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           precedence="default"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
-        {children}
-        <NameGate />
+        <ParticipationProvider value={participation}>
+          {children}
+          <JoinGate />
+        </ParticipationProvider>
       </body>
     </html>
   );

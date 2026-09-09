@@ -16,6 +16,7 @@ import {
   stepInfo,
   TOTAL_STEPS,
 } from "@/app/lib/steps";
+import { useTracking } from "./Participation";
 
 /**
  * 스텝 카드의 상태(완료 · 진행 중 · 잠김)를 입혀 감싸는 껍데기.
@@ -36,9 +37,13 @@ export default function StepShell({
   header: ReactNode;
   children: ReactNode;
 }) {
+  const tracking = useTracking();
   const raw = useSyncExternalStore(subscribe, doneSnapshot, doneServerSnapshot);
   const done = useMemo(() => parseDone(raw), [raw]);
-  const state = stepStateOf(stepId, done);
+
+  // 강의 중이 아니면 순서를 걸 이유가 없습니다.
+  // 그냥 읽는 안내서이므로 모든 단계를 평범하게 펼쳐 둡니다.
+  const state = tracking ? stepStateOf(stepId, done) : "current";
 
   const [expanded, setExpanded] = useState(false);
   const open = state === "current" || expanded;
@@ -91,13 +96,15 @@ export default function StepShell({
         </button>
       )}
 
-      <Footer
-        state={state}
-        stepId={stepId}
-        open={open}
-        onComplete={onComplete}
-        onCollapse={() => setExpanded(false)}
-      />
+      {tracking && (
+        <Footer
+          state={state}
+          stepId={stepId}
+          open={open}
+          onComplete={onComplete}
+          onCollapse={() => setExpanded(false)}
+        />
+      )}
     </section>
   );
 }

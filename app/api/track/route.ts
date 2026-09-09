@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { getDb, getActiveSession, TABLES } from "@/app/lib/db";
+import { getDb, TABLES } from "@/app/lib/db";
+import { getParticipation } from "@/app/lib/participation";
 import { isTrackedStep } from "@/app/lib/steps";
 
 export const runtime = "nodejs";
@@ -44,12 +45,19 @@ export async function POST(req: Request) {
   const now = new Date().toISOString();
 
   try {
-    // 항상 지금 열려 있는 회차에만 기록합니다.
-    // 회차가 없으면 기록하지 않습니다. 지난 회차에 섞여 들어가는 것보다 낫습니다.
-    const session = await getActiveSession();
-    if (!session) {
-      return NextResponse.json({ ok: true, stored: false, sessionId: null });
+    // 진행 중인 강의에, 비밀번호를 통과한 브라우저만 기록합니다.
+    // 화면에서 버튼을 숨기는 것만으로는 API 를 직접 부르는 것을 막지 못합니다.
+    const part = await getParticipation();
+    if (!part.running || !part.joined || !part.sessionId) {
+      return NextResponse.json({
+        ok: true,
+        stored: false,
+        sessionId: part.sessionId,
+        running: part.running,
+        joined: part.joined,
+      });
     }
+    const session = { id: part.sessionId };
 
     // 참가자 갱신. 이름이 빈 경우 기존에 저장된 이름을 덮어쓰지 않습니다.
     await db.from(TABLES.visitors).upsert(
@@ -81,7 +89,13 @@ export async function POST(req: Request) {
         .eq("step_id", stepId);
     }
 
-    return NextResponse.json({ ok: true, stored: true, sessionId: session.id });
+    return NextResponse.json({
+      ok: true,
+      stored: true,
+      sessionId: session.id,
+      running: true,
+      joined: true,
+    });
   } catch {
     return NextResponse.json({ ok: true, stored: false, sessionId: null });
   }

@@ -48,27 +48,3 @@ export const TABLES = {
   stepCounts: "step_counts",
   visitorProgress: "visitor_progress",
 } as const;
-
-/** 지금 열려 있는 강의 회차. 없으면 하나 만들어 둡니다. */
-export async function getActiveSession(): Promise<{
-  id: string;
-  name: string;
-  created_at: string;
-} | null> {
-  const db = getDb();
-  if (!db) return null;
-
-  const { data } = await db
-    .from(TABLES.sessions)
-    .select("id, name, created_at")
-    .eq("is_active", true)
-    .maybeSingle();
-  if (data) return data;
-
-  const { data: made } = await db
-    .from(TABLES.sessions)
-    .insert({ name: "첫 번째 강의", is_active: true })
-    .select("id, name, created_at")
-    .maybeSingle();
-  return made ?? null;
-}

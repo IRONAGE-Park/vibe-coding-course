@@ -2,7 +2,9 @@ export type SessionRow = {
   id: string;
   name: string;
   createdAt: string;
-  isActive: boolean;
+  /** 지금 진행 중인 강의인지 */
+  isRunning: boolean;
+  startedAt: string | null;
   visitors: number;
 };
 
@@ -18,6 +20,8 @@ export type VisitorRow = {
 
 export type Stats = {
   connected: boolean;
+  /** 지금 진행 중인 강의가 있는지 */
+  running: boolean;
   session: { id: string; name: string; createdAt: string } | null;
   sessions: SessionRow[];
   totalVisitors: number;

@@ -1,11 +1,13 @@
 import "server-only";
 
-import { getDb, getActiveSession, startOfTodayKST, TABLES } from "@/app/lib/db";
+import { getDb, startOfTodayKST, TABLES } from "@/app/lib/db";
+import { getRunningSession } from "@/app/lib/participation";
 import { TOTAL_STEPS, currentStepId } from "@/app/lib/steps";
 import type { Stats, SessionRow, VisitorRow } from "@/app/lib/stats-types";
 
 const EMPTY: Omit<Stats, "updatedAt"> = {
   connected: false,
+  running: false,
   session: null,
   sessions: [],
   totalVisitors: 0,
@@ -26,24 +28,25 @@ export async function getStats(sessionId?: string): Promise<Stats> {
   if (!db) return { ...EMPTY, updatedAt: Date.now() };
 
   try {
-    const active = await getActiveSession();
-    const target = sessionId ?? active?.id;
+    const running = await getRunningSession();
+    const target = sessionId ?? running?.id;
 
     // 회차 목록은 어느 회차를 보든 항상 같이 내려줍니다.
     const { data: sessionRows } = await db
       .from(TABLES.sessions)
-      .select("id, name, created_at, is_active")
+      .select("id, name, created_at, is_running, started_at")
       .order("created_at", { ascending: false });
 
     const rows = (sessionRows ?? []) as {
       id: string;
       name: string;
       created_at: string;
-      is_active: boolean;
+      is_running: boolean;
+      started_at: string | null;
     }[];
 
     if (!target) {
-      return { ...EMPTY, connected: true, updatedAt: Date.now() };
+      return { ...EMPTY, connected: true, running: false, updatedAt: Date.now() };
     }
 
     // 회차별 참가자 수 (목록에 함께 보여줍니다)
@@ -59,7 +62,8 @@ export async function getStats(sessionId?: string): Promise<Stats> {
       id: s.id,
       name: s.name,
       createdAt: s.created_at,
-      isActive: s.is_active,
+      isRunning: s.is_running,
+      startedAt: s.started_at,
       visitors: counts[i]?.count ?? 0,
     }));
 
@@ -120,6 +124,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
 
     return {
       connected: true,
+      running: Boolean(running),
       session: current
         ? { id: current.id, name: current.name, createdAt: current.created_at }
         : null,
