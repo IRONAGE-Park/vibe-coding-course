@@ -6,16 +6,21 @@ import {
   subscribe,
   askedSnapshot,
   askedServerSnapshot,
-  saveTeam,
+  saveName,
   getVisitorId,
   track,
+  syncSession,
+  fetchActiveSession,
 } from "@/app/lib/tracking";
 
 /**
- * 첫 방문 때 팀 이름을 한 번만 받고, 이후 방문을 집계합니다.
+ * 첫 방문 때 이름을 한 번만 받고, 이후 방문을 집계합니다.
  * 이름을 건너뛰어도 실습은 그대로 진행됩니다.
+ *
+ * 강사가 새 회차를 열면 예전 진행 상황이 남아 있으면 안 되므로,
+ * 화면을 열 때 지금 열린 회차를 확인하고 다르면 비웁니다.
  */
-export default function TeamGate() {
+export default function NameGate() {
   const pathname = usePathname();
   const isAdminArea = pathname?.startsWith("/admin") ?? false;
 
@@ -25,26 +30,34 @@ export default function TeamGate() {
     askedServerSnapshot
   );
   const [value, setValue] = useState("");
-  const sent = useRef(false);
+  const [reset, setReset] = useState(false);
+  const started = useRef(false);
 
   const open = !isAdminArea && asked !== "1";
 
   useEffect(() => {
-    // 이름을 이미 받은 방문자만 방문으로 기록합니다.
-    // 처음 온 사람은 모달에 답한 뒤에 기록됩니다.
-    // asked 대신 저장소를 직접 읽습니다. 하이드레이션 시점의 값은 아직 서버 기준이라
-    // 그대로 믿으면 이름을 받기 전에 방문이 먼저 올라갑니다.
-    if (isAdminArea || sent.current || askedSnapshot() !== "1") return;
-    sent.current = true;
-    getVisitorId();
-    void track("visit");
-  }, [isAdminArea, asked]);
+    if (isAdminArea || started.current) return;
+    started.current = true;
+
+    (async () => {
+      // 회차를 먼저 맞춘 뒤에 방문을 기록합니다.
+      // 순서가 바뀌면 지난 회차 기준으로 한 번 기록될 수 있습니다.
+      const activeId = await fetchActiveSession();
+      if (syncSession(activeId)) setReset(true);
+
+      // 이름을 이미 받은 참가자만 여기서 방문으로 기록합니다.
+      // 처음 온 사람은 모달에 답한 뒤에 기록됩니다.
+      if (askedSnapshot() !== "1") return;
+      getVisitorId();
+      void track("visit");
+    })();
+  }, [isAdminArea]);
 
   if (!open) return null;
 
   function submit(name: string) {
     getVisitorId();
-    saveTeam(name.trim().slice(0, 20));
+    saveName(name.trim().slice(0, 20));
   }
 
   return (
@@ -54,11 +67,12 @@ export default function TeamGate() {
           WELCOME
         </p>
         <h2 className="mt-2 text-[19px] font-black tracking-[-0.01em]">
-          팀 이름을 알려주세요
+          이름을 알려주세요
         </h2>
         <p className="mt-2 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
-          진행 상황을 팀 단위로 표시하기 위해서만 씁니다. 막히는 팀을 강사가
-          빨리 찾아갈 수 있어요.
+          {reset
+            ? "새 강의가 시작되어 진행 상황을 새로 시작합니다. 이름을 다시 알려주세요."
+            : "진행 상황을 표시하는 데에만 씁니다. 막히는 분을 강사가 빨리 찾아갈 수 있어요."}
         </p>
 
         <form
@@ -73,7 +87,7 @@ export default function TeamGate() {
             value={value}
             onChange={(e) => setValue(e.target.value)}
             maxLength={20}
-            placeholder="예) 3팀 아침햇살"
+            placeholder="예) 박철현"
             className="w-full rounded-[14px] border border-[var(--s2-line)] bg-[var(--s2-tint)] px-4 py-3 text-[16px] outline-none focus:border-[var(--s2-blue)]"
           />
           <button

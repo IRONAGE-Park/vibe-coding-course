@@ -1,8 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-
-type Theme = "light" | "dark";
+import { THEME_COOKIE, THEME_MAX_AGE, type Theme } from "@/app/lib/theme";
 
 /** <html data-theme> 값이 바뀌면 다시 그리도록 구독합니다 */
 function subscribe(onChange: () => void) {
@@ -11,11 +10,28 @@ function subscribe(onChange: () => void) {
     attributes: true,
     attributeFilter: ["data-theme"],
   });
-  return () => observer.disconnect();
+
+  // 아직 직접 고르지 않았다면 시스템 설정을 따라가므로, 그 변화도 봅니다.
+  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  media.addEventListener("change", onChange);
+
+  return () => {
+    observer.disconnect();
+    media.removeEventListener("change", onChange);
+  };
 }
 
+/**
+ * 지금 화면에 적용된 테마.
+ * data-theme 이 없으면 아직 직접 고르지 않은 것이라 시스템 설정을 따릅니다.
+ * CSS 의 prefers-color-scheme 블록과 같은 기준이어야 아이콘이 화면과 어긋나지 않습니다.
+ */
 function readTheme(): Theme {
-  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+  const set = document.documentElement.dataset.theme;
+  if (set === "dark" || set === "light") return set;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
 }
 
 export default function ThemeToggle() {
@@ -28,12 +44,12 @@ export default function ThemeToggle() {
 
   function toggle() {
     const next: Theme = theme === "dark" ? "light" : "dark";
+
+    // 이번 화면에는 즉시 반영하고,
     document.documentElement.dataset.theme = next;
-    try {
-      localStorage.setItem("theme", next);
-    } catch {
-      /* 저장이 막혀 있어도 이번 방문에는 적용됩니다 */
-    }
+
+    // 다음 방문에는 서버가 첫 페인트부터 심어주도록 쿠키에 남깁니다.
+    document.cookie = `${THEME_COOKIE}=${next}; path=/; max-age=${THEME_MAX_AGE}; samesite=lax`;
   }
 
   const isDark = theme === "dark";

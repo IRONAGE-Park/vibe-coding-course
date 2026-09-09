@@ -1,9 +1,10 @@
 /** 브라우저 쪽 진행 상황 저장 — 클라이언트 컴포넌트에서만 사용합니다 */
 
 const VID = "vcc.vid";
-const TEAM = "vcc.team";
+const NAME = "vcc.name";
 const ASKED = "vcc.asked";
 const DONE = "vcc.done";
+const SESSION = "vcc.session";
 
 const CHANGED = "vcc:changed";
 
@@ -27,6 +28,45 @@ function notify() {
   window.dispatchEvent(new Event(CHANGED));
 }
 
+/* ── 강의 회차 ──────────────────────────────────────────── */
+
+/**
+ * 강사가 새 회차를 열면 참가자 화면도 새로 시작해야 합니다.
+ * 저장해 둔 회차와 지금 열린 회차가 다르면 이름과 완료 기록을 비웁니다.
+ * 처음 방문(저장된 회차 없음)은 초기화할 것이 없으므로 그대로 둡니다.
+ * @returns 초기화가 일어났으면 true
+ */
+export function syncSession(activeId: string | null): boolean {
+  if (!activeId) return false;
+
+  const known = safeGet(SESSION);
+  if (known === activeId) return false;
+
+  safeSet(SESSION, activeId);
+  if (!known) return false;
+
+  try {
+    localStorage.removeItem(DONE);
+    localStorage.removeItem(NAME);
+    localStorage.removeItem(ASKED);
+  } catch {
+    /* 저장이 막힌 환경 */
+  }
+  notify();
+  return true;
+}
+
+/** 지금 열려 있는 회차를 서버에 물어봅니다 */
+export async function fetchActiveSession(): Promise<string | null> {
+  try {
+    const res = await fetch("/api/session", { cache: "no-store" });
+    const data = await res.json();
+    return typeof data?.id === "string" ? data.id : null;
+  } catch {
+    return null;
+  }
+}
+
 /* ── React 외부 저장소 구독 ─────────────────────────────── */
 
 /** useSyncExternalStore 용 구독. 같은 탭의 변경과 다른 탭의 변경을 모두 받습니다. */
@@ -46,7 +86,7 @@ export function doneSnapshot(): string {
 
 export const doneServerSnapshot = () => "";
 
-/** 팀 이름을 물어봤는지 여부 */
+/** 이름을 물어봤는지 여부 */
 export function askedSnapshot(): string {
   return safeGet(ASKED) ?? "";
 }
@@ -88,13 +128,13 @@ export function getVisitorId(): string {
   return id;
 }
 
-export function getTeam(): string {
-  return safeGet(TEAM) ?? "";
+export function getName(): string {
+  return safeGet(NAME) ?? "";
 }
 
-/** 팀 이름 저장. 빈 문자열이면 "건너뛰기"로 기록합니다. */
-export function saveTeam(name: string) {
-  if (name) safeSet(TEAM, name);
+/** 참가자 이름 저장. 빈 문자열이면 "건너뛰기"로 기록합니다. */
+export function saveName(name: string) {
+  if (name) safeSet(NAME, name);
   safeSet(ASKED, "1");
   notify();
 }
@@ -118,17 +158,20 @@ type TrackEvent = "visit" | "complete" | "uncomplete";
 /** 집계 전송 — 실패해도 사용자 화면에는 영향을 주지 않습니다 */
 export async function track(event: TrackEvent, stepId?: string) {
   try {
-    await fetch("/api/track", {
+    const res = await fetch("/api/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         visitorId: getVisitorId(),
-        team: getTeam(),
+        name: getName(),
         event,
         stepId,
       }),
       keepalive: true,
     });
+    // 응답에 실린 회차가 내가 알던 것과 다르면 여기서도 맞춰둡니다.
+    const data = await res.json().catch(() => null);
+    if (data && typeof data.sessionId === "string") syncSession(data.sessionId);
   } catch {
     /* 오프라인이거나 저장소 미연결 */
   }

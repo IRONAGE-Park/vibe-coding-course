@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
+import { THEME_COOKIE } from "./lib/theme";
 import { Noto_Sans_KR, Fragment_Mono } from "next/font/google";
 import "./globals.css";
-import TeamGate from "./components/TeamGate";
+import NameGate from "./components/NameGate";
 
 const notoSansKr = Noto_Sans_KR({
   variable: "--font-noto-sans-kr",
@@ -28,29 +30,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  // 테마를 쿠키에서 읽어 서버에서 바로 심습니다.
+  // 인라인 <script> 로 심으면 React 가 "클라이언트 렌더에서는 실행되지 않는다"고 경고하고,
+  // next/script 도 결국 같은 <script> 태그를 렌더링해서 경고가 그대로 납니다.
+  // 쿠키가 없으면 data-theme 을 붙이지 않고, 시스템 설정은 globals.css 의
+  // prefers-color-scheme 블록이 처리합니다. 그래서 첫 페인트부터 깜빡임이 없습니다.
+  const stored = (await cookies()).get(THEME_COOKIE)?.value;
+  const theme = stored === "dark" || stored === "light" ? stored : undefined;
   return (
     <html
       lang="ko"
-      // 아래 인라인 스크립트가 하이드레이션 전에 data-theme을 심습니다
-      suppressHydrationWarning
+      data-theme={theme}
       data-scroll-behavior="smooth"
       className={`${notoSansKr.variable} ${fragmentMono.variable} h-full antialiased scroll-smooth`}
     >
       <body className="s2 min-h-full flex flex-col font-sans">
-        {/* 첫 페인트 전에 테마를 결정해 화면 깜빡임을 막습니다 */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme="light"}})()`,
-          }}
-        />
         <link
           rel="stylesheet"
           precedence="default"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
         {children}
-        <TeamGate />
+        <NameGate />
       </body>
     </html>
   );
