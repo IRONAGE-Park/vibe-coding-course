@@ -16,7 +16,7 @@ const fragmentMono = Fragment_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "바이브코딩과 함께 살아남기 | 경상대학교 X (주)인바이즈",
+  title: "바이브코딩과 함께 살아남기 | (주)인바이즈",
   description:
     "환경 설정부터 첫 배포, 업데이트 배포까지 — 화면 캡처를 따라 하나씩 진행하는 바이브 코딩 실습 가이드.",
   openGraph: {

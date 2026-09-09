@@ -405,7 +405,7 @@ export function SiteFooter() {
           바이브코딩과 함께 살아남기
         </span>
         <span className="font-mono text-[11.5px] text-[var(--s2-footer)]">
-          경상대학교 X (주)인바이즈
+          (주)인바이즈
         </span>
       </div>
     </footer>

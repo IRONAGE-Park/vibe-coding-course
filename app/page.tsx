@@ -43,7 +43,7 @@ export default function Home() {
       {/* ── 커버 ───────────────────────────────────────── */}
       <section className="relative overflow-hidden">
         <div className="mx-auto max-w-5xl px-5 pb-16 pt-16 md:px-8 md:pb-20 md:pt-24">
-          <Pill>경상대학교 X (주)인바이즈</Pill>
+          <Pill>(주)인바이즈</Pill>
           <h1 className="mt-7 text-[38px] font-black leading-[1.2] tracking-[-0.03em] md:text-[64px]">
             <span className="inline-block -rotate-1.5 rounded-[10px] bg-[var(--s2-blue)] px-4 pb-1.5 text-white md:px-6 md:pb-2">
               바이브코딩
