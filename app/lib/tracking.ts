@@ -104,6 +104,13 @@ export function resetSnapshot(): string {
 
 export const resetServerSnapshot = () => "";
 
+/** 내가 적어둔 이름 */
+export function nameSnapshot(): string {
+  return safeGet(NAME) ?? "";
+}
+
+export const nameServerSnapshot = () => "";
+
 export function parseDone(raw: string): Set<string> {
   if (!raw) return new Set();
   try {

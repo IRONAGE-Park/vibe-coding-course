@@ -405,10 +405,6 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
               ))}
             </div>
           )}
-          <p className="mt-2 text-[12px] leading-[1.6] text-[var(--s2-faint)]">
-            사람이 아니라 브라우저 단위입니다. 한 사람이 폰과 노트북을 같이 쓰면
-            두 줄로 보입니다.
-          </p>
         </Section>
       )}
 
@@ -456,9 +452,8 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
               >
                 강의 종료하기
               </button>
-              <p className="mt-2 text-[12.5px] leading-[1.6] text-[var(--s2-body)]">
-                종료하면 기록은 그대로 남고, 참가자 화면은 비밀번호 없이 읽을 수
-                있는 안내서로 돌아갑니다. 완료 버튼도 사라집니다.
+              <p className="mt-2 text-[12.5px] text-[var(--s2-body)]">
+                기록은 남고, 참가자 화면은 안내서로 돌아갑니다.
               </p>
             </>
           ) : (
@@ -470,9 +465,8 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
               >
                 강의 시작하기
               </button>
-              <p className="mt-2 text-[12.5px] leading-[1.6] text-[var(--s2-body)]">
-                이름과 참가자용 비밀번호를 정하면 강의가 열립니다. 그때부터
-                참가자는 비밀번호를 넣고 들어와 진행을 남길 수 있습니다.
+              <p className="mt-2 text-[12.5px] text-[var(--s2-body)]">
+                이름과 참가자용 비밀번호를 정합니다.
               </p>
             </>
           )}

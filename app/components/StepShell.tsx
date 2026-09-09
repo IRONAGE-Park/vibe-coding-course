@@ -26,7 +26,7 @@ import { useTracking } from "./Participation";
  * - 지금 할 단계만 펼쳐져 눈에 들어오고,
  * - 아직 차례가 아닌 단계는 완료 버튼을 잠급니다.
  *
- * 접힌 단계도 "펼쳐 보기" 로 언제든 읽을 수 있습니다. 내용을 막지는 않습니다.
+ * 접힌 단계도 펼치면 언제든 읽을 수 있습니다. 내용을 막지는 않습니다.
  */
 export default function StepShell({
   stepId,
@@ -47,6 +47,7 @@ export default function StepShell({
 
   const [expanded, setExpanded] = useState(false);
   const open = state === "current" || expanded;
+  const info = stepInfo(stepId);
 
   function onComplete() {
     const next = toggleDone(stepId);
@@ -64,7 +65,6 @@ export default function StepShell({
         });
       }
     } else {
-      // 취소했으면 다시 펼쳐서 이어서 볼 수 있게 합니다.
       setExpanded(true);
     }
   }
@@ -80,98 +80,86 @@ export default function StepShell({
       data-step-state={state}
       className={`scroll-mt-20 rounded-[24px] border p-6 transition-all md:p-9 ${tone}`}
     >
-      <div className={state === "current" ? "" : "opacity-55"}>{header}</div>
+      {/* 접기·펼치기는 상태와 상관없이 늘 같은 자리(머리말 오른쪽)에 둡니다 */}
+      <div className="flex items-start gap-4">
+        <div
+          className={`min-w-0 flex-1 ${state === "current" ? "" : "opacity-55"}`}
+        >
+          {header}
+        </div>
+        {state !== "current" && (
+          <Toggle open={open} onClick={() => setExpanded(!open)} />
+        )}
+      </div>
 
-      {open ? (
-        <div className={`mt-4 flex flex-col gap-5 ${state === "current" ? "" : "opacity-75"}`}>
+      {open && (
+        <div
+          className={`mt-4 flex flex-col gap-5 ${
+            state === "current" ? "" : "opacity-75"
+          }`}
+        >
           {children}
         </div>
-      ) : (
-        <button
-          type="button"
-          onClick={() => setExpanded(true)}
-          className="mt-3 text-[13px] font-semibold text-[var(--s2-faint)] hover:text-[var(--s2-blue)]"
-        >
-          펼쳐 보기
-        </button>
       )}
 
       {tracking && (
-        <Footer
-          state={state}
-          stepId={stepId}
-          open={open}
-          onComplete={onComplete}
-          onCollapse={() => setExpanded(false)}
-        />
+        <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-dashed border-[var(--s2-line)] pt-5">
+          {state === "locked" ? (
+            <span className="rounded-full bg-[var(--s2-tint)] px-4 py-2.5 text-[13.5px] font-bold text-[var(--s2-faint)] ring-1 ring-[var(--s2-line)]">
+              앞 단계를 먼저 끝내주세요
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={onComplete}
+              aria-pressed={state === "done"}
+              className={`rounded-full px-5 py-2.5 text-[14px] font-bold transition-all ${
+                state === "done"
+                  ? "bg-[var(--s2-good-bg)] text-[var(--s2-good-ink)] ring-1 ring-[var(--s2-good-line)]"
+                  : "bg-[var(--s2-blue)] text-[var(--s2-on-blue)] hover:-translate-y-0.5"
+              }`}
+            >
+              {state === "done" ? "완료했어요 ✓" : "완료했어요!"}
+            </button>
+          )}
+
+          {info && (
+            <span className="font-mono ml-auto text-[11.5px] text-[var(--s2-faint)]">
+              {info.order + 1} / {TOTAL_STEPS}
+            </span>
+          )}
+        </div>
       )}
     </section>
   );
 }
 
-function Footer({
-  state,
-  stepId,
-  open,
-  onComplete,
-  onCollapse,
-}: {
-  state: "done" | "current" | "locked";
-  stepId: string;
-  open: boolean;
-  onComplete: () => void;
-  onCollapse: () => void;
-}) {
-  const info = stepInfo(stepId);
-
+/** 펼치기·접기 — 자리는 그대로 두고 화살표만 뒤집힙니다 */
+function Toggle({ open, onClick }: { open: boolean; onClick: () => void }) {
   return (
-    <div className="mt-5 flex flex-wrap items-center gap-3 border-t border-dashed border-[var(--s2-line)] pt-5">
-      {state === "locked" ? (
-        <>
-          <span className="rounded-full bg-[var(--s2-tint)] px-4 py-2.5 text-[13.5px] font-bold text-[var(--s2-faint)] ring-1 ring-[var(--s2-line)]">
-            앞 단계를 먼저 끝내주세요
-          </span>
-          <span className="text-[12.5px] text-[var(--s2-faint)]">
-            순서대로 해야 막히지 않습니다
-          </span>
-        </>
-      ) : (
-        <button
-          type="button"
-          onClick={onComplete}
-          aria-pressed={state === "done"}
-          className={`rounded-full px-5 py-2.5 text-[14px] font-bold transition-all ${
-            state === "done"
-              ? "bg-[var(--s2-good-bg)] text-[var(--s2-good-ink)] ring-1 ring-[var(--s2-good-line)]"
-              : "bg-[var(--s2-blue)] text-[var(--s2-on-blue)] hover:-translate-y-0.5"
-          }`}
-        >
-          {state === "done" ? "완료했어요 ✓" : "완료했어요!"}
-        </button>
-      )}
-
-      {state === "done" && (
-        <span className="text-[12.5px] text-[var(--s2-faint)]">
-          다시 누르면 취소돼요
-        </span>
-      )}
-
-      <span className="ml-auto flex items-center gap-3">
-        {state !== "current" && open && (
-          <button
-            type="button"
-            onClick={onCollapse}
-            className="text-[12.5px] font-semibold text-[var(--s2-faint)] hover:text-[var(--s2-blue)]"
-          >
-            접기
-          </button>
-        )}
-        {info && (
-          <span className="font-mono text-[11.5px] text-[var(--s2-faint)]">
-            {info.order + 1} / {TOTAL_STEPS}
-          </span>
-        )}
-      </span>
-    </div>
+    <button
+      type="button"
+      onClick={onClick}
+      aria-expanded={open}
+      className="mt-0.5 flex shrink-0 items-center gap-1.5 rounded-full border border-[var(--s2-line)] bg-[var(--s2-card)] py-1.5 pl-3.5 pr-3 text-[12.5px] font-bold text-[var(--s2-gray)] transition-colors hover:border-[var(--s2-blue)] hover:text-[var(--s2-blue)]"
+    >
+      {open ? "접기" : "펼쳐 보기"}
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 12 12"
+        fill="none"
+        aria-hidden="true"
+        className={`transition-transform ${open ? "rotate-180" : ""}`}
+      >
+        <path
+          d="M2.5 4.5 6 8l3.5-3.5"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </button>
   );
 }

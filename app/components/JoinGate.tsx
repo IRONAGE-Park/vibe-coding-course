@@ -111,7 +111,7 @@ function PasswordStep({
         {sessionName ?? "강의"}에 들어가기
       </h2>
       <p className="mt-2 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
-        강사가 알려준 비밀번호를 넣어주세요. 진행 상황을 기록하려면 필요합니다.
+        강사가 알려준 비밀번호를 넣어주세요.
       </p>
 
       <form onSubmit={submit} className="mt-5">
@@ -160,8 +160,8 @@ function NameStep({ reset }: { reset: boolean }) {
       </h2>
       <p className="mt-2 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
         {reset
-          ? "새 강의가 시작되어 진행 상황을 새로 시작합니다. 이름을 다시 알려주세요."
-          : "진행 상황을 표시하는 데에만 씁니다. 막히는 분을 강사가 빨리 찾아갈 수 있어요."}
+          ? "새 강의가 시작되어 처음부터 다시 시작합니다."
+          : "진행 상황을 표시하는 데에만 씁니다."}
       </p>
 
       <form
