@@ -3,7 +3,13 @@ import "server-only";
 import { getDb, startOfTodayKST, TABLES } from "@/app/lib/db";
 import { getRunningSession } from "@/app/lib/participation";
 import { TOTAL_STEPS, currentStepId } from "@/app/lib/steps";
+import {
+  FEEDBACK_COLUMNS,
+  toFeedbackRow,
+  type FeedbackDbRow,
+} from "@/app/lib/feedback";
 import type {
+  FeedbackRow,
   Stats,
   SessionRow,
   StepTime,
@@ -27,6 +33,7 @@ const EMPTY: Omit<Stats, "updatedAt"> = {
   stepCounts: {},
   visitors: [],
   ...NO_TIMING,
+  feedback: [],
 };
 
 /**
@@ -80,7 +87,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
 
     const current = rows.find((s) => s.id === target) ?? null;
 
-    const [today, steps, people, timing] = await Promise.all([
+    const [today, steps, people, timing, feedback] = await Promise.all([
       db
         .from(TABLES.visitors)
         .select("visitor_id", { count: "exact", head: true })
@@ -97,6 +104,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
         .order("done", { ascending: true })
         .order("first_seen", { ascending: true }),
       getTiming(db, target),
+      getFeedback(db, target),
     ]);
 
     const firstError = today.error ?? steps.error ?? people.error;
@@ -148,6 +156,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
       stepCounts,
       visitors,
       ...timing,
+      feedback,
       updatedAt: Date.now(),
     };
   } catch {
@@ -222,5 +231,24 @@ async function getTiming(db: Db, sessionId: string): Promise<Timing> {
     };
   } catch {
     return NO_TIMING;
+  }
+}
+
+/**
+ * 참가자가 보낸 문의 · 개선 제안. 새것이 위로 옵니다.
+ * supabase/feedback.sql 을 아직 실행하지 않았으면 빈 목록입니다.
+ */
+async function getFeedback(db: Db, sessionId: string): Promise<FeedbackRow[]> {
+  try {
+    const { data, error } = await db
+      .from(TABLES.feedback)
+      .select(FEEDBACK_COLUMNS)
+      .eq("session_id", sessionId)
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) return [];
+    return ((data ?? []) as unknown as FeedbackDbRow[]).map(toFeedbackRow);
+  } catch {
+    return [];
   }
 }

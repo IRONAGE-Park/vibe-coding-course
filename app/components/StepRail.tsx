@@ -10,6 +10,7 @@ import {
   nameServerSnapshot,
 } from "@/app/lib/tracking";
 import { currentStepId, stepInfo, TOTAL_STEPS } from "@/app/lib/steps";
+import { setViewing } from "@/app/lib/viewing";
 import { useParticipation, useTracking } from "./Participation";
 
 export type RailItem = { id: string; num: string; label: string };
@@ -33,6 +34,13 @@ export default function StepRail({ items }: { items: RailItem[] }) {
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
   }, [items]);
+
+  // 문의 창이 "지금 보고 있는 곳" 을 알 수 있게 올려둡니다.
+  // 레일은 좁은 화면에서 숨겨지지만 계산은 계속되므로 휴대폰에서도 같은 값을 씁니다.
+  useEffect(() => {
+    setViewing(items.find((i) => i.id === active) ?? null);
+  }, [active, items]);
+  useEffect(() => () => setViewing(null), []);
 
   return (
     <nav

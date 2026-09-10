@@ -3,7 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { CHAPTERS, TOTAL_STEPS, stepLabel } from "@/app/lib/steps";
+import {
+  CHAPTERS,
+  TOTAL_STEPS,
+  pageLabel,
+  pageOrder,
+  stepLabel,
+} from "@/app/lib/steps";
+import { FEEDBACK_KINDS } from "@/app/lib/feedback";
 import type { ChapterNotes } from "@/app/lib/lecture-notes";
 import type { Stats, VisitorRow } from "@/app/lib/stats-types";
 
@@ -176,7 +183,7 @@ function NotesView({ notes }: { notes: ChapterNotes[] }) {
   );
 }
 
-type Tab = "people" | "steps" | "time" | "notes" | "sessions";
+type Tab = "people" | "inbox" | "steps" | "time" | "notes" | "sessions";
 
 function Dashboard({
   initialStats,
@@ -349,8 +356,23 @@ function Dashboard({
     }
   }
 
+  async function resolveFeedback(id: number, resolved: boolean) {
+    if (
+      await call("/api/admin/feedback", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, resolved }),
+      })
+    ) {
+      await refresh();
+    }
+  }
+
   const viewed = stats.sessions.find((s) => s.id === stats.session?.id);
   const isViewingRunning = viewed?.isRunning ?? false;
+
+  const unresolved = stats.feedback.filter((f) => !f.resolvedAt).length;
+  const names = new Map(stats.visitors.map((v) => [v.id, v.name]));
 
   const pages = [...stats.pageTimes].sort(
     (a, b) => pageOrder(a.path) - pageOrder(b.path)
@@ -409,10 +431,12 @@ function Dashboard({
       </div>
 
       {/* ── 탭 ────────────────────────────────────────── */}
-      <div className="mt-6 flex gap-1.5">
+      {/* 탭이 여섯 개라 좁은 화면에서는 두 줄로 나눕니다 */}
+      <div className="mt-6 grid grid-cols-3 gap-1.5 sm:flex">
         {(
           [
             ["people", `참가자 ${stats.totalVisitors}`],
+            ["inbox", unresolved > 0 ? `문의 ${unresolved}` : "문의"],
             ["steps", "단계별"],
             ["time", "시간"],
             ["notes", "강사 노트"],
@@ -495,6 +519,70 @@ function Dashboard({
                   <Bar value={v.done} max={stats.totalSteps} />
                 </div>
               ))}
+            </div>
+          )}
+        </Section>
+      )}
+
+      {tab === "inbox" && (
+        <Section title="문의 · 개선 제안" note="새것이 위에 옵니다">
+          {stats.feedback.length === 0 ? (
+            <Empty>아직 받은 문의가 없습니다.</Empty>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {stats.feedback.map((f) => {
+                const resolved = f.resolvedAt !== null;
+                return (
+                  <div
+                    key={f.id}
+                    className={`overflow-hidden rounded-[16px] border p-4 ${
+                      resolved
+                        ? "border-[var(--s2-divider)] bg-[var(--s2-tint)] opacity-70"
+                        : "border-[var(--s2-line)] bg-[var(--s2-card)]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                          f.kind === "question"
+                            ? "bg-[var(--s2-info-bg)] text-[var(--s2-blue)]"
+                            : "bg-[var(--s2-warn-bg)] text-[var(--s2-warn-ink)]"
+                        }`}
+                      >
+                        {FEEDBACK_KINDS[f.kind]}
+                      </span>
+                      <p className="min-w-0 flex-1 truncate text-[14.5px] font-extrabold">
+                        {names.get(f.visitorId) ?? "이름 안 밝힘"}
+                      </p>
+                      <span className="font-mono shrink-0 text-[11px] text-[var(--s2-faint)]">
+                        {when(f.createdAt)}
+                      </span>
+                    </div>
+
+                    {/* 보낼 때 보고 있던 곳. 강사가 바로 그 단계로 찾아갈 수 있게 합니다 */}
+                    <p className="mt-1.5 text-[12px] leading-[1.5] text-[var(--s2-faint)]">
+                      {f.context}
+                    </p>
+                    <p className="mt-2 whitespace-pre-wrap break-words text-[14px] leading-[1.6] text-[var(--s2-strong)]">
+                      {f.body}
+                    </p>
+
+                    <div className="mt-3 flex justify-end">
+                      <button
+                        onClick={() => resolveFeedback(f.id, !resolved)}
+                        disabled={busy}
+                        className={`rounded-full px-3 py-1 text-[12px] font-semibold disabled:opacity-40 ${
+                          resolved
+                            ? "border border-[var(--s2-line)] text-[var(--s2-gray)]"
+                            : "bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
+                        }`}
+                      >
+                        {resolved ? "확인 취소" : "확인했어요"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </Section>
@@ -710,22 +798,6 @@ function Dashboard({
 }
 
 /* ── 조각들 ─────────────────────────────────────────────── */
-
-/** 참가자 화면의 페이지 순서 — 홈, 각 장, 막혔을 때 */
-const PAGES = [
-  { href: "/", label: "홈" },
-  ...CHAPTERS.map((c) => ({ href: c.href, label: `${c.num} ${c.label}` })),
-  { href: "/help", label: "막혔을 때" },
-];
-
-function pageOrder(path: string): number {
-  const i = PAGES.findIndex((p) => p.href === path);
-  return i < 0 ? PAGES.length : i;
-}
-
-function pageLabel(path: string): string {
-  return PAGES.find((p) => p.href === path)?.label ?? path;
-}
 
 /** 걸린 시간 표시 — 45초 · 4분 · 1시간 5분 */
 function duration(ms: number): string {

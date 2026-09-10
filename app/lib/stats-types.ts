@@ -43,6 +43,24 @@ export type StepTime = {
   medianS: number;
 };
 
+export type FeedbackKind = "question" | "idea";
+
+/** 참가자가 오른쪽 아래 버튼으로 보낸 문의 · 개선 제안 */
+export type FeedbackRow = {
+  id: number;
+  visitorId: string;
+  kind: FeedbackKind;
+  body: string;
+  path: string;
+  /** 보낼 때 보고 있던 영역의 id ("setup-3"). 레일이 없는 페이지면 null */
+  sectionId: string | null;
+  /** 보낼 때 보고 있던 곳 — "01 환경 설정 · 3. GitHub 가입" */
+  context: string;
+  createdAt: string;
+  /** 강사가 확인한 때. 아직이면 null */
+  resolvedAt: string | null;
+};
+
 export type Stats = {
   connected: boolean;
   /** 지금 진행 중인 강의가 있는지 */
@@ -59,5 +77,7 @@ export type Stats = {
   pageTimes: PageTime[];
   nextClicks: NextClick[];
   stepTimes: Record<string, StepTime>;
+  /** 새것이 먼저 */
+  feedback: FeedbackRow[];
   updatedAt: number;
 };

@@ -5,7 +5,8 @@
 --   처음 설치할 때 한 번만 실행하세요.
 --   강의 기록이 쌓인 뒤에는 다시 실행하면 안 됩니다.
 --   기록을 지우고 싶을 때는 관리자 화면의 "새 회차" 나 "회차 삭제" 를 쓰세요.
---   이미 설치한 뒤 머문 시간 기록만 더하려면 events.sql 만 실행하세요.
+--   이미 설치한 뒤 머문 시간 기록만 더하려면 events.sql 만,
+--   문의 기능만 더하려면 feedback.sql 만 실행하세요.
 
 drop view  if exists public.page_time_stats  cascade;
 drop view  if exists public.next_click_stats cascade;
@@ -14,6 +15,7 @@ drop view  if exists public.visitor_progress cascade;
 drop view  if exists public.step_counts      cascade;
 drop view  if exists public.team_members     cascade;
 drop view  if exists public.team_steps       cascade;
+drop table if exists public.feedback         cascade;
 drop table if exists public.events           cascade;
 drop table if exists public.completions      cascade;
 drop table if exists public.visitors         cascade;
@@ -211,3 +213,27 @@ create view public.step_time_stats
 revoke all on public.page_time_stats  from anon, authenticated;
 revoke all on public.next_click_stats from anon, authenticated;
 revoke all on public.step_time_stats  from anon, authenticated;
+
+-- ── 문의 · 개선 제안 ──────────────────────────────────────
+-- 내용은 feedback.sql 과 같습니다. 처음 설치할 때는 여기서 함께 만들어집니다.
+
+create table public.feedback (
+  id           bigint generated always as identity primary key,
+  visitor_id   text not null,
+  session_id   uuid not null,
+  kind         text not null check (kind in ('question', 'idea')),
+  body         text not null check (char_length(body) between 1 and 1000),
+  path         text not null,
+  section_id   text,
+  context      text not null,
+  created_at   timestamptz not null default now(),
+  resolved_at  timestamptz,
+  foreign key (visitor_id, session_id)
+    references public.visitors (visitor_id, session_id) on delete cascade
+);
+
+create index feedback_session_created_idx
+  on public.feedback (session_id, created_at desc);
+
+alter table public.feedback enable row level security;
+revoke all on public.feedback from anon, authenticated;

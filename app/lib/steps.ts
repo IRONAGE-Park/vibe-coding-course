@@ -158,3 +158,22 @@ export function nextStepId(id: string): string | null {
   const i = STEP_IDS.indexOf(id);
   return i >= 0 && i + 1 < STEP_IDS.length ? STEP_IDS[i + 1] : null;
 }
+
+/* ── 페이지 ─────────────────────────────────────────────── */
+
+/** 참가자 화면의 페이지 순서 — 홈, 각 장, 막혔을 때 */
+export const PAGES: { href: string; label: string }[] = [
+  { href: "/", label: "홈" },
+  ...CHAPTERS.map((c) => ({ href: c.href, label: `${c.num} ${c.label}` })),
+  { href: "/help", label: "막혔을 때" },
+];
+
+export function pageOrder(path: string): number {
+  const i = PAGES.findIndex((p) => p.href === path);
+  return i < 0 ? PAGES.length : i;
+}
+
+/** "01 환경 설정" 같은 페이지 이름. 모르는 주소면 주소를 그대로 돌려줍니다. */
+export function pageLabel(path: string): string {
+  return PAGES.find((p) => p.href === path)?.label ?? path;
+}
