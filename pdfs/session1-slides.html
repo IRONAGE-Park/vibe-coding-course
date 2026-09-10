@@ -127,16 +127,38 @@
   .iconcloud .chipc img { width: 46%; }
   .iconcloud .chipc.soft { background: #f4f8ff; border-color: #d7e6ff; }
 
-  /* 비유 그래픽 (전기 ≠ 수도) */
-  .analogy { display: flex; align-items: center; justify-content: center; gap: 54px; padding-top: 26px; }
-  .analogy .abox { text-align: center; width: 300px; }
-  .analogy .acircle { width: 200px; height: 200px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
-  .analogy .acircle img { width: 88px; }
-  .analogy .acircle.ok { background: var(--blue-soft); }
-  .analogy .acircle.nope { background: #f3f4f6; }
-  .analogy .alabel { margin-top: 22px; font-size: 21px; font-weight: 800; }
-  .analogy .asub { font-size: 16px; color: var(--gray); margin-top: 6px; line-height: 1.5; }
-  .analogy .neq { font-family: "Fragment Mono", monospace; font-size: 64px; color: #c3c8d1; }
+  /* 비유 사진: 가진 도구(전기 공구) → 하려는 일(수도꼭지) + 안 맞는 이유(한계 · 수지타산) */
+  .analogy { display: flex; align-items: flex-start; }
+  .analogy .abox { width: 270px; flex-shrink: 0; }
+  .analogy .aph { position: relative; height: 220px; border-radius: 16px; overflow: hidden; }
+  .analogy .aph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .analogy .atag { position: absolute; left: 12px; top: 12px; font-size: 13.5px; font-weight: 800; color: var(--ink); background: #fff; border-radius: 999px; padding: 6px 13px; box-shadow: 0 2px 8px rgba(17,24,39,.15); }
+  .analogy .alabel { margin-top: 14px; font-size: 21px; font-weight: 800; }
+  .analogy .asub { font-size: 14.5px; color: var(--gray); margin-top: 4px; }
+  .analogy .ato { width: 76px; flex-shrink: 0; text-align: center; padding-top: 82px; }
+  .analogy .ato b { display: block; font-size: 30px; font-weight: 400; color: #c3c8d1; line-height: 1; }
+  .analogy .ato span { display: block; font-family: "Fragment Mono", monospace; font-size: 12px; color: var(--gray); margin-top: 8px; }
+  .analogy .why { flex: 1; margin-left: 36px; display: flex; flex-direction: column; gap: 12px; }
+  .analogy .why > div { border: 1px solid var(--line); border-radius: 16px; padding: 14px 24px; background: #fff; }
+  .analogy .why .tag { display: inline-block; font-size: 14px; font-weight: 800; color: var(--blue); background: var(--blue-soft); border-radius: 999px; padding: 4px 12px; }
+  .analogy .why h4 { font-size: 20px; font-weight: 800; margin-top: 8px; }
+  .analogy .why p { font-size: 15.5px; line-height: 1.55; color: var(--body); margin-top: 6px; }
+
+  /* 11장 — 반복과 기억(컴퓨터) / 발견과 판단(사람): 8장 범례와 같은 색 — 컴퓨터 블루, 사람 잉크 */
+  .roles { display: flex; gap: 28px; }
+  .roles > div { flex: 1; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: #fff; }
+  .roles > div.pc { background: #f4f8ff; border-color: #d7e6ff; }
+  .roles .ph { position: relative; height: 150px; }
+  .roles .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .roles .in { padding: 18px 32px 22px; }
+  .roles .who { font-family: "Fragment Mono", monospace; font-size: 13px; color: var(--gray); }
+  .roles h3 { font-size: 34px; font-weight: 900; letter-spacing: -0.02em; margin-top: 2px; }
+  .roles .pc h3 { color: var(--blue); }
+  .roles ul { list-style: none; margin-top: 8px; }
+  .roles li { font-size: 16.5px; line-height: 1.5; color: var(--body); padding: 5px 0 5px 22px; position: relative; }
+  .roles li::before { content: ""; position: absolute; left: 4px; top: 14px; width: 7px; height: 7px; border-radius: 50%; background: var(--blue); }
+  .roles .me li::before { background: var(--ink); }
+  .cr { position: absolute; right: 10px; bottom: 8px; font-family: "Fragment Mono", monospace; font-size: 10.5px; color: rgba(255,255,255,.9); text-shadow: 0 1px 3px rgba(0,0,0,.6); }
 
   .proc .loop {
     font-family: "Fragment Mono", monospace; font-size: 16px; font-weight: 700;
@@ -425,12 +447,12 @@
     <h2>코딩하는 사람은 <span class="blue">계속 넓어져</span> 왔습니다</h2>
   </div>
   <div class="body">
-    <p class="verdict">진입장벽은 AI 전에도 <b>60년 동안</b> 낮아지고 있었습니다.</p>
+    <p class="verdict">진입장벽은 AI 전에도 <b>60년 넘게</b> 낮아지고 있었습니다.</p>
     <div class="grow">
       <div class="gh"><span></span><span>코딩할 수 있는 사람의 폭</span><span>무엇이 문턱을 낮췄나</span></div>
-      <div class="gr" style="--w:22%;--c:#e6f0ff"><span class="y">1957</span><div class="track"><b>전공자만</b></div><p><em>FORTRAN</em> — 과학자가 기계에 맞춰 적던 시대</p></div>
-      <div class="gr" style="--w:38%;--c:#cfe1fd"><span class="y">1964</span><div class="track"><b>학생도</b></div><p><em>BASIC</em> — 대학생이 처음 배우도록 만든 언어</p></div>
-      <div class="gr" style="--w:56%;--c:#a9c9fb"><span class="y">1991</span><div class="track"><b>혼자서도</b></div><p><em>Python</em> — 읽기 쉬운 문법, 독학하는 사람이 늘다</p></div>
+      <div class="gr" style="--w:22%;--c:#e6f0ff"><span class="y">1957</span><div class="track"><b>전공자만</b></div><p><em>FORTRAN</em> — 수식을 적는 언어, 쓰는 사람은 과학자뿐</p></div>
+      <div class="gr" style="--w:38%;--c:#cfe1fd"><span class="y">1964</span><div class="track"><b>학생도</b></div><p><em>BASIC</em> — 전공이 아닌 대학생도 배우도록 만든 언어</p></div>
+      <div class="gr" style="--w:56%;--c:#a9c9fb"><span class="y">1977</span><div class="track"><b>집에서 혼자서도</b></div><p><em>Apple II</em> — BASIC이 들어 있는 컴퓨터가 집으로</p></div>
       <div class="gr" style="--w:76%;--c:#79aaf8"><span class="y">2008</span><div class="track"><b>물어보면 누구나</b></div><p><em>Stack Overflow</em> — 막히면 검색해서 푸는 시대</p></div>
       <div class="gr now" style="--w:100%;--c:#3182f6"><span class="y">2021</span><div class="track"><b>AI가 옆에서</b></div><p><em>GitHub Copilot</em> — 다음 줄을 AI가 먼저 적어준다</p></div>
     </div>
@@ -482,22 +504,35 @@
     <span class="pill"><span class="dot"></span>02 — 도구를 보는 안목</span>
     <h2>컴퓨터는 무얼 할 수 있는가</h2>
   </div>
-  <div class="body" style="top:190px">
+  <div class="body">
+    <p class="verdict">전기 배선을 할 줄 안다고, 수도꼭지 설치를 <b>반드시</b> 할 수 있는 것은 아닙니다.</p>
     <div class="analogy">
       <div class="abox">
-        <div class="acircle ok"><img src="assets/ic-plug.svg" alt="전기 배선"></div>
-        <p class="alabel">전기 배선</p>
-        <p class="asub">할 줄 아는 일</p>
+        <div class="aph"><img src="assets/analogy-tools.jpg" alt="절연 드라이버, 피복 탈피기, 압착기, 전압 테스터 같은 전기 배선 공구" style="object-position:center 62%"><span class="atag">가진 도구</span><span class="cr">Dmitry G · CC BY-SA 3.0</span></div>
+        <p class="alabel">전기 배선 공구</p>
+        <p class="asub">피복 벗기기 · 압착 · 전압 확인</p>
       </div>
-      <span class="neq">&ne;</span>
+      <div class="ato"><b>→</b><span>이 공구로?</span></div>
       <div class="abox">
-        <div class="acircle nope"><img src="assets/ic-shower.svg" alt="수도꼭지 설치"></div>
-        <p class="alabel" style="color:var(--gray)">수도꼭지 설치</p>
-        <p class="asub">할 수 없는 일</p>
+        <div class="aph"><img src="assets/analogy-plumber.jpg" alt="세면대 아래 배관을 고치는 배관공"><span class="atag">하려는 일</span><span class="cr">ocean yamaha · CC BY 2.0</span></div>
+        <p class="alabel">수도꼭지 설치</p>
+        <p class="asub">배관 조이기 · 새는 물 막기</p>
+      </div>
+      <div class="why">
+        <div>
+          <span class="tag">한계</span>
+          <h4>공구가 맞지 않습니다</h4>
+          <p>전선을 벗기고 누르는 공구로는<br>배관을 조이고 새는 물을 막기 어렵습니다</p>
+        </div>
+        <div>
+          <span class="tag">수지타산</span>
+          <h4>억지로 하면 손해입니다</h4>
+          <p>맞는 공구를 사고 요령을 익히는 비용이<br>배관공을 한 번 부르는 비용보다 큽니다</p>
+        </div>
       </div>
     </div>
   </div>
-  <p class="fnote">전기 배선을 할 줄 안다고 수도꼭지를 설치할 수는 없다 —<br>도구가 아무리 좋아져도, 할 수 있는 것과 없는 것을 구분하는 <b>안목</b>은 사람의 몫입니다</p>
+  <p class="fnote">코딩도 도구입니다 — 할 수 있느냐보다 <b>이 도구로 푸는 게 맞느냐</b>를 먼저 가려내는 <b>안목</b>이 필요합니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
@@ -507,23 +542,31 @@
     <span class="pill"><span class="dot"></span>02 — 도구를 보는 안목</span>
     <h2>컴퓨터는 무얼 할 수 있는가</h2>
   </div>
-  <div class="body">
-    <div class="vs">
-      <div class="hi">
-        <h3><span class="tag">CAN — 반복과 기억</span>컴퓨터가 잘하는 일</h3>
-        <ul>
-          <li>버스 도착 데이터를 매일 같은 규칙으로 수집·정리</li>
-          <li>축제 후기 수천 건에서 특정 단어를 즉시 검색</li>
-          <li>조건이 맞는 순간, 24시간 언제든 알림</li>
-        </ul>
+  <div class="body" style="top:196px">
+    <div class="roles">
+      <div class="pc">
+        <div class="ph"><img src="assets/role-computer.jpg" alt="서버 랙"><span class="cr">Unsplash · CC0</span></div>
+        <div class="in">
+          <span class="who">컴퓨터의 몫</span>
+          <h3>반복과 기억</h3>
+          <ul>
+            <li>버스 도착 데이터를 매일 같은 규칙으로 수집·정리</li>
+            <li>축제 후기 수천 건에서 특정 단어를 즉시 검색</li>
+            <li>조건이 맞는 순간, 24시간 언제든 알림</li>
+          </ul>
+        </div>
       </div>
-      <div class="no">
-        <h3><span class="tag">CANNOT — 발견과 판단</span>컴퓨터가 못하는 일</h3>
-        <ul>
-          <li>현장에서 사람들이 겪는 불편을 발견하는 일</li>
-          <li>두 기능 중 무엇이 더 가치 있는지 결정하는 일</li>
-          <li>세상에 기록되지 않은 정보를 다루는 일</li>
-        </ul>
+      <div class="me">
+        <div class="ph"><img src="assets/role-person.jpg" alt="거리에 앉아 수첩을 들고 지나가는 사람들을 지켜보는 사람" style="object-position:center 18%"><span class="cr">Unsplash · CC0</span></div>
+        <div class="in">
+          <span class="who">사람의 몫</span>
+          <h3>발견과 판단</h3>
+          <ul>
+            <li>현장에서 사람들이 겪는 불편을 발견한다</li>
+            <li>두 기능 중 무엇이 더 가치 있는지 결정한다</li>
+            <li>아직 어디에도 기록되지 않은 사실을 알아챈다</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

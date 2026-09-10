@@ -5,7 +5,8 @@
 - `바이브 코딩과 함께 살아남기 - 1교시.pdf` — **최종 발표용 PDF** (48장, 마지막 페이지 실습 URL 클릭 가능)
 
 - `session1-slides.html` — 1교시 강의 슬라이드 "바이브 코딩과 함께 살아남기" (16:9, 1280×720, 48장, 페이지 번호는 CSS 카운터 자동, 빈칸 없음 — 발표 준비 완료)
-  - 7~8p: 시간에 따른 변화 2장, 서로 다른 그림 — 7p "코딩하는 사람은 계속 넓어져 왔습니다"는 해마다 넓어지는 막대(1957 FORTRAN → 1964 BASIC → 1991 Python → 2008 Stack Overflow → 2021 Copilot), 8p "생성형 AI와 AI Agent — 5년의 변화"는 사람의 몫이 AI 쪽으로 옮겨가는 막대 4개 + "오늘 사람에게 남은 일" 카드 (2026-09-10 개편)
+  - 7~8p: 시간에 따른 변화 2장, 서로 다른 그림 — 7p "코딩하는 사람은 계속 넓어져 왔습니다"는 해마다 넓어지는 막대(1957 FORTRAN → 1964 BASIC → 1977 Apple II → 2008 Stack Overflow → 2021 Copilot, 연도마다 그해에 실제로 일어난 변화만 적음), 8p "생성형 AI와 AI Agent — 5년의 변화"는 사람의 몫이 AI 쪽으로 옮겨가는 막대 4개 + "오늘 사람에게 남은 일" 카드 (2026-09-10 개편)
+  - 10~11p: 10p 비유는 "전기 배선을 할 줄 안다고 수도꼭지 설치를 반드시 할 수 있는 것은 아니다" — 실사 사진 [가진 도구: 전기 공구] → [하려는 일: 수도꼭지 설치] + 안 맞는 이유 카드 2개(한계: 공구가 맞지 않음 / 수지타산: 억지로 하면 손해), 11p는 "반복과 기억"(컴퓨터, 서버 사진) / "발견과 판단"(사람, 관찰하는 사람 사진) — 잘하는/못하는 일 구도 대신 역할 분담으로 (2026-09-10 개편)
   - 예시에 나온 서비스는 카드 안에 바로 가는 링크(`.svc`, PDF에서 클릭 가능): 14p 서울시 상권분석서비스 · 21p 몰트북 · 40p 벚꽃지도 · 41p 러브버그.com / 거지맵.com / 야장맵.kr · 42p base44.com
   - 13~19p: 연습문제 3세트 (질문→판단: 데이터 해상도 / 이용 권한 / 현실의 규칙) + "세 번 다 다른 곳에서 막혔습니다" 정리 — 창업팀 맥락으로 교체(2026-09-10), 근거는 `docs/research/` 참고
   - 20~21p: 위험 2장 — "잘못되는 방식은 네 가지"(방법 자체 위법 / 남의 자료 / 정보 유출 / 과장 광고) + 실제 사례 3건 (2026-09-10 신규)
@@ -23,6 +24,10 @@
   - `vercel-new.png` — Vercel 새 프로젝트/배포 화면 (출처: vercel.com/new)
   - `eniac.jpg` — ENIAC 사진, 1945 (U.S. Army · Public Domain)
   - `waterfall-model.png` — Waterfall 모델 다이어그램 (Wikimedia Commons · CC BY 3.0)
+  - `analogy-tools.jpg` — 10p 전기 배선 공구 모음 (Dmitry G · Wikimedia Commons "Tools for electric works.JPG" · CC BY-SA 3.0)
+  - `analogy-plumber.jpg` — 10p 세면대 배관 작업 중인 배관공 (ocean yamaha · Wikimedia Commons "Plumber at work 2010 USA.jpg" · CC BY 2.0)
+  - `role-computer.jpg` — 11p 서버 랙 (Thomas Kvistholt · Unsplash via Wikimedia Commons "Beautiful technology (Unsplash).jpg" · CC0)
+  - `role-person.jpg` — 11p 거리에서 수첩을 들고 관찰하는 사람 (Ron Jake Roque · Unsplash via Wikimedia Commons "Critical Thinking (Unsplash).jpg" · CC0)
 
 ## PDF로 내보내는 방법
 
