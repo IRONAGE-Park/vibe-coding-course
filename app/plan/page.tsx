@@ -41,22 +41,19 @@ const FLOW = [
   { k: "개발 지시", v: "앱 초안" },
 ];
 
-/* 『Running Lean』·『핑크 펭귄』에서 가져온 원칙 — 근거는 docs/research/D-레퍼런스-창업초기.md */
+/* 이 페이지 내용의 근거: docs/research/D-레퍼런스-창업초기.md */
 const PRINCIPLES = [
   {
     k: "제품이 아니라 고객부터",
     v: "“우리는 ○○ 앱을 만듭니다”로 시작하면 같은 말을 하는 수많은 경쟁자 사이에 묻힙니다. 출발점은 제품이 아니라, 가장 돕고 싶은 고객 한 유형입니다.",
-    src: "핑크 펭귄 1·2장",
   },
   {
     k: "해결책은 최대한 늦게",
     v: "고객은 우리의 해결책이 아니라 자기 문제에 관심이 있습니다. 해결책을 일찍 못 박을수록 아무도 원하지 않는 것을 만들 위험이 커집니다.",
-    src: "Running Lean 1·3장",
   },
   {
     k: "오늘 문서는 가설이다",
-    v: "『Running Lean』에 따르면 성공한 스타트업의 약 3분의 2는 처음 계획과 다른 길로 갔습니다. 목표는 완벽한 기획이 아니라, 빨리 확인하고 고칠 수 있는 기획입니다.",
-    src: "Running Lean 소개",
+    v: "성공한 스타트업 상당수도 처음 계획과는 다른 길로 갔습니다. 목표는 완벽한 기획이 아니라, 빨리 확인하고 고칠 수 있는 기획입니다.",
   },
 ];
 
@@ -69,27 +66,27 @@ const LOOP = [
   "plan.md 고치기",
 ];
 
-/* 『Running Lean』 2장 — 책 자체를 이 사이클로 만든 과정 */
-const BOOK_CASE = [
+/* 오늘의 예시로 네 단계를 한 바퀴 */
+const EXAMPLE_ROUND = [
   {
     k: "문제 이해",
-    v: "책을 내 달라던 독자들에게 직접 전화 — ‘이론은 많은데 따라 할 단계별 안내가 없다’는 문제를 확인",
+    v: "예비창업팀 대표 10명을 인터뷰 — 매주 사이트를 돌며 공고를 챙기는 사람이 몇 명인지 셉니다",
   },
   {
     k: "해결책 정의",
-    v: "하루 만에 목차와 가제만 있는 소개 페이지를 만들어 공개 — 석 달 만에 이메일 1,000개",
+    v: "하루 만에 문제와 핵심 가치만 적은 소개 페이지 — 2주 동안 알림 신청이 몇 개 오는지 봅니다",
   },
   {
     k: "작게 검증",
-    v: "책 대신 슬라이드로 무료 워크숍 → 유료로 바꾸고, 가격을 두 배씩 올려 저항이 생기는 지점 확인",
+    v: "신청자 10명에게 초안을 직접 보여주며 핵심 행동을 관찰하고, 월 ○원을 제시해 반응을 적습니다",
   },
   {
     k: "크게 검증",
-    v: "선주문을 받고 2주마다 원고를 보내며 고침 — 혼자 판 부수가 쌓이자 출판사가 먼저 연락",
+    v: "모르는 사람에게도 열고, 주별 기록으로 다시 들어오는 사람의 비율을 봅니다",
   },
 ];
 
-/* 린 캔버스를 오늘 실습용으로 줄인 9칸 */
+/* 오늘 실습용으로 줄인 한 장짜리 캔버스 9칸 */
 const CANVAS = [
   { num: "①", title: "서비스 이름", ex: "공고레이더 — 짧게, 약어 말고. 임시여도 OK" },
   {
@@ -122,14 +119,14 @@ const CANVAS = [
   },
 ];
 
-const CHAIN_LABELS = ["기능", "혜택", "최상의 이득"];
+const CHAIN_LABELS = ["기능", "혜택", "고객이 끝내 원하는 것"];
 const VALUE_CHAINS = [
   {
-    name: "이력서 서비스 — 『Running Lean』의 예",
+    name: "이력서 서비스라면",
     steps: ["전문가급 템플릿", "돋보이는 이력서", "원하던 회사에 합격"],
   },
   {
-    name: "지원사업 서비스 — 오늘의 예",
+    name: "오늘의 예 — 지원사업 서비스",
     steps: ["조건 필터", "맞는 공고만 모아 보기", "받을 수 있는 지원금을 놓치지 않기"],
   },
 ];
@@ -158,48 +155,42 @@ const METHODS = [
   {
     k: "관찰",
     when: "문제 이해",
-    how: "고객이 그 일을 하는 모습을 옆에서 봅니다. 『Running Lean』의 저자는 매주 2시간을 비워 누구든 30분씩 대화를 신청할 수 있게 열어 두고, 반복되는 문제를 찾았습니다.",
+    how: "고객이 그 일을 하는 모습을 옆에서 봅니다. 매주 시간을 정해 두고 누구든 30분씩 이야기를 신청할 수 있게 열어 두면, 반복되는 문제가 보이기 시작합니다.",
     get: "고객도 말로 설명하지 못하는 불편",
-    src: "RL 7장",
   },
   {
     k: "문제 인터뷰",
     when: "문제 이해",
     how: "20~30분, 가능하면 직접 만나서. 해결책은 꺼내지 않고 문제의 순위와 지금의 해결 방법을 묻습니다. 대본은 아래에.",
     get: "꼭 필요한 문제 · 지금의 대안 · 첫 고객의 모습",
-    src: "RL 6·7장",
   },
   {
     k: "소개 페이지",
     when: "문제 → 해결책",
     how: "문제와 핵심 가치 한 줄만 적은 한 페이지에 ‘출시 알림 받기’를 답니다. 해결책은 자세히 보여주지 않습니다. 오늘 배운 방법이면 금방 만듭니다.",
     get: "관심 있는 사람의 연락처 = 다음 인터뷰 대상",
-    src: "RL 2장 · 부록",
   },
   {
     k: "데모 · 목업",
     when: "해결책 정의",
-    how: "만들기 전에 화면 그림이나 짧은 시연 영상으로 보여줍니다. 드롭박스는 제품보다 3분짜리 영상이 먼저였습니다. 예시 데이터는 진짜처럼.",
+    how: "만들기 전에 화면 그림이나 짧은 시연 영상으로 보여줍니다. 드롭박스도 제품보다 3분짜리 시연 영상이 먼저였습니다. 예시 데이터는 진짜처럼.",
     get: "어떤 기능이 꼭 필요하고 무엇을 빼도 되는지",
-    src: "RL 5·8장",
   },
   {
     k: "가격 제시",
     when: "해결책 정의",
     how: "‘얼마면 사겠어요?’가 아니라 ‘월 ○원을 생각합니다’라고 말하고 반응을 적습니다. 모두 쉽게 받아들이면 더 높여 봅니다.",
     get: "받을 수 있는 가격 · 누가 돈을 내는지",
-    src: "RL 8장",
   },
   {
     k: "손으로 먼저 · 무료 시범",
     when: "해결책 → 작게 검증",
     how: "자동화하기 전에 몇 명에게 손으로 먼저 해 줍니다. 가치의 일부를 무료로 주되, 끝나면 ‘예 / 아니요’로 답하기로 미리 약속합니다.",
     get: "실제로 쓰는지 · 돈을 낼지 · 어디를 자동화할지",
-    src: "RL 5장 · PP 21·23·26장",
   },
 ];
 
-/* 『Running Lean』 7장의 문제 인터뷰 대본을 줄인 것 */
+/* 문제 인터뷰 대본 */
 const INTERVIEW = [
   {
     t: "2분",
@@ -307,16 +298,16 @@ export default function PlanPage() {
             <Blue>&ldquo;만들어야 하나&rdquo;</Blue>
           </h2>
           <p className="mt-4 text-[15px] leading-[1.7] text-[var(--s2-body)]">
-            에릭 리스는 『Running Lean』 서문에서, 만드는 비용이 싸질수록
-            &ldquo;정말로 만들어야 할까?&rdquo;가 더 중요한 질문이 된다고
-            말합니다. AI로 하루 만에 앱이 나오는 지금은 더 그렇습니다. 그래서 이
-            장은 코드 대신 <b>세 가지 원칙</b>으로 시작합니다.
+            만드는 비용이 싸질수록 &ldquo;정말로 만들어야 할까?&rdquo;가 더
+            중요한 질문이 됩니다. AI로 하루 만에 앱이 나오는 지금은 더
+            그렇습니다. 그래서 이 장은 코드 대신 <b>세 가지 원칙</b>으로
+            시작합니다.
           </p>
           <div className="mt-5 grid gap-4 md:grid-cols-3">
             {PRINCIPLES.map((c, i) => (
               <div
                 key={c.k}
-                className="flex flex-col rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5"
+                className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5"
               >
                 <p className="font-mono text-[12px] text-[var(--s2-blue)]">
                   {String(i + 1).padStart(2, "0")}
@@ -324,9 +315,6 @@ export default function PlanPage() {
                 <p className="mt-1 text-[15.5px] font-extrabold">{c.k}</p>
                 <p className="mt-1.5 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
                   {c.v}
-                </p>
-                <p className="mt-auto pt-3 font-mono text-[11px] text-[var(--s2-faint)]">
-                  {c.src}
                 </p>
               </div>
             ))}
@@ -340,7 +328,7 @@ export default function PlanPage() {
             아이디어는 <Blue>네 단계를 돌며</Blue> 자랍니다
           </h2>
           <p className="mt-4 text-[15px] leading-[1.7] text-[var(--s2-body)]">
-            『Running Lean』은 아이디어를 키우는 과정을 하나의 틀로 반복합니다 —{" "}
+            아이디어를 키우는 과정은 하나의 틀을 반복합니다 —{" "}
             <b>문제를 이해하고, 해결책을 정의하고, 작게 확인한 뒤, 크게
             확인한다.</b> 단계마다 확인할 것, 데이터를 얻는 방법, 다음으로
             넘어가도 되는 기준이 다릅니다. 오늘 2장은 1·2단계를 대화와 문서로
@@ -384,10 +372,10 @@ export default function PlanPage() {
 
           <div className="mt-6 flex flex-col gap-3">
             <p className="text-[15px] font-extrabold">
-              『Running Lean』은 <Blue>이 사이클로 만들어진 책</Blue>입니다
+              예시 — <Blue>공고레이더로 한 바퀴</Blue>
             </p>
             <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-              {BOOK_CASE.map((c, i) => (
+              {EXAMPLE_ROUND.map((c, i) => (
                 <div
                   key={c.k}
                   className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
@@ -402,11 +390,9 @@ export default function PlanPage() {
               ))}
             </div>
             <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
-              저자는 책을 다 쓴 뒤 팔지 않았습니다. 가장 위험한 가정(&lsquo;이
-              목차를 원하는 사람이 있나&rsquo;)부터 가장 싼 방법으로 확인하고,
-              신호가 올 때마다 조금씩 더 크게 걸었습니다. 『핑크 펭귄』의 저자도
-              새 코칭 프로그램을 같은 방식으로 키웠습니다 — 기존 고객 25명에게
-              먼저 무료로 해 보며 단계를 다듬고, 그다음에 요금을 받았습니다.
+              단계마다 <b>가장 싼 방법으로 먼저</b> 확인하고, 신호가 올 때마다
+              조금씩 더 크게 겁니다. 앱을 다 만들어 놓고 반응을 기다리는 것보다
+              훨씬 덜 잃습니다.
             </p>
           </div>
         </section>
@@ -626,11 +612,10 @@ export default function PlanPage() {
             </div>
           </div>
           <Callout title="&lsquo;모두&rsquo;를 노리면 아무에게도 닿지 않습니다">
-            페이스북도 처음엔 하버드 학생만을 위한 서비스였습니다. 『핑크
-            펭귄』에는 치과의사만 고객으로 삼기로 한 자산관리사가 나옵니다 —
-            그렇게 정할 때 치과의사 고객은 5명뿐이었지만, 이후 300명을
-            넘겼습니다. 오늘은 <b>가장 절실한 한 유형</b>만 고르세요. 고르기
-            어렵다면 가장 함께하기 싫은 유형부터 지워 나가면 됩니다.
+            페이스북도 처음엔 하버드 학생만을 위한 서비스였습니다. 좁게 잡을수록
+            그 사람들을 깊이 알게 되고, 그들 사이에서 &lsquo;그 분야라면
+            여기&rsquo;가 됩니다. 오늘은 <b>가장 절실한 한 유형</b>만 고르세요.
+            고르기 어렵다면 가장 함께하기 싫은 유형부터 지워 나가면 됩니다.
           </Callout>
           <div className="flex flex-col gap-3">
             <p className="text-[15px] font-extrabold">
@@ -667,11 +652,10 @@ export default function PlanPage() {
           <Callout title="오늘은 1명, 강의가 끝나면 5명">
             완성한 문장을 옆 팀 한 명에게 읽어주고{" "}
             <b>&ldquo;지금은 어떻게 하세요?&rdquo;</b> 하나만 물어보세요.
-            강의가 끝나면 첫 고객 유형에 맞는 사람 5명을 만나 보세요.
-            『Running Lean』은 처음엔 그 정도로도 강한 신호가 보이고, 10명쯤
-            만나면 &lsquo;꼭 필요한 문제&rsquo;인지 판단할 수 있다고 말합니다.
-            만나는 방법과 대본은 이 페이지 아래{" "}
-            <b>&lsquo;데이터를 모으는 법&rsquo;</b>에 있습니다.
+            강의가 끝나면 첫 고객 유형에 맞는 사람 5명을 만나 보세요. 처음엔
+            그 정도로도 강한 신호가 보이고, 10명쯤 만나면 &lsquo;꼭 필요한
+            문제&rsquo;인지 판단할 수 있습니다. 만나는 방법과 대본은 이 페이지
+            아래 <b>&lsquo;데이터를 모으는 법&rsquo;</b>에 있습니다.
           </Callout>
         </StepCard>
 
@@ -684,8 +668,8 @@ export default function PlanPage() {
           intro={
             <>
               문제가 잡혔으면 AI에게 <b>파일로 정리</b>시킵니다. 대화는
-              날아가지만 파일은 남습니다. 형식은 『Running Lean』의{" "}
-              <b>린 캔버스</b>를 오늘 실습에 맞게 줄인 한 장입니다.
+              날아가지만 파일은 남습니다. 형식은 창업 초기에 많이 쓰는{" "}
+              <b>한 장짜리 캔버스</b>를 오늘 실습에 맞게 줄였습니다.
             </>
           }
         >
@@ -714,16 +698,15 @@ export default function PlanPage() {
                 },
                 {
                   dim: true,
-                  text: ">   4) 그래서 우리가 줄 수 있는 최상의 이득 한 줄은?",
+                  text: ">   4) 그래서 우리가 줄 수 있는, 이 사람이 끝내 원하는 것 한 줄은?",
                 },
               ]}
             />
             <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
-              『핑크 펭귄』에서 가져온 질문들입니다. 구명보트의 크기가 아니라
-              배가 가라앉으면 벌어질 일을 이야기하라는{" "}
-              <b>&lsquo;타이타닉 기법&rsquo;</b>, 고객의 지금과 이후를 그리는{" "}
-              <b>&lsquo;변혁&rsquo;</b>, 여러 생각을 고객의 이득 하나로 묶는
-              질문 순서. 여기서 나온 답이 ②문제와 ⑤핵심 가치 칸이 됩니다.
+              구명보트가 얼마나 좋은지가 아니라{" "}
+              <b>배가 가라앉으면 무슨 일이 생기는지</b>를 말해야 고객이 귀를
+              기울입니다. 고객의 지금과 이후를 그려 보면 해결책의 폭도 넓어집니다.
+              여기서 나온 답이 ②문제와 ⑤핵심 가치 칸이 됩니다.
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -743,7 +726,7 @@ export default function PlanPage() {
             ))}
           </div>
           <p className="text-[13.5px] leading-[1.65] text-[var(--s2-gray)]">
-            원래 린 캔버스에 있는 채널 · 비용 · 경쟁 우위 칸은 오늘은 비워
+            원래 캔버스에는 채널 · 비용 · 경쟁 우위 칸도 있지만 오늘은 비워
             둡니다 — 첫 고객에게 닿고 나서 채워도 늦지 않습니다.
           </p>
           <Term
@@ -778,7 +761,7 @@ export default function PlanPage() {
           <div className="flex flex-col gap-4 rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5">
             <p className="text-[15px] font-extrabold">
               ⑤ 핵심 가치 한 줄 쓰는 법 —{" "}
-              <Blue>기능 → 혜택 → 최상의 이득</Blue>
+              <Blue>기능 → 혜택 → 고객이 끝내 원하는 것</Blue>
             </p>
             {VALUE_CHAINS.map((row) => (
               <div key={row.name} className="flex flex-col gap-2">
@@ -814,9 +797,8 @@ export default function PlanPage() {
             ))}
             <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
               기능을 말하면 비교당하고, 고객이 원래 원하던 결과를 말하면
-              기억됩니다. 『핑크 펭귄』의 말로는 &lsquo;2차적 이득&rsquo;이 아니라{" "}
-              <b>&lsquo;최상의 이득&rsquo;</b> — 웹사이트 제작을 맡기는 사람이
-              진짜 원하는 건 멋진 사이트가 아니라 손님이 늘어나는 것입니다.
+              기억됩니다. 웹사이트 제작을 맡기는 사람이 진짜 원하는 건 멋진
+              사이트가 아니라 <b>손님이 늘어나는 것</b>입니다.
             </p>
           </div>
           <Callout title="&lsquo;모름&rsquo; 칸이 가장 위험한 칸입니다">
@@ -827,10 +809,10 @@ export default function PlanPage() {
           </Callout>
           <Callout title="15분 안에 쓰고, 한 명에게 보여주기">
             첫 캔버스는 15분 안에 끝내는 스냅숏이면 충분합니다. 다 쓰면 옆
-            팀에게 2분만 보여주세요. 규칙은 『핑크 펭귄』의 빅아이디어
-            인큐베이터 — <b>① 좋은 점만 말하기 → ② 어떻게 하면 될지 → ③
-            마지막에만 걸림돌</b>. 갓 나온 아이디어는 비판부터 들으면 싹이
-            잘립니다. 『Running Lean』은 여기에 질문 하나를 더 권합니다 —{" "}
+            팀에게 2분만 보여주세요. 규칙은 세 단계 —{" "}
+            <b>① 좋은 점만 말하기 → ② 어떻게 하면 될지 → ③ 마지막에만
+            걸림돌</b>. 갓 나온 아이디어는 비판부터 들으면 싹이 잘립니다.
+            마지막으로 하나만 물어보세요 —{" "}
             <b>&ldquo;이 계획에서 가장 위험해 보이는 곳이 어디예요?&rdquo;</b>
           </Callout>
         </StepCard>
@@ -912,7 +894,7 @@ export default function PlanPage() {
             ]}
           />
           <Callout title="MVP는 &lsquo;대충 만든 것&rsquo;이 아닙니다">
-            『Running Lean』의 정의로 MVP는 버그 많은 시제품이 아니라,{" "}
+            MVP는 버그 많은 시제품이 아니라,{" "}
             <b>가장 중요한 문제 하나를 충분히 풀어 주는 최소한</b>입니다.
             작게 만들되, 그 하나는 제대로.
           </Callout>
@@ -970,8 +952,8 @@ export default function PlanPage() {
             items={[
               <>
                 <b>첫 화면 맨 위 한 줄</b> — 처음 온 사람은 몇 초 만에 머물지
-                떠날지 정합니다(『Running Lean』은 8초로 봅니다). 무엇을 해주는
-                서비스인지 첫 줄에서 보여야 합니다
+                떠날지 정합니다. 무엇을 해주는 서비스인지 첫 줄에서 보여야
+                합니다
               </>,
               <>
                 <b>진짜 같은 예시 데이터</b> — 의미 없는 채움 글 대신 있을 법한
@@ -1015,10 +997,10 @@ export default function PlanPage() {
           </h2>
           <p className="mt-4 text-[15px] leading-[1.7] text-[var(--s2-body)]">
             오늘 만든 plan.md의 칸은 대부분 추측입니다. 추측을 사실로 바꾸는
-            데이터는 <b>앱이 생기기 전에도</b> 모을 수 있습니다. 두 책이 권하는
-            방법을 싸고 빠른 순서로 정리했습니다. 초기에는 설문지보다 직접
-            만나는 쪽이 낫습니다 — 설문은 무엇을 물어야 할지 이미 안다고
-            가정하고, 표정과 망설임을 보여주지 않기 때문입니다.
+            데이터는 <b>앱이 생기기 전에도</b> 모을 수 있습니다. 싸고 빠른
+            순서로 정리했습니다. 초기에는 설문지보다 직접 만나는 쪽이 낫습니다 —
+            설문은 무엇을 물어야 할지 이미 안다고 가정하고, 표정과 망설임을
+            보여주지 않기 때문입니다.
           </p>
 
           <div className="mt-6 flex flex-col gap-3">
@@ -1050,11 +1032,10 @@ export default function PlanPage() {
               </span>
             </div>
             <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
-              『Running Lean』은 돈을 받는 것을 가장 강력한 검증으로 봅니다. 말로
-              &ldquo;쓸게요&rdquo;를 들었다면 다음엔 연락처 · 시간 · 선결제 같은{" "}
-              <b>행동으로</b> 확인하세요. 『핑크 펭귄』은 한발 더 나가,
-              &ldquo;글쎄요&rdquo;는 대부분 정중한 &ldquo;아니요&rdquo;라고
-              말합니다. 기록할 때도 그렇게 적으세요.
+              가장 강한 신호는 돈입니다. 말로 &ldquo;쓸게요&rdquo;를 들었다면
+              다음엔 연락처 · 시간 · 선결제 같은 <b>행동으로</b> 확인하세요. 그리고
+              &ldquo;글쎄요&rdquo;는 대부분 정중한 &ldquo;아니요&rdquo;입니다.
+              기록할 때도 그렇게 적으세요.
             </p>
           </div>
 
@@ -1071,11 +1052,8 @@ export default function PlanPage() {
                 <p className="mt-1.5 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
                   {m.how}
                 </p>
-                <p className="mt-3 text-[12.5px] leading-[1.55] text-[var(--s2-strong)]">
+                <p className="mt-auto pt-3 text-[12.5px] leading-[1.55] text-[var(--s2-strong)]">
                   <b>얻는 것</b> · {m.get}
-                </p>
-                <p className="mt-auto pt-3 font-mono text-[11px] text-[var(--s2-faint)]">
-                  {m.src}
                 </p>
               </div>
             ))}
@@ -1110,8 +1088,8 @@ export default function PlanPage() {
             문제 인터뷰 — <Blue>만나고, 묻고, 적고, 읽기</Blue>
           </h2>
           <p className="mt-4 text-[15px] leading-[1.7] text-[var(--s2-body)]">
-            가장 빨리 배우는 방법은 사람과 직접 이야기하는 것입니다. 『Running
-            Lean』의 문제 인터뷰를 오늘 쓸 수 있게 정리했습니다.
+            가장 빨리 배우는 방법은 사람과 직접 이야기하는 것입니다. 오늘 바로
+            쓸 수 있는 문제 인터뷰 방법입니다.
           </p>
 
           <div className="mt-6 flex flex-col gap-3">
@@ -1266,10 +1244,9 @@ export default function PlanPage() {
             계속 쓰입니다. 대화는 사라져도 문서는 남습니다.
           </p>
           <p className="mt-3 text-[14.5px] leading-[1.65] text-[var(--s2-body)]">
-            단, 이 문서는 정답이 아니라 <b>첫 번째 가설(Plan A)</b>입니다.
-            『Running Lean』의 부제처럼, 계획 A에서 시작해{" "}
-            <b>실제로 통하는 계획</b>으로 고쳐 가는 것 — 인터뷰로 고치고, 4장에서
-            만든 앱을 보여주며 또 고칩니다.
+            단, 이 문서는 정답이 아니라 <b>첫 번째 가설(Plan A)</b>입니다. 계획
+            A에서 시작해 <b>실제로 통하는 계획</b>으로 고쳐 가는 것 — 인터뷰로
+            고치고, 4장에서 만든 앱을 보여주며 또 고칩니다.
           </p>
         </section>
       </main>
