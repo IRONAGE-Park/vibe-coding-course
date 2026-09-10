@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import CopyBlock from "../components/CopyBlock";
+import SdlcLoop from "../components/SdlcLoop";
 import StageCycle from "../components/StageCycle";
 import StepRail from "../components/StepRail";
 import Tip from "../components/Tip";
@@ -21,7 +22,7 @@ import {
 export const metadata: Metadata = {
   title: "02 문제 정의 | 바이브코딩과 함께 살아남기",
   description:
-    "Claude Code와 대화하며 문제를 좁히고, 한 장짜리 기획서와 요구사항 명세를 만들어 앱 초안 개발까지 지시하는 과정.",
+    "Claude Code에게 인터뷰받으며 문제를 좁히고, intent.md(무엇을 · 왜)와 spec.md(어떻게) 두 문서로 제품을 시작하는 과정.",
 };
 
 /* 배경 설명 · 사례 · 진행 요령은 강사 노트(app/lib/lecture-notes.ts)에 있습니다 */
@@ -29,18 +30,45 @@ export const metadata: Metadata = {
 const TOTAL = 5;
 
 const RAIL = [
-  { id: "plan-1", num: "01", label: "AI와 대화 시작" },
+  { id: "plan-1", num: "01", label: "AI에게 인터뷰받기" },
   { id: "plan-2", num: "02", label: "문제 정의" },
-  { id: "plan-3", num: "03", label: "기획서" },
-  { id: "plan-4", num: "04", label: "요구사항 명세" },
+  { id: "plan-3", num: "03", label: "intent.md" },
+  { id: "plan-4", num: "04", label: "spec.md" },
   { id: "plan-5", num: "05", label: "개발 지시" },
 ];
 
 const FLOW = [
   { k: "문제 정의", v: "무엇이 불편한가" },
-  { k: "기획서", v: "docs/plan.md" },
-  { k: "요구사항 명세", v: "docs/requirements.md" },
-  { k: "개발 지시", v: "앱 초안" },
+  { k: "intent.md", v: "무엇을 · 왜 · 제약" },
+  { k: "spec.md", v: "화면 · 기능 · 데이터" },
+  { k: "개발 지시", v: "계획 → 앱 초안" },
+];
+
+/* Claude · Codex 공식 가이드가 공통으로 권하는 시작 순서 — 근거는 강사 노트 */
+const START = [
+  {
+    k: "인터뷰받기",
+    v: "막연한 아이디어를 던지고, AI가 범위 · 사용자 · 제약 · 성공 기준을 묻게 합니다.",
+  },
+  {
+    k: "intent.md",
+    v: "무엇을 · 왜 · 어떤 제약으로 — 내 말로 쓴 한 장. 사람도 AI도 읽습니다.",
+  },
+  {
+    k: "spec.md",
+    v: "AI가 intent.md를 읽고 요구사항과 설계를 한 번에. 걸리는 점은 따로 표시.",
+  },
+  {
+    k: "계획 먼저",
+    v: "새 대화 · 계획 모드에서 구현 계획부터. 승인한 뒤에 만듭니다(3장).",
+  },
+];
+
+const PROMPT_PARTS = [
+  { k: "목표", v: "무엇을 만들거나 바꾸나" },
+  { k: "맥락", v: "읽어야 할 문서 · 참고할 예시" },
+  { k: "제약", v: "지킬 규칙 · 하지 말 것" },
+  { k: "완료 조건", v: "끝났다고 볼 확인 방법" },
 ];
 
 const PRINCIPLES = [
@@ -63,23 +91,30 @@ const LOOP = [
   "가설 한 문장",
   "가장 작은 실험",
   "기록",
-  "plan.md 고치기",
+  "intent.md 고치기",
 ];
 
+/* 린 캔버스를 오늘 실습용으로 줄인 9칸 — to 는 intent.md 에서 들어갈 자리 */
 const CANVAS = [
-  { num: "①", title: "서비스 이름", ex: "공고레이더 — 임시여도 OK" },
+  { num: "①", title: "서비스 이름", ex: "공고레이더 — 임시여도 OK", to: "제목" },
   {
     num: "②",
     title: "문제 (최대 3개)",
     ex: "공고가 흩어져 있다 · 우리 조건인지 모른다 · 마감을 놓친다",
+    to: "문제",
   },
-  { num: "③", title: "지금의 대안", ex: "매일 사이트 순회 · 단톡방 · 그냥 놓침" },
-  { num: "④", title: "첫 고객", ex: "3인 이하 예비창업팀 대표" },
-  { num: "⑤", title: "핵심 가치 한 줄", ex: "받을 수 있는 지원금을 놓치지 않는다" },
-  { num: "⑥", title: "해결책", ex: "문제마다 가장 간단한 기능 하나" },
-  { num: "⑦", title: "화면 구성", ex: "메인 + 상세 1~2개" },
-  { num: "⑧", title: "수익", ex: "누가, 얼마를 — 모르면 ‘모름’" },
-  { num: "⑨", title: "성공 신호", ex: "첫 방문 30초 안에 공고 1개 클릭" },
+  { num: "③", title: "지금의 대안", ex: "매일 사이트 순회 · 단톡방 · 그냥 놓침", to: "문제" },
+  { num: "④", title: "첫 고객", ex: "3인 이하 예비창업팀 대표", to: "대상" },
+  {
+    num: "⑤",
+    title: "핵심 가치 한 줄",
+    ex: "받을 수 있는 지원금을 놓치지 않는다",
+    to: "원하는 결과",
+  },
+  { num: "⑥", title: "해결책", ex: "문제마다 가장 간단한 기능 하나", to: "원하는 결과" },
+  { num: "⑦", title: "화면 구성", ex: "메인 + 상세 1~2개", to: "spec.md 에서" },
+  { num: "⑧", title: "수익", ex: "누가, 얼마를 — 모르면 ‘모름’", to: "열린 질문" },
+  { num: "⑨", title: "성공 신호", ex: "첫 방문 30초 안에 공고 1개 클릭", to: "성공 신호" },
 ];
 
 const CHAIN_LABELS = ["기능", "혜택", "고객이 끝내 원하는 것"];
@@ -174,13 +209,13 @@ export default function PlanPage() {
         label="Chapter 02"
         title={
           <>
-            <Blue>문제 정의</Blue> — AI와 함께 기획서까지
+            <Blue>문제 정의</Blue> — 문서 두 장으로 제품 시작하기
           </>
         }
         sub={
           <>
-            Claude Code와 대화하며 문제를 좁히고,{" "}
-            <b>기획서와 요구사항 명세</b> 두 문서를 만듭니다. 3장은 이 문서로
+            Claude Code에게 인터뷰받으며 문제를 좁히고,{" "}
+            <b>intent.md와 spec.md</b> 두 문서를 만듭니다. 3장은 이 문서로
             앱을 만듭니다.
           </>
         }
@@ -220,8 +255,54 @@ export default function PlanPage() {
             ))}
           </div>
           <p className="mt-5 text-[14.5px] leading-[1.65] text-[var(--s2-body)]">
-            두 문서가 있으면 새 세션을 열어도 AI가 <b>같은 방향으로</b>{" "}
-            일합니다.
+            두 문서는 <b>사람도 AI도 읽는 파일</b>입니다. 있으면 새 대화를 열어도
+            AI가 같은 방향으로 일합니다.
+          </p>
+        </section>
+
+        {/* 제품을 시작하는 순서 — Claude · Codex 공통 */}
+        <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
+          <Badge>AI 네이티브 개발 주기</Badge>
+          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
+            제품은 코드가 아니라 <Blue>문서 두 장</Blue>으로 시작합니다
+          </h2>
+          <p className="mt-3 text-[15px] leading-[1.7] text-[var(--s2-body)]">
+            Claude와 Codex의 공식 가이드가 권하는 순서는 같습니다 —{" "}
+            <b>인터뷰 → 문서 → 계획 → 구현</b>.
+          </p>
+          <div className="mt-5 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+            {START.map((c, i) => (
+              <div
+                key={c.k}
+                className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5"
+              >
+                <p className="font-mono text-[12px] text-[var(--s2-blue)]">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <p className="mt-1 text-[15.5px] font-extrabold">{c.k}</p>
+                <p className="mt-1.5 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
+                  {c.v}
+                </p>
+              </div>
+            ))}
+          </div>
+          <p className="mb-3 mt-6 text-[15px] font-extrabold">
+            개발 주기로 보면 — <Blue>1 · 2단계</Blue>
+          </p>
+          <SdlcLoop current={[0, 1]} />
+          <p className="mt-4 text-[13px] leading-[1.65] text-[var(--s2-gray)]">
+            출처 —{" "}
+            <Ext href="https://academy.claude.com/ko/courses/ai-native-sdlc-playbook/capture-intent">
+              AI-Native SDLC Playbook
+            </Ext>{" "}
+            ·{" "}
+            <Ext href="https://code.claude.com/docs/ko/best-practices">
+              Claude Code 모범 사례
+            </Ext>{" "}
+            ·{" "}
+            <Ext href="https://learn.chatgpt.com/guides/best-practices">
+              Codex 모범 사례
+            </Ext>
           </p>
         </section>
 
@@ -332,15 +413,15 @@ export default function PlanPage() {
           </div>
         </section>
 
-        {/* 1. AI와 대화 시작 */}
+        {/* 1. AI에게 인터뷰받기 */}
         <StepCard
           no={1}
           total={TOTAL}
           id="plan-1"
-          title="Claude Code 열고 대화 시작하기"
+          title="AI에게 인터뷰받기 — 대화 시작"
           intro={
             <>
-              지금은 <b>코드를 만들지 않습니다</b> — 대화와 문서만.
+              지금은 <b>코드를 만들지 않습니다</b>. 질문은 AI가, 답은 여러분이.
             </>
           }
         >
@@ -348,7 +429,7 @@ export default function PlanPage() {
             Orca에서 내 프로젝트를 열고, 탭 옆 <b>+</b> → <b>Claude</b>.
           </p>
           <Term
-            title="첫 메시지 — 역할과 규칙부터 정해주기"
+            title="첫 메시지 — 역할을 정하고, 인터뷰를 부탁하기"
             lines={[
               {
                 dim: true,
@@ -361,15 +442,19 @@ export default function PlanPage() {
               { dim: true, text: ">" },
               {
                 dim: true,
-                text: "> 규칙: 아직 코드는 만들지 마. 질문은 한 번에 2개까지만.",
+                text: "> 규칙: 아직 코드는 만들지 마. 나를 인터뷰해줘. 질문은 한 번에 2개까지.",
               },
               {
                 dim: true,
-                text: "> 해결책보다 '누가, 무엇 때문에 불편한지'를 먼저 물어봐줘.",
+                text: "> 해결책보다 '누가, 무엇 때문에 불편한지'부터 묻고,",
               },
               {
                 dim: true,
-                text: "> 내가 막연하게 말하면 구체적으로 되물어줘.",
+                text: "> 범위 · 사용자 · 제약 · 성공 기준까지 — 뻔한 질문 말고 내가 놓친 부분을.",
+              },
+              {
+                dim: true,
+                text: "> 충분해지면 알려줘. 그 내용을 docs/intent.md 로 정리할 거야.",
               },
             ]}
           />
@@ -510,16 +595,20 @@ export default function PlanPage() {
           </Callout>
         </StepCard>
 
-        {/* 3. 기획서 */}
+        {/* 3. intent.md */}
         <StepCard
           no={3}
           total={TOTAL}
           id="plan-3"
-          title="기획서 만들기 — 한 장짜리 캔버스"
+          title="intent.md 만들기 — 무엇을 · 왜 · 어떤 제약으로"
           intro={
             <>
-              문제가 잡혔으면 <b>한 장짜리 기획서</b>로 정리시킵니다. 대화는
-              날아가도 파일은 남습니다.
+              문제가 잡혔으면{" "}
+              <Tip tip="제품을 시작하는 첫 문서. 무엇을 원하는지, 왜 필요한지, 어떤 제약이 있는지를 내 말로 적은 한 장입니다. 사람도 읽고, AI도 바로 다음 단계에 씁니다.">
+                intent.md
+              </Tip>{" "}
+              한 장으로 남깁니다. 대화는 날아가도 파일은 남고, 다음 단계가 이
+              파일을 읽고 시작합니다.
             </>
           }
         >
@@ -532,7 +621,7 @@ export default function PlanPage() {
               lines={[
                 {
                   dim: true,
-                  text: "> 캔버스를 채우기 전에, 우리 첫 고객 입장에서 한 번에 하나씩 물어봐줘.",
+                  text: "> 정리하기 전에, 우리 첫 고객 입장에서 한 번에 하나씩 물어봐줘.",
                 },
                 {
                   dim: true,
@@ -552,19 +641,24 @@ export default function PlanPage() {
                 },
               ]}
             />
-            <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
-              여기서 나온 답이 ②문제와 ⑤핵심 가치가 됩니다.
-            </p>
           </div>
+          <p className="text-[15px] font-extrabold">
+            캔버스로 생각하고 — <Blue>intent.md로 남기기</Blue>
+          </p>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {CANVAS.map((item) => (
               <div
                 key={item.num}
-                className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
+                className="flex flex-col rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
               >
-                <p className="font-mono text-[14px] font-bold text-[var(--s2-blue)]">
-                  {item.num}
-                </p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-mono text-[14px] font-bold text-[var(--s2-blue)]">
+                    {item.num}
+                  </p>
+                  <span className="font-mono rounded-full bg-[var(--s2-blue-soft)] px-2.5 py-0.5 text-[11px] text-[var(--s2-blue)]">
+                    → {item.to}
+                  </span>
+                </div>
                 <p className="mt-1 text-[15px] font-extrabold">{item.title}</p>
                 <p className="mt-1.5 text-[12.5px] leading-[1.55] text-[var(--s2-gray)]">
                   {item.ex}
@@ -573,37 +667,51 @@ export default function PlanPage() {
             ))}
           </div>
           <Term
-            title="기획서를 파일로 뽑아내기"
+            title="intent.md 로 뽑아내기"
             lines={[
               {
                 dim: true,
-                text: "> 지금까지 정한 내용으로 한 장짜리 기획서를 만들어서",
-              },
-              { dim: true, text: "> docs/plan.md 파일로 저장해줘." },
-              { dim: true, text: ">" },
-              {
-                dim: true,
-                text: "> 항목: 서비스 이름 / 문제(최대 3개) / 지금의 대안 / 첫 고객 /",
+                text: "> 지금까지 정한 내용으로 docs/intent.md 를 만들어줘.",
               },
               {
                 dim: true,
-                text: ">      핵심 가치 한 줄 / 해결책 / 화면 구성 / 수익 / 성공 신호",
+                text: "> 항목: 문제 / 원하는 결과 / 대상 / 제약 / 성공 신호 / 열린 질문",
               },
               {
                 dim: true,
-                text: "> 모르는 칸은 채우지 말고 '모름'이라고 적어줘.",
+                text: "> 캔버스 내용은 칸마다 표시한 자리에 넣어줘.",
               },
               {
                 dim: true,
-                text: "> 맨 아래에 '아직 확인 안 된 가정'을 위험한 순서로 3개 적어줘.",
+                text: "> 모르는 칸은 채우지 말고 '모름'. 확인 안 된 가정은 '열린 질문'에 위험한 순서로 3개.",
               },
               { text: "" },
-              { dim: true, text: "✓ Created docs/plan.md" },
+              { dim: true, text: "✓ Created docs/intent.md" },
+            ]}
+          />
+          <Term
+            title="이렇게 생긴 파일입니다 — docs/intent.md"
+            lines={[
+              { text: "# Intent: 공고레이더 — 맞는 지원사업 놓치지 않기" },
+              { text: "작성: 우리 팀 · 상태: 초안" },
+              { text: "## 문제" },
+              { text: "3인 이하 예비창업팀 대표는 조건에 맞는 공고를 마감 전에 알기 어렵다." },
+              { text: "지금은 매일 여러 사이트를 직접 뒤진다." },
+              { text: "## 원하는 결과" },
+              { text: "조건을 한 번 넣으면, 맞는 공고만 마감 임박순으로 본다." },
+              { text: "## 대상" },
+              { text: "3인 이하 예비창업팀 대표" },
+              { text: "## 제약" },
+              { text: "로그인 없이 · 공개된 공고만 · 개인정보는 받지 않는다." },
+              { text: "## 성공 신호" },
+              { text: "처음 온 사람이 30초 안에 공고 1개를 누른다." },
+              { text: "## 열린 질문" },
+              { text: "1. 공고를 매일 새로 가져올 방법이 있나?  2. 누가 돈을 내나? (모름)" },
             ]}
           />
           <div className="flex flex-col gap-4 rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5">
             <p className="text-[15px] font-extrabold">
-              ⑤ 핵심 가치 한 줄 —{" "}
+              원하는 결과 한 줄 —{" "}
               <Blue>기능이 아니라 고객이 끝내 원하는 것</Blue>
             </p>
             {VALUE_CHAINS.map((row) => (
@@ -639,10 +747,10 @@ export default function PlanPage() {
               </div>
             ))}
           </div>
-          <Callout title="&lsquo;모름&rsquo;은 그대로 두세요">
+          <Callout title="&lsquo;모름&rsquo;은 그대로, 틀린 곳은 짚어서">
             AI가 빈칸을 그럴듯하게 채우면 위험이 숨어버립니다. 파일을 열어
-            읽고, 다른 부분은 <b>&ldquo;③번을 이렇게 바꿔줘&rdquo;</b>처럼
-            고치세요.
+            읽고, 다른 부분은 <b>&ldquo;제약을 이렇게 바꿔줘&rdquo;</b>처럼
+            항목을 짚어 고치세요. 이 파일의 주인은 여러분입니다.
           </Callout>
           <Callout title="15분 안에 쓰고, 옆 팀에 2분">
             듣는 쪽은 <b>① 좋은 점 → ② 어떻게 하면 될지 → ③ 걸림돌</b> 순서로
@@ -651,29 +759,33 @@ export default function PlanPage() {
           </Callout>
         </StepCard>
 
-        {/* 4. 요구사항 명세 */}
+        {/* 4. spec.md */}
         <StepCard
           no={4}
           total={TOTAL}
           id="plan-4"
-          title="요구사항 명세 — 두 번째 문서"
+          title="spec.md 만들기 — 요구사항과 설계를 한 번에"
           intro={
             <>
-              기획서가 &ldquo;무엇을 왜&rdquo;라면, 명세는{" "}
-              <b>&ldquo;어떻게&rdquo;</b>입니다.
+              intent.md가 &ldquo;무엇을 왜&rdquo;라면,{" "}
+              <Tip tip="intent.md를 만들 수 있게 풀어 쓴 명세. 화면 · 기능 · 데이터 · 만들지 않을 것 · 걱정되는 점 · 확인 방법이 들어갑니다. 쓰는 건 AI, 검토와 승인은 사람.">
+                spec.md
+              </Tip>
+              는 <b>&ldquo;어떻게&rdquo;</b>입니다. 쓰는 건 AI, 여러분은
+              검토합니다.
             </>
           }
         >
           <Term
-            title="요구사항 명세 뽑아내기"
+            title="spec.md 뽑아내기"
             lines={[
               {
                 dim: true,
-                text: "> docs/plan.md 를 읽고, 이걸 개발할 수 있는",
+                text: "> docs/intent.md 를 읽고, 이걸 만들 수 있는 요구사항·설계 명세를",
               },
               {
                 dim: true,
-                text: "> 요구사항 명세를 docs/requirements.md 로 만들어줘.",
+                text: "> docs/spec.md 로 써줘. CLAUDE.md 의 규칙을 지켜서.",
               },
               { dim: true, text: ">" },
               { dim: true, text: "> 포함할 것:" },
@@ -697,13 +809,31 @@ export default function PlanPage() {
                 dim: true,
                 text: ">   5) 이번에 만들지 않을 것 (로그인, 관리자 등)",
               },
+              {
+                dim: true,
+                text: ">   6) 걱정되는 점 — 서로 부딪히거나 확실하지 않은 부분은 따로 표시",
+              },
+              {
+                dim: true,
+                text: ">   7) 확인 방법 — 처음 온 사람의 흐름을 처음부터 끝까지 확인하는 순서",
+              },
             ]}
           />
+          <p className="text-[15px] font-extrabold">
+            검토는 <Blue>이 순서로</Blue>
+          </p>
           <CheckList
             items={[
               <>
-                이번엔 <b>&lsquo;꼭 필요&rsquo;만</b> — 화면 3개 이내, 핵심
-                기능 1개. 이게 오늘의{" "}
+                <b>&lsquo;걱정되는 점&rsquo;부터</b> — 문서일 때 고치는 게 가장
+                쌉니다
+              </>,
+              <>
+                intent.md의 <b>문제를 푸는가</b>, 열린 질문은 답했거나 넘겼는가
+              </>,
+              <>
+                <b>&lsquo;꼭 필요&rsquo;만</b> — 화면 3개 이내, 핵심 기능 1개.
+                이게 오늘의{" "}
                 <Tip tip="Minimum Viable Product. 대충 만든 시제품이 아니라, 가장 중요한 문제 하나를 충분히 풀어 주는 최소한의 제품입니다.">
                   MVP
                 </Tip>
@@ -714,10 +844,10 @@ export default function PlanPage() {
                 로그인·관리자까지 만들다가 못 끝냅니다
               </>,
               <>
-                <Tip tip="처음 온 사람이 ‘이거 좋다’를 처음 느끼는 행동. 예) 30초 안에 맞는 공고 1개를 누른다. 3장 /goal 완료 조건과 4장 확인 기준이 됩니다.">
+                <Tip tip="처음 온 사람이 ‘이거 좋다’를 처음 느끼는 행동. 예) 30초 안에 맞는 공고 1개를 누른다.">
                   핵심 행동
-                </Tip>{" "}
-                1개는 3장·4장에서 계속 씁니다
+                </Tip>
+                과 <b>확인 방법</b>은 3장 /goal 완료 조건이 됩니다
               </>,
             ]}
           />
@@ -728,51 +858,69 @@ export default function PlanPage() {
           no={5}
           total={TOTAL}
           id="plan-5"
-          title="개발 지시 — 문서를 근거로 초안 만들기"
+          title="개발 지시 — 목표 · 맥락 · 제약 · 완료 조건"
           intro={
             <>
               이제 &ldquo;알아서 잘&rdquo;이 아니라{" "}
-              <b>&ldquo;이 문서대로&rdquo;</b>라고 시킵니다.
+              <b>&ldquo;이 문서대로&rdquo;</b>라고 시킵니다. 좋은 지시는 네
+              칸으로 나뉩니다.
             </>
           }
         >
+          <div className="grid gap-3 md:grid-cols-4">
+            {PROMPT_PARTS.map((c) => (
+              <div
+                key={c.k}
+                className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-4"
+              >
+                <p className="text-[15px] font-extrabold">{c.k}</p>
+                <p className="mt-1 text-[13px] leading-[1.55] text-[var(--s2-body)]">
+                  {c.v}
+                </p>
+              </div>
+            ))}
+          </div>
           <Term
-            title="AI에게 목표(goal)를 주는 방식"
+            title="AI에게 보내는 개발 지시"
             lines={[
               {
                 dim: true,
-                text: "> docs/plan.md 와 docs/requirements.md 를 읽어줘.",
+                text: "> [목표] docs/spec.md 대로 웹앱 초안을 만든다.",
+              },
+              {
+                dim: true,
+                text: "> [맥락] docs/intent.md 와 docs/spec.md 를 읽어줘.",
+              },
+              {
+                dim: true,
+                text: "> [제약] '꼭 필요' 기능까지만. '만들지 않을 것'은 건드리지 마.",
+              },
+              {
+                dim: true,
+                text: ">        첫 화면 맨 위에 intent.md 의 '원하는 결과'를 한 줄로 크게.",
+              },
+              {
+                dim: true,
+                text: ">        예시 데이터는 실제 있을 법한 것 8개 이상 (lorem ipsum 금지).",
+              },
+              {
+                dim: true,
+                text: "> [완료 조건] spec.md 의 확인 방법이 통과하고 npm run build 가 오류 없이 끝남.",
               },
               { dim: true, text: ">" },
               {
                 dim: true,
-                text: "> [목표] 이 문서대로 웹앱 초안을 만든다.",
-              },
-              {
-                dim: true,
-                text: "> [범위] '꼭 필요' 기능까지만. '만들지 않을 것'은 건드리지 마.",
-              },
-              {
-                dim: true,
-                text: "> [첫 화면] 맨 위에 plan.md의 '핵심 가치 한 줄'을 크게 보여줘.",
-              },
-              {
-                dim: true,
-                text: "> [스택] Next.js + TypeScript, 배포는 Vercel",
-              },
-              {
-                dim: true,
-                text: "> [데이터] 실제 있을 법한 예시 데이터 8개 이상 (lorem ipsum 금지)",
-              },
-              { dim: true, text: ">" },
-              {
-                dim: true,
-                text: "> 시작하기 전에 네가 이해한 계획을 먼저 요약해줘.",
+                text: "> 코드는 아직. 네가 이해한 구현 계획부터 보여줘.",
               },
             ]}
           />
-          <Callout title="먼저 계획을 요약하게">
-            방향이 틀렸다면 <b>코드 한 줄 쓰기 전에</b> 잡을 수 있습니다.
+          <Callout title="새 대화 · 계획 모드로 보내면 더 확실합니다">
+            <b className="font-mono">/clear</b> 로 대화를 비우고,{" "}
+            <b className="font-mono">Shift+Tab</b>으로{" "}
+            <b className="font-mono">⏸ plan mode on</b>을 켠 뒤 보내세요. 문서가
+            있으니 새 대화도 같은 방향으로 이어지고, Claude는 읽기만 하며 계획을
+            내놓습니다. 계획이 나오면{" "}
+            <b>&ldquo;가장 위험한 단계는 어디야?&rdquo;</b>를 물어보세요.
           </Callout>
           <div className="rounded-[16px] border border-[var(--s2-info-line)] bg-[var(--s2-info-bg)] p-5">
             <p className="mb-3 flex items-center gap-2 text-[14.5px] font-extrabold">
@@ -787,7 +935,7 @@ export default function PlanPage() {
                 title="이렇게 나오면 3장으로"
                 lines={[
                   { prompt: true, text: "ls docs/" },
-                  { text: "plan.md   requirements.md" },
+                  { text: "intent.md   spec.md" },
                 ]}
               />
             </div>
@@ -801,7 +949,7 @@ export default function PlanPage() {
             추측을 사실로 — <Blue>데이터를 모으는 법</Blue>
           </h2>
           <p className="mt-3 text-[15px] leading-[1.7] text-[var(--s2-body)]">
-            plan.md의 칸은 대부분 추측입니다. 앱이 없어도 데이터는 모을 수
+            intent.md의 칸은 대부분 추측입니다. 앱이 없어도 데이터는 모을 수
             있고, 초기엔{" "}
             <Tip tip="설문은 무엇을 물어야 할지 이미 안다고 가정하고, 표정과 망설임을 보여주지 않습니다. 가설이 선 뒤 크게 확인할 때 씁니다.">
               설문보다 직접 만나는 쪽
@@ -864,11 +1012,11 @@ export default function PlanPage() {
 
           <div className="mt-6 flex flex-col gap-2">
             <Term
-              title="소개 페이지 — 문제와 핵심 가치만"
+              title="소개 페이지 — 문제와 원하는 결과만"
               lines={[
                 {
                   dim: true,
-                  text: "> docs/plan.md 의 문제와 핵심 가치 한 줄만 보여주는 소개 페이지를 만들어줘.",
+                  text: "> docs/intent.md 의 문제와 원하는 결과 한 줄만 보여주는 소개 페이지를 만들어줘.",
                 },
                 {
                   dim: true,
@@ -914,7 +1062,7 @@ export default function PlanPage() {
               lines={[
                 {
                   dim: true,
-                  text: "> docs/plan.md 를 읽고 20분 문제 인터뷰 대본을 docs/interview-script.md 로 만들어줘.",
+                  text: "> docs/intent.md 를 읽고 20분 문제 인터뷰 대본을 docs/interview-script.md 로 만들어줘.",
                 },
                 { dim: true, text: "> 해결책을 꺼내지 않고, 지금의 행동을 묻는 질문으로." },
                 { dim: true, text: ">" },
@@ -953,11 +1101,11 @@ export default function PlanPage() {
               ]}
             />
             <Term
-              title="배운 것을 기획서로 되돌리기"
+              title="배운 것을 intent.md 로 되돌리기"
               lines={[
                 {
                   dim: true,
-                  text: "> docs/interviews.md 를 읽고, docs/plan.md 에서 바꿔야 할 칸과",
+                  text: "> docs/interviews.md 를 읽고, docs/intent.md 에서 바꿔야 할 칸과",
                 },
                 {
                   dim: true,

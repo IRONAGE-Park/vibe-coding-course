@@ -31,10 +31,10 @@ export const CHAPTERS: Chapter[] = [
     label: "문제 정의",
     href: "/plan",
     steps: [
-      { id: "plan-1", title: "Claude Code 열고 대화 시작하기" },
+      { id: "plan-1", title: "AI에게 인터뷰받기" },
       { id: "plan-2", title: "문제 정의 — 한 문장으로" },
-      { id: "plan-3", title: "기획서 만들기" },
-      { id: "plan-4", title: "요구사항 명세" },
+      { id: "plan-3", title: "intent.md 만들기" },
+      { id: "plan-4", title: "spec.md 만들기" },
       { id: "plan-5", title: "개발 지시 — 초안 만들기" },
     ],
   },

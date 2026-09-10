@@ -275,6 +275,10 @@ export default function ToolsPage() {
               <CheckList
                 items={[
                   <>
+                    <b>무엇을 적나</b> — 명령어 · 규칙 · 폴더 구조 · Claude가 자주
+                    틀리는 것. <b>한 페이지 이내</b>로
+                  </>,
+                  <>
                     작업하다 <b>같은 지적을 두 번 하게 되면</b> — 그건
                     CLAUDE.md에 적을 규칙입니다
                   </>,
@@ -348,6 +352,31 @@ export default function ToolsPage() {
                 </>,
               ]}
             />
+            <div className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5">
+              <p className="text-[15px] font-extrabold">
+                유명 서비스의 <Blue>디자인 시스템</Blue>을 가져다 쓰기
+              </p>
+              <p className="mt-1.5 text-[14px] leading-[1.65] text-[var(--s2-body)]">
+                <Ext href="https://getdesign.md/">getdesign.md</Ext> 는 Stripe ·
+                Vercel · Linear · Apple · Airbnb 같은 서비스의 색 · 글꼴 · 간격 ·
+                컴포넌트 규칙을{" "}
+                <Tip tip="AI 코딩 에이전트가 읽기 좋게 디자인 규칙을 정리한 마크다운 파일. 프로젝트 맨 위 폴더에 두면 Claude Code · Codex가 그 규칙대로 화면을 만듭니다.">
+                  DESIGN.md
+                </Tip>{" "}
+                파일로 모아 둔 곳입니다(원본:{" "}
+                <Ext href="https://github.com/VoltAgent/awesome-design-md">
+                  awesome-design-md
+                </Ext>
+                ). 마음에 드는 파일을 내 프로젝트 맨 위 폴더에 넣고 이렇게
+                시키면 됩니다.
+              </p>
+              <div className="mt-3">
+                <CopyBlock
+                  label="Claude Code에 입력"
+                  command="DESIGN.md 의 색 · 글꼴 · 컴포넌트 규칙대로 지금 화면을 다시 꾸며줘. 기능은 건드리지 마"
+                />
+              </div>
+            </div>
             <Callout title="목록은 / 만 눌러보면 나옵니다">
               외울 필요 없습니다. Claude Code 입력창에{" "}
               <b className="font-mono">/</b> 를 치면 지금 쓸 수 있는 명령어와
@@ -422,6 +451,13 @@ export default function ToolsPage() {
                 <b>확장</b> — MCP로 Slack·DB·GitHub 같은 외부 서비스도 도구로
                 연결
               </>,
+              <>
+                <Tip tip="Claude가 행동하기 직전에 매번 실행되는 검사. CLAUDE.md와 스킬은 권고라 가끔 놓치지만, 훅은 막거나 승인을 요구합니다. 설정은 .claude/settings.json 에.">
+                  훅(hooks)
+                </Tip>{" "}
+                — &lsquo;반드시&rsquo; 지킬 규칙을 거는 자리. 예) 실서비스 배포 전
+                확인, 비밀 키 파일 수정 금지
+              </>,
             ]}
           />
           <Callout title="잘 안 풀릴 때">
@@ -481,6 +517,16 @@ export default function ToolsPage() {
                       Claude Code changelog
                     </Ext>{" "}
                     — 새 기능 소식
+                  </>,
+                  <>
+                    <Ext href="https://claude.com/blog/the-ai-native-sdlc-playbook">
+                      The AI-Native SDLC Playbook
+                    </Ext>{" "}
+                    ·{" "}
+                    <Ext href="https://academy.claude.com/ko/courses/ai-native-sdlc-playbook/introduction">
+                      Claude Academy 코스(한국어)
+                    </Ext>{" "}
+                    — 오늘 따라 한 개발 주기의 원본
                   </>,
                 ]}
               />

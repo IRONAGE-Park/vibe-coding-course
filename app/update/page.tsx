@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import CopyBlock from "../components/CopyBlock";
+import SdlcLoop from "../components/SdlcLoop";
 import StageCycle from "../components/StageCycle";
 import StepRail from "../components/StepRail";
 import Tip from "../components/Tip";
@@ -95,7 +96,7 @@ const REINFORCE = [
 
 const DECISIONS = [
   { k: "계속", v: "신호가 좋다 → 가장 큰 구멍을 계속 메운다" },
-  { k: "방향 전환", v: "다른 고객·문제에서 반응이 더 좋다 → plan.md의 첫 고객·문제부터 다시" },
+  { k: "방향 전환", v: "다른 고객·문제에서 반응이 더 좋다 → intent.md의 대상·문제부터 다시" },
   { k: "멈춤", v: "신호가 없거나, 오래 풀고 싶은 문제가 아니다 → 배운 것을 남기고 새 아이디어로" },
 ];
 
@@ -157,6 +158,13 @@ export default function UpdatePage() {
             배포가 아니라 <b>배운 것</b> — 뒤쪽 &lsquo;배우는 법&rsquo;에서
             다룹니다.
           </p>
+          <div className="mt-6">
+            <p className="mb-3 text-[15px] font-extrabold">
+              개발 주기로 보면 — <Blue>검증 · 배포 · 운영</Blue>, 그리고 다시
+              1단계
+            </p>
+            <SdlcLoop current={[3, 4, 5]} />
+          </div>
         </section>
 
         {/* 업데이트 원칙 */}
@@ -259,8 +267,8 @@ export default function UpdatePage() {
             command="/goal 화면이 의도대로 바뀌고 npm run build 가 통과할 때까지"
           />
           <CopyBlock
-            label="새 기능이라면 — 먼저 기획서와 대조"
-            command="docs/plan.md 의 핵심 가치와 이 요청이 맞는지 먼저 확인하고, 안 맞으면 만들기 전에 말해줘"
+            label="새 기능이라면 — 먼저 intent.md 와 대조"
+            command="docs/intent.md 의 원하는 결과와 이 요청이 맞는지 먼저 확인하고, 안 맞으면 만들기 전에 말해줘"
           />
           <Callout title="기존 화면을 지키는 한마디">
             수정 요청에는 늘 <b>&ldquo;지금 화면은 그대로 두고&rdquo;</b>를
@@ -386,6 +394,10 @@ export default function UpdatePage() {
           title="커밋하고 푸시하기"
           intro={<>화면이 마음에 들면 바로 올립니다. 이것도 말로 시킵니다.</>}
         >
+          <CopyBlock
+            label="올리기 전에 — AI에게 검토받기"
+            command="/code-review"
+          />
           <Term
             title="Claude Code 안에서"
             lines={[
@@ -403,6 +415,9 @@ export default function UpdatePage() {
               </>,
               <>
                 푸시 전에 <b className="font-mono">npm run build</b> 통과 확인
+              </>,
+              <>
+                검토에서 <b>같은 지적이 두 번</b> 나오면 CLAUDE.md에 규칙으로
               </>,
             ]}
           />
@@ -671,11 +686,11 @@ export default function UpdatePage() {
               ]}
             />
             <Term
-              title="한 주가 끝나면 — 기획서로 되돌리기"
+              title="한 주가 끝나면 — intent.md 로 되돌리기"
               lines={[
                 {
                   dim: true,
-                  text: "> docs/learning.md 를 읽고, docs/plan.md 에서 바뀌어야 할 칸과",
+                  text: "> docs/learning.md 를 읽고, docs/intent.md 에서 바뀌어야 할 칸과",
                 },
                 {
                   dim: true,
@@ -729,7 +744,7 @@ export default function UpdatePage() {
                 <>
                   <b>기록</b> —{" "}
                   <span className="font-mono text-[13.5px]">learning.md</span> →{" "}
-                  <span className="font-mono text-[13.5px]">plan.md</span>
+                  <span className="font-mono text-[13.5px]">intent.md</span>
                 </>,
               ]}
             />

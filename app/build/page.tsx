@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import CopyBlock from "../components/CopyBlock";
+import SdlcLoop from "../components/SdlcLoop";
 import StepRail from "../components/StepRail";
 import Tip from "../components/Tip";
 import {
+  Badge,
   Blue,
   Callout,
   CheckList,
@@ -111,6 +113,21 @@ export default function BuildPage() {
           </div>
         </section>
 
+        {/* AI 네이티브 개발 주기 — 지금 여기 */}
+        <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
+          <Badge>AI 네이티브 개발 주기</Badge>
+          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
+            이 장은 루프의 <Blue>3 · 4 · 5단계</Blue> — 구현, 검증, 첫 배포
+          </h2>
+          <p className="mt-3 text-[15px] leading-[1.7] text-[var(--s2-body)]">
+            <b>계획 → 구현 → AI의 자가 검증 → 배포</b>. 여러분은 계획을
+            승인하고, 결과를 보고, 내보낼지 정합니다.
+          </p>
+          <div className="mt-5">
+            <SdlcLoop current={[2, 3, 4]} />
+          </div>
+        </section>
+
         {/* 1. /goal 로 완료 조건 걸기 */}
         <StepCard
           no={1}
@@ -186,7 +203,7 @@ export default function BuildPage() {
         >
           <CopyBlock
             label="Orca에서 + → Claude 로 연 뒤, 이렇게 요청"
-            command="docs/plan.md 와 docs/requirements.md 를 읽고 웹앱 초안을 만들어줘"
+            command="docs/intent.md 와 docs/spec.md 를 읽고 웹앱 초안을 만들어줘"
           />
           <Term
             title="이렇게 진행됩니다"
@@ -199,7 +216,7 @@ export default function BuildPage() {
               { text: "" },
               {
                 dim: true,
-                text: "> docs/plan.md 와 docs/requirements.md 를 읽고 초안을 만들어줘",
+                text: "> docs/intent.md 와 docs/spec.md 를 읽고 초안을 만들어줘",
               },
               { text: "" },
               { text: "두 문서를 읽었습니다. 계획은 이렇습니다:" },
@@ -216,6 +233,12 @@ export default function BuildPage() {
           <Callout title="계획이 마음에 안 들면 여기서">
             &ldquo;3번은 빼고 검색창을 넣어줘&rdquo;처럼 <b>항목을 짚어</b>{" "}
             고치세요. 아직 코드가 없어 되돌릴 것도 없습니다.
+          </Callout>
+          <Callout title="더 확실하게 — 계획 모드">
+            입력창에서 <b className="font-mono">Shift+Tab</b>으로{" "}
+            <b className="font-mono">⏸ plan mode on</b>을 켜고 요청하면, Claude는{" "}
+            <b>읽기만</b> 하고 계획을 내놓습니다. 승인해야 만들기 시작합니다 —
+            작업이 클수록 이 방식이 안전합니다.
           </Callout>
         </StepCard>
 

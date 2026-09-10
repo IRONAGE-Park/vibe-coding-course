@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Nav from "./components/Nav";
-import { Pill, SiteFooter } from "./components/ui";
+import SdlcLoop from "./components/SdlcLoop";
+import { Badge, Blue, Ext, Pill, SiteFooter } from "./components/ui";
 
 const CHAPTERS = [
   {
@@ -13,7 +14,7 @@ const CHAPTERS = [
     href: "/plan",
     num: "02",
     title: "문제 정의",
-    desc: "문제를 좁히고 한 장짜리 기획서 · 요구사항 명세 만들기",
+    desc: "AI에게 인터뷰받으며 문제를 좁히고 intent.md · spec.md 두 문서로 시작하기",
   },
   {
     href: "/build",
@@ -71,6 +72,35 @@ export default function Home() {
         >
           GO
         </span>
+      </section>
+
+      {/* ── 개발 주기 ──────────────────────────────────── */}
+      <section className="border-t border-[var(--s2-line)]">
+        <div className="mx-auto w-full max-w-5xl px-5 py-14 md:px-8">
+          <Badge>AI 네이티브 개발 주기</Badge>
+          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
+            코드는 더 이상 병목이 아닙니다 — 이 강의는{" "}
+            <Blue>여섯 단계 루프</Blue>를 한 바퀴 돕니다
+          </h2>
+          <p className="mt-3 text-[15px] leading-[1.7] text-[var(--s2-body)]">
+            단계마다 AI가 <b>문서(.md)</b>를 만들고 다음 단계가 그 문서를
+            읽습니다. 사람은 루프 <b>위</b>에서 시작하고, 방향을 정하고,
+            승인합니다.
+          </p>
+          <div className="mt-6">
+            <SdlcLoop />
+          </div>
+          <p className="mt-4 text-[13px] leading-[1.65] text-[var(--s2-gray)]">
+            출처 —{" "}
+            <Ext href="https://claude.com/blog/the-ai-native-sdlc-playbook">
+              The AI-Native SDLC Playbook
+            </Ext>{" "}
+            ·{" "}
+            <Ext href="https://academy.claude.com/ko/courses/ai-native-sdlc-playbook/introduction">
+              Claude Academy 코스
+            </Ext>
+          </p>
+        </div>
       </section>
 
       {/* ── 챕터 목차 ──────────────────────────────────── */}
