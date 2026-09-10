@@ -160,6 +160,21 @@
   .roles .me li::before { background: var(--ink); }
   .cr { position: absolute; right: 10px; bottom: 8px; font-family: "Fragment Mono", monospace; font-size: 10.5px; color: rgba(255,255,255,.9); text-shadow: 0 1px 3px rgba(0,0,0,.6); }
 
+  /* 에이전트 활용: 만들지 않고 맡기기(3단 카드) · 스킬 저장소 목록 */
+  .cases.flex > div { display: flex; flex-direction: column; }
+  .cases.flex .n { align-self: flex-start; }
+  .cases.flex p, .cases .ex li { word-break: keep-all; }
+  .cases .ex { list-style: none; margin-top: 14px; padding-top: 12px; border-top: 1px solid #f1f2f4; }
+  .cases .ex li { font-size: 15px; line-height: 1.5; color: var(--body); padding: 3px 0 3px 20px; position: relative; }
+  .cases .ex li::before { content: "→"; position: absolute; left: 0; top: 3px; font-family: "Fragment Mono", monospace; font-size: 13px; color: var(--blue); }
+  .cases .tl { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 16px; }
+  .cases .tl span { font-family: "Fragment Mono", monospace; font-size: 12px; color: var(--blue); background: #f4f8ff; border: 1px solid #d7e6ff; border-radius: 999px; padding: 4px 11px; }
+  .skl { padding: 6px 34px; }
+  .skl > div { display: grid; grid-template-columns: 330px 1fr; gap: 24px; align-items: center; padding: 9px 0; border-bottom: 1px solid #f1f2f4; }
+  .skl > div:last-child { border-bottom: none; }
+  .skl .rp { font-family: "Fragment Mono", monospace; font-size: 15px; font-weight: 700; color: var(--ink); text-decoration: none; }
+  .skl .ds { font-size: 16px; line-height: 1.45; color: var(--body); }
+
   .proc .loop {
     font-family: "Fragment Mono", monospace; font-size: 16px; font-weight: 700;
     color: var(--blue); background: var(--blue-soft); border-radius: 999px; padding: 11px 20px;
@@ -334,7 +349,7 @@
         <div class="item">
           <div class="n">04</div>
           <div class="t">어떤 문제를 해결해야 할까</div>
-          <div class="s">일을 '시키는' 사람이란 · 문제를 정의하자 · 항상 잘게 쪼개기</div>
+          <div class="s">일을 '시키는' 사람이란 · 문제를 정의하자 · 항상 잘게 쪼개기 · 만들지 않고 맡기기</div>
         </div>
         <div class="item">
           <div class="n">05</div>
@@ -1446,6 +1461,83 @@
     </div>
   </div>
   <p class="fnote">잘 맞는 문제의 형태 — 범위가 작고, <b>오늘 안에 결과를 확인할 수 있는</b> 문제입니다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 에이전트 활용 ① 질문: 꼭 바이브 코딩이어야 할까 -->
+<section class="slide tint">
+  <div class="center">
+    <span class="badge">04 — 한 걸음 더</span>
+    <h1>꼭 <span class="blue">바이브 코딩</span>만<br>해야 할까요?</h1>
+    <p class="sub">에이전트는 코드를 짜는 도구이기 전에, 일을 <b>맡기는</b> 도구입니다</p>
+  </div>
+  <div class="ghost">?</div>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 에이전트 활용 ② 만들지 않고 맡기기 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>04 — 한 걸음 더</span>
+    <h2>만들지 않고 <span class="blue">맡기기</span></h2>
+  </div>
+  <div class="body" style="top:210px">
+    <div class="cases flex">
+      <div>
+        <span class="n">자료 수집 · 조사</span>
+        <h4>여러 갈래로 나눠 동시에 조사</h4>
+        <p>주제를 쪼개 에이전트 여럿이 <b>동시에 찾고</b>, 출처를 붙여 한 문서로 모읍니다</p>
+        <ul class="ex">
+          <li>경쟁 서비스 비교표를 출처와 함께</li>
+          <li>지원사업 공고 중 우리 조건에 맞는 것만</li>
+        </ul>
+        <div class="tl"><span>Deep Research</span><span>서브에이전트</span></div>
+      </div>
+      <div>
+        <span class="n">자료 가공</span>
+        <h4>폴더째 맡기고 결과만 확인</h4>
+        <p>흩어진 파일을 읽고 <b>정리·변환</b>까지 — 사람은 결과가 맞는지만 봅니다</p>
+        <ul class="ex">
+          <li>영수증 스크린샷 묶음을 경비 엑셀로</li>
+          <li>여러 문서에 흩어진 메모를 보고서 초안으로</li>
+        </ul>
+        <div class="tl"><span>Claude Cowork</span><span>Claude for Excel</span></div>
+      </div>
+      <div>
+        <span class="n">문서 · PPT 만들기</span>
+        <h4>모은 자료를 발표 자료로</h4>
+        <p>조사한 내용과 표를 <b>슬라이드·보고서</b>로 — 초안은 에이전트, 다듬기는 사람</p>
+        <ul class="ex">
+          <li>회의록과 엑셀을 넣고 10장짜리 보고 자료로</li>
+          <li>HTML로 만든 슬라이드를 PDF로</li>
+        </ul>
+        <div class="tl"><span>pptx 스킬</span><span>ppt-master</span><span>Claude for PowerPoint</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">이 강의 자료의 사진 찾기 · 라이선스 확인 · PDF 출력도 에이전트에게 맡긴 일입니다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 에이전트 활용 ③ 스킬: GitHub에 공유된 일하는 요령 -->
+<section class="slide tint">
+  <div class="head">
+    <span class="badge">04 — 한 걸음 더</span>
+    <h2>남이 만든 <span class="blue">일하는 요령</span>, 스킬</h2>
+  </div>
+  <div class="body" style="top:200px">
+    <p class="verdict">스킬은 <b>폴더 하나</b>입니다 — 안에 적힌 요령(SKILL.md)을 에이전트가 필요할 때 꺼내 씁니다.</p>
+    <div class="panel skl">
+      <div><a class="rp" href="https://github.com/anthropics/skills">anthropics/skills</a><span class="ds">Anthropic 공식 — PPT·Word·Excel·PDF 문서 스킬 포함 19개</span></div>
+      <div><a class="rp" href="https://github.com/tt-a1i/archify">tt-a1i/archify</a><span class="ds">시스템과 업무 흐름을 설명하면 움직이는 구조도·흐름도로</span></div>
+      <div><a class="rp" href="https://github.com/hugohe3/ppt-master">hugohe3/ppt-master</a><span class="ds">문서나 주제를 넣으면 도형까지 편집되는 진짜 PowerPoint로</span></div>
+      <div><a class="rp" href="https://github.com/K-Dense-AI/claude-scientific-skills">K-Dense-AI/claude-scientific-skills</a><span class="ds">과학 연구용 스킬 모음 — 논문과 연구 데이터 조사</span></div>
+      <div><a class="rp" href="https://github.com/cathrynlavery/diagram-design">cathrynlavery/diagram-design</a><span class="ds">순서도·간트·타임라인 등 수십 종의 다이어그램을 브랜드 색으로</span></div>
+      <div><a class="rp" href="https://github.com/VoltAgent/awesome-agent-skills">VoltAgent/awesome-agent-skills</a><span class="ds">공식·커뮤니티 스킬 1,000개 이상을 모아 둔 목록</span></div>
+      <div><a class="rp" href="https://github.com/NomaDamas/k-skill">NomaDamas/k-skill</a><span class="ds">한국인을 위한 123개 — KTX 시간표, 부동산 실거래가, 법령·특허, 사업자 조회</span></div>
+    </div>
+  </div>
+  <p class="fnote">스킬은 내 컴퓨터에서 <b>내 권한으로</b> 실행됩니다 — 설치 전에 무엇을 하는지 한 번 읽어보세요</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
