@@ -6,6 +6,15 @@ import { isTrackedStep } from "@/app/lib/steps";
 export const runtime = "nodejs";
 
 const VID_RE = /^[a-zA-Z0-9-]{8,64}$/;
+/** 사이트 안의 페이지 주소만 받습니다 — "/", "/setup" 같은 모양 */
+const PATH_RE = /^\/[a-z0-9-]{0,40}$/;
+/** 한 번에 보내는 머문 시간의 상한. 탭을 켜둔 채 자리를 비운 기록이 한없이 커지지 않게 합니다. */
+const MAX_MS = 3 * 60 * 60 * 1000;
+
+function cleanMs(raw: unknown): number | null {
+  if (typeof raw !== "number" || !Number.isFinite(raw) || raw < 0) return null;
+  return Math.min(Math.round(raw), MAX_MS);
+}
 
 /** 참가자 이름 정리 — 제어문자를 걸러내고 길이를 제한합니다 */
 function cleanName(raw: unknown): string {
@@ -87,6 +96,26 @@ export async function POST(req: Request) {
         .eq("visitor_id", visitorId)
         .eq("session_id", session.id)
         .eq("step_id", stepId);
+    } else if (event === "page" || event === "next") {
+      const path = typeof body.path === "string" ? body.path : "";
+      const target = typeof body.target === "string" ? body.target : "";
+      const ms = cleanMs(body.ms);
+      const valid =
+        PATH_RE.test(path) &&
+        ms !== null &&
+        (event === "page" || PATH_RE.test(target));
+
+      if (valid) {
+        await db.from(TABLES.events).insert({
+          visitor_id: visitorId,
+          session_id: session.id,
+          kind: event,
+          path,
+          target: event === "next" ? target : null,
+          duration_ms: ms,
+          at: now,
+        });
+      }
     }
 
     return NextResponse.json({

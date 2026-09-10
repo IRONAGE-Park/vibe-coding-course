@@ -176,7 +176,7 @@ function NotesView({ notes }: { notes: ChapterNotes[] }) {
   );
 }
 
-type Tab = "people" | "steps" | "notes" | "sessions";
+type Tab = "people" | "steps" | "time" | "notes" | "sessions";
 
 function Dashboard({
   initialStats,
@@ -352,6 +352,13 @@ function Dashboard({
   const viewed = stats.sessions.find((s) => s.id === stats.session?.id);
   const isViewingRunning = viewed?.isRunning ?? false;
 
+  const pages = [...stats.pageTimes].sort(
+    (a, b) => pageOrder(a.path) - pageOrder(b.path)
+  );
+  const clicks = [...stats.nextClicks].sort(
+    (a, b) => pageOrder(a.path) - pageOrder(b.path) || b.visitors - a.visitors
+  );
+
   const avgPct = stats.totalSteps
     ? Math.round((stats.averageDone / stats.totalSteps) * 100)
     : 0;
@@ -407,6 +414,7 @@ function Dashboard({
           [
             ["people", `참가자 ${stats.totalVisitors}`],
             ["steps", "단계별"],
+            ["time", "시간"],
             ["notes", "강사 노트"],
             ["sessions", "강의"],
           ] as [Tab, string][]
@@ -493,11 +501,16 @@ function Dashboard({
       )}
 
       {tab === "steps" &&
-        CHAPTERS.filter((c) => c.steps.length > 0).map((c) => (
-          <Section key={c.key} title={`${c.num} ${c.label}`}>
+        CHAPTERS.filter((c) => c.steps.length > 0).map((c, ci) => (
+          <Section
+            key={c.key}
+            title={`${c.num} ${c.label}`}
+            note={ci === 0 ? "걸린 시간 · 완료 인원" : undefined}
+          >
             <div className="overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)]">
               {c.steps.map((s, i) => {
                 const n = stats.stepCounts[s.id] ?? 0;
+                const t = stats.stepTimes[s.id];
                 return (
                   <div
                     key={s.id}
@@ -507,6 +520,12 @@ function Dashboard({
                   >
                     <span className="flex-1 text-[13.5px] leading-[1.45]">
                       {s.title}
+                    </span>
+                    <span
+                      title="앞 단계를 끝낸 때부터 이 단계를 끝낸 때까지 (중앙값)"
+                      className="font-mono w-14 shrink-0 text-right text-[11.5px] text-[var(--s2-faint)]"
+                    >
+                      {t ? duration(t.medianS * 1000) : "–"}
                     </span>
                     <span className="w-16 shrink-0">
                       <Bar
@@ -524,6 +543,70 @@ function Dashboard({
             </div>
           </Section>
         ))}
+
+      {tab === "time" && (
+        <>
+          <Section title="페이지별 머문 시간" note="탭을 보고 있던 시간 · 중앙값">
+            {pages.length === 0 ? (
+              <Empty>아직 기록이 없습니다.</Empty>
+            ) : (
+              <div className="overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)]">
+                {pages.map((p, i) => (
+                  <div
+                    key={p.path}
+                    className={`flex items-center gap-3 px-4 py-3 ${
+                      i > 0 ? "border-t border-[var(--s2-line)]" : ""
+                    }`}
+                  >
+                    <span className="min-w-0 flex-1 truncate text-[13.5px]">
+                      {pageLabel(p.path)}
+                    </span>
+                    <span className="font-mono shrink-0 text-[11.5px] text-[var(--s2-faint)]">
+                      {p.visitors}명 · 평균 {duration(p.avgMs)}
+                    </span>
+                    <span className="font-mono w-16 shrink-0 text-right text-[13px] font-bold text-[var(--s2-blue)]">
+                      {duration(p.medianMs)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Section>
+
+          <Section title="다음 장으로 넘어간 시점" note="처음 누른 때 기준">
+            {clicks.length === 0 ? (
+              <Empty>아직 페이지 아래 &lsquo;다음&rsquo;을 누른 사람이 없습니다.</Empty>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {clicks.map((c) => (
+                  <div
+                    key={`${c.path}>${c.target}`}
+                    className="overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <p className="min-w-0 flex-1 truncate text-[14.5px] font-extrabold">
+                        {pageLabel(c.path)} → {pageLabel(c.target)}
+                      </p>
+                      <span className="font-mono shrink-0 text-[12.5px] font-bold text-[var(--s2-blue)]">
+                        {c.visitors} / {stats.totalVisitors}
+                      </span>
+                    </div>
+                    <p className="mt-1.5 text-[12.5px] leading-[1.5] text-[var(--s2-body)]">
+                      <span className="text-[var(--s2-faint)]">페이지에 머문 시간 </span>
+                      {duration(c.medianMs)}
+                      <span className="text-[var(--s2-faint)]"> (중앙값)</span>
+                    </p>
+                    <p className="font-mono mt-1 truncate text-[11px] text-[var(--s2-faint)]">
+                      첫 클릭 {when(c.firstAt)} · 중앙값 {when(c.medianAt)}
+                    </p>
+                    <Bar value={c.visitors} max={Math.max(stats.totalVisitors, 1)} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </Section>
+        </>
+      )}
 
       {tab === "notes" && <NotesView notes={notes} />}
 
@@ -627,6 +710,31 @@ function Dashboard({
 }
 
 /* ── 조각들 ─────────────────────────────────────────────── */
+
+/** 참가자 화면의 페이지 순서 — 홈, 각 장, 막혔을 때 */
+const PAGES = [
+  { href: "/", label: "홈" },
+  ...CHAPTERS.map((c) => ({ href: c.href, label: `${c.num} ${c.label}` })),
+  { href: "/help", label: "막혔을 때" },
+];
+
+function pageOrder(path: string): number {
+  const i = PAGES.findIndex((p) => p.href === path);
+  return i < 0 ? PAGES.length : i;
+}
+
+function pageLabel(path: string): string {
+  return PAGES.find((p) => p.href === path)?.label ?? path;
+}
+
+/** 걸린 시간 표시 — 45초 · 4분 · 1시간 5분 */
+function duration(ms: number): string {
+  const s = Math.round(ms / 1000);
+  if (s < 60) return `${s}초`;
+  const m = Math.round(s / 60);
+  if (m < 60) return `${m}분`;
+  return `${Math.floor(m / 60)}시간 ${m % 60}분`;
+}
 
 function short(id: string): string {
   return id.slice(0, 8);

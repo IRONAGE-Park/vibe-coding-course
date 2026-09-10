@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import StepShell from "./StepShell";
+import NextLink from "./NextLink";
 import { isTrackedStep } from "@/app/lib/steps";
 
 /* ── 라벨/뱃지 ─────────────────────────────────────────── */
@@ -423,7 +424,7 @@ export function Pager({
         <span className="flex-1" />
       )}
       {next ? (
-        <Link
+        <NextLink
           href={next.href}
           className="group flex flex-1 flex-col items-end gap-1 rounded-[18px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-5 text-right transition-colors hover:border-[var(--s2-blue)]"
         >
@@ -433,7 +434,7 @@ export function Pager({
           <span className="text-[15.5px] font-extrabold text-[var(--s2-strong)] group-hover:text-[var(--s2-blue)]">
             {next.label}
           </span>
-        </Link>
+        </NextLink>
       ) : (
         <span className="flex-1" />
       )}

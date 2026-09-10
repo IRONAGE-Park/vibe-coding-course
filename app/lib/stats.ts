@@ -3,7 +3,17 @@ import "server-only";
 import { getDb, startOfTodayKST, TABLES } from "@/app/lib/db";
 import { getRunningSession } from "@/app/lib/participation";
 import { TOTAL_STEPS, currentStepId } from "@/app/lib/steps";
-import type { Stats, SessionRow, VisitorRow } from "@/app/lib/stats-types";
+import type {
+  Stats,
+  SessionRow,
+  StepTime,
+  VisitorRow,
+} from "@/app/lib/stats-types";
+
+type Db = NonNullable<ReturnType<typeof getDb>>;
+type Timing = Pick<Stats, "pageTimes" | "nextClicks" | "stepTimes">;
+
+const NO_TIMING: Timing = { pageTimes: [], nextClicks: [], stepTimes: {} };
 
 const EMPTY: Omit<Stats, "updatedAt"> = {
   connected: false,
@@ -16,6 +26,7 @@ const EMPTY: Omit<Stats, "updatedAt"> = {
   averageDone: 0,
   stepCounts: {},
   visitors: [],
+  ...NO_TIMING,
 };
 
 /**
@@ -69,7 +80,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
 
     const current = rows.find((s) => s.id === target) ?? null;
 
-    const [today, steps, people] = await Promise.all([
+    const [today, steps, people, timing] = await Promise.all([
       db
         .from(TABLES.visitors)
         .select("visitor_id", { count: "exact", head: true })
@@ -85,6 +96,7 @@ export async function getStats(sessionId?: string): Promise<Stats> {
         .eq("session_id", target)
         .order("done", { ascending: true })
         .order("first_seen", { ascending: true }),
+      getTiming(db, target),
     ]);
 
     const firstError = today.error ?? steps.error ?? people.error;
@@ -135,9 +147,80 @@ export async function getStats(sessionId?: string): Promise<Stats> {
       averageDone,
       stepCounts,
       visitors,
+      ...timing,
       updatedAt: Date.now(),
     };
   } catch {
     return { ...EMPTY, updatedAt: Date.now() };
+  }
+}
+
+/**
+ * 머문 시간 · "다음" 클릭 · 단계별 걸린 시간.
+ * supabase/events.sql 을 아직 실행하지 않았으면 뷰가 없어 오류가 납니다.
+ * 그래도 기존 진행 현황은 보여야 하므로, 이 부분만 비워서 돌려줍니다.
+ */
+async function getTiming(db: Db, sessionId: string): Promise<Timing> {
+  try {
+    const [pages, clicks, steps] = await Promise.all([
+      db
+        .from(TABLES.pageTimeStats)
+        .select("path, visitors, median_ms, avg_ms")
+        .eq("session_id", sessionId),
+      db
+        .from(TABLES.nextClickStats)
+        .select("path, target, visitors, median_ms, first_at, median_at")
+        .eq("session_id", sessionId),
+      db
+        .from(TABLES.stepTimeStats)
+        .select("step_id, visitors, median_s")
+        .eq("session_id", sessionId),
+    ]);
+    if (pages.error || clicks.error || steps.error) return NO_TIMING;
+
+    const stepTimes: Record<string, StepTime> = {};
+    for (const row of (steps.data ?? []) as {
+      step_id: string;
+      visitors: number;
+      median_s: number;
+    }[]) {
+      stepTimes[row.step_id] = { visitors: row.visitors, medianS: row.median_s };
+    }
+
+    return {
+      pageTimes: (
+        (pages.data ?? []) as {
+          path: string;
+          visitors: number;
+          median_ms: number;
+          avg_ms: number;
+        }[]
+      ).map((row) => ({
+        path: row.path,
+        visitors: row.visitors,
+        medianMs: row.median_ms,
+        avgMs: row.avg_ms,
+      })),
+      nextClicks: (
+        (clicks.data ?? []) as {
+          path: string;
+          target: string;
+          visitors: number;
+          median_ms: number;
+          first_at: string;
+          median_at: string;
+        }[]
+      ).map((row) => ({
+        path: row.path,
+        target: row.target,
+        visitors: row.visitors,
+        medianMs: row.median_ms,
+        firstAt: row.first_at,
+        medianAt: row.median_at,
+      })),
+      stepTimes,
+    };
+  } catch {
+    return NO_TIMING;
   }
 }

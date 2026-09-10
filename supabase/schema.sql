@@ -5,11 +5,16 @@
 --   처음 설치할 때 한 번만 실행하세요.
 --   강의 기록이 쌓인 뒤에는 다시 실행하면 안 됩니다.
 --   기록을 지우고 싶을 때는 관리자 화면의 "새 회차" 나 "회차 삭제" 를 쓰세요.
+--   이미 설치한 뒤 머문 시간 기록만 더하려면 events.sql 만 실행하세요.
 
+drop view  if exists public.page_time_stats  cascade;
+drop view  if exists public.next_click_stats cascade;
+drop view  if exists public.step_time_stats  cascade;
 drop view  if exists public.visitor_progress cascade;
 drop view  if exists public.step_counts      cascade;
 drop view  if exists public.team_members     cascade;
 drop view  if exists public.team_steps       cascade;
+drop table if exists public.events           cascade;
 drop table if exists public.completions      cascade;
 drop table if exists public.visitors         cascade;
 drop table if exists public.login_attempts   cascade;
@@ -117,3 +122,92 @@ create view public.visitor_progress
 
 revoke all on public.step_counts      from anon, authenticated;
 revoke all on public.visitor_progress from anon, authenticated;
+
+-- ── 머문 시간 · "다음" 클릭 ───────────────────────────────
+-- 내용은 events.sql 과 같습니다. 처음 설치할 때는 여기서 함께 만들어집니다.
+
+create table public.events (
+  id           bigint generated always as identity primary key,
+  visitor_id   text not null,
+  session_id   uuid not null,
+  kind         text not null check (kind in ('page', 'next')),
+  path         text not null,
+  target       text,
+  duration_ms  int  not null check (duration_ms >= 0),
+  at           timestamptz not null default now(),
+  foreign key (visitor_id, session_id)
+    references public.visitors (visitor_id, session_id) on delete cascade
+);
+
+create index events_session_kind_idx on public.events (session_id, kind);
+
+alter table public.events enable row level security;
+revoke all on public.events from anon, authenticated;
+
+create view public.page_time_stats
+  with (security_invoker = true) as
+  select
+    session_id,
+    path,
+    count(*)::int                                                  as visitors,
+    (percentile_cont(0.5) within group (order by active_ms))::int as median_ms,
+    avg(active_ms)::int                                            as avg_ms
+  from (
+    select session_id, visitor_id, path, sum(duration_ms)::bigint as active_ms
+    from public.events
+    where kind = 'page'
+    group by session_id, visitor_id, path
+  ) per_visitor
+  group by session_id, path;
+
+create view public.next_click_stats
+  with (security_invoker = true) as
+  select
+    session_id,
+    path,
+    target,
+    count(*)::int                                                  as visitors,
+    (percentile_cont(0.5) within group (order by ms_before))::int as median_ms,
+    min(first_at)                                                  as first_at,
+    percentile_disc(0.5) within group (order by first_at)         as median_at
+  from (
+    select
+      session_id,
+      visitor_id,
+      path,
+      target,
+      min(at)                                  as first_at,
+      (array_agg(duration_ms order by at))[1]  as ms_before
+    from public.events
+    where kind = 'next'
+    group by session_id, visitor_id, path, target
+  ) first_click
+  group by session_id, path, target;
+
+create view public.step_time_stats
+  with (security_invoker = true) as
+  select
+    session_id,
+    step_id,
+    count(*)::int                                             as visitors,
+    (percentile_cont(0.5) within group (order by secs))::int as median_s
+  from (
+    select
+      c.session_id,
+      c.step_id,
+      extract(epoch from c.done_at - coalesce(
+        lag(c.done_at) over (
+          partition by c.session_id, c.visitor_id order by c.done_at
+        ),
+        v.first_seen
+      )) as secs
+    from public.completions c
+    join public.visitors v
+      on v.session_id = c.session_id and v.visitor_id = c.visitor_id
+  ) gaps
+  where secs >= 0
+  group by session_id, step_id;
+
+revoke all on public.page_time_stats  from anon, authenticated;
+revoke all on public.next_click_stats from anon, authenticated;
+revoke all on public.step_time_stats  from anon, authenticated;
