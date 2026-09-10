@@ -3,6 +3,7 @@ import Nav from "../components/Nav";
 import CopyBlock from "../components/CopyBlock";
 import CopyDoc from "../components/CopyDoc";
 import StepRail from "../components/StepRail";
+import Tip from "../components/Tip";
 import { CLAUDE_MD } from "./claudeMd";
 import {
   Blue,
@@ -387,8 +388,11 @@ export default function SetupPage() {
                     접속.
                   </>,
                   <>
-                    이메일 가입 대신 <b>Continue with GitHub</b> →{" "}
-                    <b>Authorize</b> 승인하면 끝.
+                    이메일 가입 대신{" "}
+                    <Tip tip="비밀번호가 늘지 않고, 나중에 저장소를 연결할 때 권한이 클릭 한 번으로 이어집니다.">
+                      <b>Continue with GitHub</b>
+                    </Tip>{" "}
+                    → <b>Authorize</b> 승인하면 끝.
                   </>,
                   <>
                     확인:{" "}
@@ -698,10 +702,6 @@ export default function SetupPage() {
               <b>클론</b>을 누릅니다. 잠시 뒤 왼쪽 목록에 프로젝트가 나타나면
               성공입니다.
             </p>
-            <Callout title="터미널 없이 여기까지 끝났습니다">
-              Orca가 <b>내려받기 · 프로젝트 등록 · 편집기 열기</b>를 한 번에
-              해줍니다. 이제 이 프로젝트 안에서 Claude를 열어볼 차례입니다.
-            </Callout>
           </div>
         </StepCard>
 
@@ -817,33 +817,23 @@ export default function SetupPage() {
                   <>
                     Orca 오른쪽 <b>파일 목록</b>에서 프로젝트 폴더를 우클릭 →{" "}
                     <b>새 파일</b>을 만들고 이름을{" "}
-                    <code className="font-mono text-[13px]">CLAUDE.md</code> 로
-                    합니다. (터미널을 쓸 필요 없습니다)
+                    <Tip tip=".md는 마크다운(Markdown) 파일입니다. Orca가 제목·목록을 보기 좋게 보여줄 뿐, 실제로는 글자만 든 문서예요.">
+                      <code className="font-mono text-[13px]">CLAUDE.md</code>
+                    </Tip>{" "}
+                    로 합니다.
                   </>,
                   <>
-                    파일을 클릭하면 가운데에 <b>편집기</b>가 열립니다 — 아래
-                    내용을 <b>전체 복사</b>해서 붙여넣고 저장(Ctrl+S)합니다.
+                    파일을 클릭해 열린 <b>편집기</b>에 아래 내용을{" "}
+                    <b>전체 복사</b>해 붙여넣고 저장(Ctrl+S)합니다.
                   </>,
                   <>
-                    Claude Code를 실행 중이었다면 껐다가 다시 켭니다 — 새
-                    세션부터 이 규칙을 읽습니다.
+                    Claude Code를 실행 중이었다면 껐다가 다시 켭니다.
                   </>,
                 ]}
               />
-              <p className="text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
-                <b>.md</b>는 마크다운(Markdown) 파일 확장자입니다 — Orca가
-                제목·목록을 예쁘게 보여주지만, 실제로는 그냥 글자만 든 문서예요.
-              </p>
             </div>
           </div>
           <CopyDoc filename="CLAUDE.md" content={CLAUDE_MD} />
-          <Callout title="왜 이걸 미리 적어두나요?">
-            AI는 <b>내가 정해준 만큼만</b> 일관되게 일합니다. &ldquo;한 번에
-            하나씩&rdquo;, &ldquo;요청 안 한 건 만들지 마&rdquo;, &ldquo;쉬운
-            말로 설명해&rdquo; 같은 규칙을 매번 타이핑하는 대신 파일 하나로
-            끝내는 것 — 1교시에서 본 <b>작게 · 자주 · 되돌릴 수 있게</b>라는
-            바이브 코딩의 리듬을 AI에게 심어두는 작업입니다.
-          </Callout>
           <div className="rounded-[16px] border border-[var(--s2-info-line)] bg-[var(--s2-info-bg)] p-5">
             <p className="mb-3 flex items-center gap-2 text-[14.5px] font-extrabold">
               <span className="flex h-5.5 w-5.5 items-center justify-center rounded-full bg-[var(--s2-blue)] text-[11px] font-black text-[var(--s2-on-blue)]">

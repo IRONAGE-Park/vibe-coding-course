@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { CHAPTERS, TOTAL_STEPS, stepLabel } from "@/app/lib/steps";
+import type { ChapterNotes } from "@/app/lib/lecture-notes";
 import type { Stats, VisitorRow } from "@/app/lib/stats-types";
 
 const REFRESH_MS = 10_000;
@@ -12,15 +13,18 @@ export default function AdminClient({
   initialAuthed,
   configured,
   initialStats,
+  notes,
 }: {
   initialAuthed: boolean;
   configured: boolean;
   initialStats: Stats | null;
+  /** 강사 노트 — 로그인한 경우에만 서버가 내려줍니다 */
+  notes: ChapterNotes[] | null;
 }) {
   const router = useRouter();
 
   if (initialAuthed && initialStats) {
-    return <Dashboard initialStats={initialStats} />;
+    return <Dashboard initialStats={initialStats} notes={notes ?? []} />;
   }
   return <Login configured={configured} onSuccess={() => router.refresh()} />;
 }
@@ -107,9 +111,80 @@ function Login({
 
 /* ── 대시보드 ───────────────────────────────────────────── */
 
-type Tab = "people" | "steps" | "sessions";
+/* ── 강사 노트 ─────────────────────────────────────────────
+   참가자 화면에서 뺀 배경 설명 · 사례 · 진행 요령을 장별로 봅니다. */
 
-function Dashboard({ initialStats }: { initialStats: Stats }) {
+function NotesView({ notes }: { notes: ChapterNotes[] }) {
+  const [chapter, setChapter] = useState(CHAPTERS[0].key);
+  const current = notes.find((n) => n.key === chapter);
+
+  return (
+    <section className="mt-7">
+      {/* 강의 중에는 지금 장만 빠르게 골라 봅니다 */}
+      <div className="flex flex-wrap gap-1.5">
+        {CHAPTERS.map((c) => (
+          <button
+            key={c.key}
+            onClick={() => setChapter(c.key)}
+            className={`rounded-full px-3 py-1.5 text-[12.5px] font-bold transition-colors ${
+              chapter === c.key
+                ? "bg-[var(--s2-ink)] text-[var(--s2-on-ink)]"
+                : "border border-[var(--s2-line)] text-[var(--s2-gray)]"
+            }`}
+          >
+            {c.num} {c.label}
+          </button>
+        ))}
+      </div>
+
+      {!current || current.sections.length === 0 ? (
+        <div className="mt-4">
+          <Empty>이 장에는 노트가 없습니다.</Empty>
+        </div>
+      ) : (
+        <div className="mt-4 flex flex-col gap-2.5">
+          {current.sections.map((s) => (
+            <details
+              key={s.title}
+              open
+              className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
+            >
+              <summary className="cursor-pointer text-[14.5px] font-extrabold">
+                {s.title}
+              </summary>
+              <ul className="mt-2.5 flex flex-col gap-1.5">
+                {s.points.map((p) => (
+                  <li
+                    key={p}
+                    className="flex gap-2 text-[13.5px] leading-[1.6] text-[var(--s2-body)]"
+                  >
+                    <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-[var(--s2-blue)]" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </div>
+      )}
+
+      <p className="mt-4 text-[11.5px] leading-[1.5] text-[var(--s2-faint)]">
+        참가자 화면에서 뺀 배경 설명 · 사례 · 진행 요령입니다. 근거 자료는
+        docs/research 에 있습니다.
+      </p>
+    </section>
+  );
+}
+
+type Tab = "people" | "steps" | "notes" | "sessions";
+
+function Dashboard({
+  initialStats,
+  notes,
+}: {
+  initialStats: Stats;
+  notes: ChapterNotes[];
+}) {
   const router = useRouter();
   const [stats, setStats] = useState<Stats>(initialStats);
   const [viewing, setViewing] = useState<string | null>(null);
@@ -332,6 +407,7 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
           [
             ["people", `참가자 ${stats.totalVisitors}`],
             ["steps", "단계별"],
+            ["notes", "강사 노트"],
             ["sessions", "강의"],
           ] as [Tab, string][]
         ).map(([key, label]) => (
@@ -448,6 +524,8 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
             </div>
           </Section>
         ))}
+
+      {tab === "notes" && <NotesView notes={notes} />}
 
       {tab === "sessions" && (
         <Section title="강의">

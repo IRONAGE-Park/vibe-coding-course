@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import CopyBlock from "../components/CopyBlock";
 import StepRail from "../components/StepRail";
+import Tip from "../components/Tip";
 import {
   Blue,
   Callout,
@@ -19,6 +20,8 @@ export const metadata: Metadata = {
   description:
     "goal 스킬로 앱 초안을 만들고, GitHub에 올린 뒤, Vercel로 첫 배포까지.",
 };
+
+/* 배경 설명 · 진행 요령은 강사 노트(app/lib/lecture-notes.ts)에 있습니다 */
 
 const TOTAL = 5;
 
@@ -44,8 +47,7 @@ export default function BuildPage() {
         }
         sub={
           <>
-            2장에서 만든 문서를 근거로 앱 초안을 만들고, GitHub에 올린 뒤,
-            Vercel과 연결해 전 세계에 공개합니다.
+            2장 문서로 앱 초안을 만들고, GitHub에 올려 Vercel로 공개합니다.
           </>
         }
       />
@@ -117,38 +119,20 @@ export default function BuildPage() {
           title="/goal 로 완료 조건 걸기"
           intro={
             <>
-              AI가 도중에 &ldquo;일단 이 정도면 되겠죠?&rdquo; 하고 멈추는 걸
-              막는 장치입니다. 만들기 전에 <b>끝났다고 인정할 기준</b>을 먼저
-              정해둡니다.
+              AI가 도중에 멈추지 않게, <b>끝났다고 인정할 기준</b>을 먼저
+              걸어둡니다.
             </>
           }
         >
-          <div className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-6">
-            <p className="mb-2 text-[15.5px] font-extrabold">
-              슬래시 명령어(<span className="font-mono">/</span>)가 뭔가요?
-            </p>
-            <p className="text-[14.5px] leading-[1.7] text-[var(--s2-body)]">
-              Claude Code 입력창에 <b className="font-mono">/</b> 를 치면 쓸 수
-              있는 명령어 목록이 뜹니다. <b>기본으로 들어 있는 것</b>(
-              <span className="font-mono text-[13.5px]">/goal</span>,{" "}
-              <span className="font-mono text-[13.5px]">/code-review</span>,{" "}
-              <span className="font-mono text-[13.5px]">/debug</span> …)도 있고,
-              나중에 필요하면 자주 쓰는 절차를 명령어로 추가할 수도 있습니다.
-              오늘은 기본 제공되는 <b>/goal</b> 하나만 씁니다.
-            </p>
-          </div>
-          <div className="rounded-[16px] border border-[var(--s2-info-line)] bg-[var(--s2-info-bg)] p-6">
-            <p className="mb-2 text-[15.5px] font-extrabold">
-              <Blue>/goal</Blue> 의 목적 — 완료 조건 걸기
-            </p>
-            <p className="text-[14.5px] leading-[1.7] text-[var(--s2-body)]">
-              공식 설명은 <b>&ldquo;조건이 충족될 때까지 계속 작업한다&rdquo;</b>
-              입니다. 조건을 하나 걸어두면 Claude는 <b>작업을 멈추기 전에</b> 그
-              조건이 채워졌는지 스스로 확인하고, 아직이면 계속 이어서 합니다.
-              1교시에서 본 &ldquo;AI는 큰 작업을 한 번에 못 한다&rdquo;의 반대편
-              문제 — <b>중간에 대충 끝내버리는 것</b>을 막아주는 장치입니다.
-            </p>
-          </div>
+          <p className="text-[14.5px] leading-[1.7] text-[var(--s2-body)]">
+            입력창에{" "}
+            <Tip tip="Claude Code 입력창에 / 를 치면 쓸 수 있는 명령어 목록이 뜹니다. /goal · /code-review · /debug 같은 기본 명령어가 있고, 자주 쓰는 절차를 직접 추가할 수도 있습니다.">
+              슬래시 명령어
+            </Tip>{" "}
+            <b className="font-mono">/goal</b> 과 조건을 적으면, Claude가
+            멈추기 전에 조건이 채워졌는지 스스로 확인하고 아직이면 계속
+            작업합니다.
+          </p>
           <div className="flex flex-col gap-3">
             <p className="text-[15px] font-extrabold">
               조건은 <Blue>눈으로 확인할 수 있는 것</Blue>으로
@@ -182,11 +166,9 @@ export default function BuildPage() {
             </div>
           </div>
           <Callout title="목록에 /goal 이 안 보인다면">
-            Claude Code 버전이 낮을 수 있습니다. 터미널에서{" "}
-            <code className="font-mono text-[13px]">claude update</code> 로 최신
-            버전으로 올린 뒤 다시 실행해 보세요. 그래도 없으면 이 단계는
-            건너뛰어도 됩니다 — 완료 조건을 <b>말로</b> 함께 적어주면 비슷한
-            효과가 납니다.
+            터미널에서{" "}
+            <code className="font-mono text-[13px]">claude update</code> 후 다시
+            실행하세요. 그래도 없으면 완료 조건을 <b>말로</b> 적어도 됩니다.
           </Callout>
         </StepCard>
 
@@ -198,8 +180,7 @@ export default function BuildPage() {
           title="앱 초안 만들기"
           intro={
             <>
-              완료 조건을 걸어뒀으니, 이제 <b>무엇을 만들지</b>만 말하면 됩니다.
-              2장의 두 문서가 그대로 지시서가 됩니다.
+              완료 조건을 걸었으니 <b>무엇을 만들지</b>만 말하면 됩니다.
             </>
           }
         >
@@ -232,23 +213,9 @@ export default function BuildPage() {
               { dim: true, text: "> 좋아, 그대로 만들어줘" },
             ]}
           />
-          <CheckList
-            items={[
-              <>
-                <b>계획을 먼저 보여주는 이유</b> — 1장의 CLAUDE.md에{" "}
-                &ldquo;만들기 전에 계획을 요약하고 컨펌을 받는다&rdquo;라고
-                적어뒀기 때문입니다
-              </>,
-              <>
-                <b>끝까지 만드는 이유</b> — 방금 <span className="font-mono">/goal</span>{" "}
-                로 완료 조건을 걸어뒀기 때문입니다
-              </>,
-            ]}
-          />
-          <Callout title="계획이 마음에 안 들면 여기서 고치세요">
-            &ldquo;3번은 빼고 대신 검색창을 넣어줘&rdquo;처럼 <b>항목을 짚어</b>{" "}
-            수정하면 됩니다. 코드가 한 줄도 만들어지기 전이라 되돌릴 것이
-            없습니다.
+          <Callout title="계획이 마음에 안 들면 여기서">
+            &ldquo;3번은 빼고 검색창을 넣어줘&rdquo;처럼 <b>항목을 짚어</b>{" "}
+            고치세요. 아직 코드가 없어 되돌릴 것도 없습니다.
           </Callout>
         </StepCard>
 
@@ -260,9 +227,15 @@ export default function BuildPage() {
           title="GitHub에 올리기 — 커밋하고 푸시"
           intro={
             <>
-              초안이 나왔으면 바로 저장소에 올립니다. <b>커밋</b>은 &ldquo;여기까지를
-              한 묶음으로 기록&rdquo;, <b>푸시</b>는 &ldquo;그 기록을 GitHub로
-              보내기&rdquo;입니다.
+              초안이 나오면 바로{" "}
+              <Tip tip="여기까지의 변경을 한 묶음으로 기록하는 것. 기록마다 언제든 되돌아갈 수 있는 지점이 됩니다.">
+                커밋
+              </Tip>
+              하고{" "}
+              <Tip tip="내 컴퓨터에 쌓인 커밋 기록을 GitHub로 보내는 것.">
+                푸시
+              </Tip>
+              합니다.
             </>
           }
         >
@@ -283,13 +256,11 @@ export default function BuildPage() {
           <CheckList
             items={[
               <>
-                푸시가 실패하면 대부분 <b>로그인 문제</b>입니다 — 1장의{" "}
-                <code className="font-mono text-[13px]">gh auth status</code> 로
-                확인하세요
+                푸시가 실패하면 대부분 <b>로그인 문제</b> —{" "}
+                <code className="font-mono text-[13px]">gh auth status</code>
               </>,
               <>
-                커밋은 <b>작게, 자주</b> — 화면 하나 만들 때마다 한 번씩이
-                좋습니다
+                커밋은 <b>작게, 자주</b> — 화면 하나 만들 때마다
               </>,
             ]}
           />
@@ -312,9 +283,7 @@ export default function BuildPage() {
               }}
             />
             <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
-              내 저장소 주소를 열었을 때 <b>방금 만든 파일들</b>과{" "}
-              <b>커밋 메시지</b>가 보이면 성공입니다. 오른쪽 위{" "}
-              <b>N Commits</b> 숫자도 늘어나 있습니다.
+              방금 만든 파일과 커밋 메시지가 보이면 성공입니다.
             </p>
           </div>
           <div className="flex flex-col gap-3">
@@ -329,10 +298,8 @@ export default function BuildPage() {
               url="github.com/내아이디/vibe-coding-practice/commits/main"
             />
             <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
-              저장소 상단의 <b>N Commits</b>를 누르면 나오는 화면입니다. 앞으로
-              수정할 때마다 여기에 한 줄씩 쌓입니다 —{" "}
-              <b>언제든 이 시점으로 되돌릴 수 있다</b>는 뜻이라, 마음 놓고
-              실험해도 됩니다.
+              상단의 <b>N Commits</b>를 누르면 나옵니다. 여기 쌓인 한 줄 한 줄이{" "}
+              <b>언제든 되돌릴 수 있는 지점</b>입니다.
             </p>
           </div>
         </StepCard>
@@ -345,8 +312,8 @@ export default function BuildPage() {
           title="Vercel과 GitHub 연결하기"
           intro={
             <>
-              한 번만 연결하면 이후부터는 <b>푸시만 해도 자동 배포</b>됩니다.
-              설정은 건드릴 필요 없습니다 — Vercel이 Next.js를 자동 인식합니다.
+              한 번만 연결하면 이후엔 <b>푸시만 해도 자동 배포</b>됩니다. 설정은
+              건드리지 않습니다.
             </>
           }
         >
@@ -446,16 +413,12 @@ export default function BuildPage() {
                 </span>{" "}
                 주소를 브라우저에서 열어보기
               </>,
-              <>휴대폰으로도 접속해 보기 — 같은 화면이 보이면 성공</>,
+              <>휴대폰으로도 접속해 보기</>,
               <>
                 <b>팀 채팅방에 링크 공유 — 이게 완주 조건!</b>
               </>,
             ]}
           />
-          <Callout title="설정을 건드릴 필요가 없어요">
-            Vercel이 Next.js 프로젝트를 자동 인식해서 빌드 설정을 채워줍니다.{" "}
-            <b>Deploy 버튼만 누르면</b> 1~2분 안에 끝납니다.
-          </Callout>
         </StepCard>
       </main>
 

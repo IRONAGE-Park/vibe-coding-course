@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import CopyBlock from "../components/CopyBlock";
 import StepRail from "../components/StepRail";
+import Tip from "../components/Tip";
 import {
   Blue,
   Callout,
@@ -68,22 +69,15 @@ export default function ToolsPage() {
           }
           intro={
             <>
-              화면만 있는 서비스는 새로고침하면 입력한 게 사라집니다.{" "}
-              <b>글·신청·후기처럼 남아야 하는 정보</b>가 생기면 그때
-              데이터베이스가 필요해요. 아래는 실제로 만들어 본 과정입니다.
+              새로고침해도 <b>남아야 하는 정보</b>(글·신청·후기)가 생기면
+              데이터베이스가 필요합니다.
             </>
           }
         >
-          <div className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-6">
-            <p className="mb-2 text-[15.5px] font-extrabold">
-              먼저, 지금 꼭 필요한가요?
-            </p>
-            <p className="text-[14.5px] leading-[1.7] text-[var(--s2-body)]">
-              1교시에서 말한 대로 <b>Supabase는 필수가 아닙니다</b>. 안내·지도·
-              계산기처럼 <b>보여주기만</b> 하는 서비스라면 건너뛰세요. 회원가입,
-              글쓰기, 신청 내역처럼 <b>저장이 필요할 때</b>만 붙이면 됩니다.
-            </p>
-          </div>
+          <p className="text-[14.5px] leading-[1.65] text-[var(--s2-body)]">
+            <b>필수는 아닙니다.</b> 보여주기만 하는 서비스라면 건너뛰고,{" "}
+            <b>저장이 필요할 때</b>만 붙이세요.
+          </p>
 
           <div className="flex flex-col gap-5">
             <p className="text-[15px] font-extrabold">
@@ -211,11 +205,9 @@ export default function ToolsPage() {
                 label: "Install",
               }}
             />
-            <Callout title="이걸 왜 하나요? — 키를 직접 복사하지 않아도 됩니다">
-              연결해 두면 Supabase가 <b>내 Vercel 프로젝트의 환경 변수를 알아서
-              채워주고 최신으로 유지</b>합니다. 안 하면 배포할 때마다 주소와
-              키를 손으로 옮겨 적어야 해요. <b>Install</b> → Vercel 로그인 →
-              연결할 프로젝트 선택, 이 세 단계면 끝입니다.
+            <Callout title="연결해 두면 키를 옮겨 적지 않아도 됩니다">
+              <b>Install</b> → Vercel 로그인 → 프로젝트 선택. 환경 변수가
+              자동으로 채워지고 최신으로 유지됩니다.
             </Callout>
           </div>
 
@@ -362,13 +354,10 @@ export default function ToolsPage() {
               설명이 전부 뜹니다 — 궁금한 건 눌러보면 됩니다.
             </Callout>
             <Callout title="테스트까지 스킬에게 — computer-use & orca-cli">
-              기능을 만들 때마다 <b>하나하나 직접 눌러보며 확인하는 건 꽤 힘든
-              일</b>입니다. 이럴 때{" "}
-              <b className="font-mono text-[13.5px]">computer-use</b> 스킬이나{" "}
+              <b className="font-mono text-[13.5px]">computer-use</b> ·{" "}
               <b className="font-mono text-[13.5px]">orca-cli</b> 스킬을 쓰면
-              Claude가 <b>직접 브라우저를 열고 클릭해 가며</b> 방금 작업한
-              내용을 대신 테스트해 줍니다 — &ldquo;방금 만든 다크 모드 버튼,
-              직접 눌러서 확인해줘&rdquo;라고 시키면 됩니다.
+              Claude가 <b>브라우저를 직접 열고 눌러 보며</b> 테스트합니다 —
+              &ldquo;방금 만든 버튼, 직접 눌러서 확인해줘&rdquo;.
             </Callout>
           </div>
         </StepCard>
@@ -385,8 +374,12 @@ export default function ToolsPage() {
           }
           intro={
             <>
-              Claude Code가 똑똑한 이유는 모델이 전부가 아닙니다 — 모델을
-              도구·권한·반복 루프로 감싼 <b>하네스(harness)</b> 덕분입니다.
+              Claude Code가 똑똑한 건 모델만의 힘이 아니라, 모델을
+              도구·권한·반복 루프로 감싼{" "}
+              <Tip tip="말에 씌우는 마구처럼, AI 모델에 도구 · 권한 · 반복 실행을 달아 실제로 일하게 만드는 틀. Claude Code 자체가 하나의 하네스입니다.">
+                하네스(harness)
+              </Tip>{" "}
+              덕분입니다.
             </>
           }
         >
@@ -431,10 +424,8 @@ export default function ToolsPage() {
               </>,
             ]}
           />
-          <Callout title="왜 알아야 하나요?">
-            같은 모델도 <b>어떤 하네스에 태우느냐</b>에 따라 결과가 완전히
-            달라집니다. 잘 안 풀리면 &ldquo;모델이 멍청해서&rdquo;가 아니라{" "}
-            <b>권한·도구·지시문</b>을 먼저 점검하세요.
+          <Callout title="잘 안 풀릴 때">
+            모델 탓보다 <b>권한·도구·지시문</b>을 먼저 점검하세요.
           </Callout>
         </StepCard>
 

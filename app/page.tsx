@@ -13,7 +13,7 @@ const CHAPTERS = [
     href: "/plan",
     num: "02",
     title: "문제 정의",
-    desc: "세 가지 질문으로 아이디어 검증하고 기획서 6칸 채우기",
+    desc: "문제를 좁히고 한 장짜리 기획서 · 요구사항 명세 만들기",
   },
   {
     href: "/build",
