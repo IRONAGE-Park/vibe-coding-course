@@ -38,7 +38,7 @@ const CHAPTERS = [
     href: "/tools",
     num: "06",
     title: "유용한 도구들",
-    desc: "CLAUDE.md · Skills · Harness — 다음 단계로 가는 도구",
+    desc: "CLAUDE.md · Skills · Harness · 테스트 자동화 — 다음 단계로 가는 도구",
   },
 ];
 

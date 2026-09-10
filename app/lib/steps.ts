@@ -84,6 +84,7 @@ export const CHAPTERS: Chapter[] = [
       { id: "tools-4", title: "Harness" },
       { id: "tools-5", title: "다른 프로젝트 참고 · 뉴스" },
       { id: "tools-6", title: "AI 에이전트로 일상 업무까지" },
+      { id: "tools-7", title: "테스트 자동화" },
     ],
   },
 ];
@@ -109,7 +110,7 @@ export type StepInfo = {
   chapterLabel: string;
   /** 챕터 안에서 몇 번째인지 (1부터) */
   indexInChapter: number;
-  /** 전체 31단계 중 몇 번째인지 (0부터) */
+  /** 전체 단계 중 몇 번째인지 (0부터) */
   order: number;
 };
 

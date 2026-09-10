@@ -20,10 +20,10 @@ import {
 export const metadata: Metadata = {
   title: "06 유용한 도구들 | 바이브코딩과 함께 살아남기",
   description:
-    "CLAUDE.md, Skills, Harness, 프로젝트 참고와 뉴스, AI 에이전트 활용 — 다음 단계로 가는 다섯 가지.",
+    "CLAUDE.md, Skills, Harness, 프로젝트 참고와 뉴스, AI 에이전트 활용, 테스트 자동화 — 다음 단계로 가는 도구와 습관.",
 };
 
-const TOTAL = 6;
+const TOTAL = 7;
 
 const RAIL = [
   { id: "tools-1", num: "01", label: "Supabase 연동" },
@@ -32,6 +32,41 @@ const RAIL = [
   { id: "tools-4", num: "04", label: "Harness" },
   { id: "tools-5", num: "05", label: "참고 & 뉴스" },
   { id: "tools-6", num: "06", label: "AI 에이전트" },
+  { id: "tools-7", num: "07", label: "테스트 자동화" },
+];
+
+/* 테스트 자동화로 어디까지 확인할 수 있는지 — 아래로 갈수록 넓어집니다 */
+const TEST_LADDER = [
+  {
+    t: "빌드가 되는가",
+    tool: "npm run build",
+    d: "문법 · 타입 오류를 잡습니다. 1장 CLAUDE.md의 ‘완료 전에 확인’이 바로 이 단계 — 이미 하고 있어요.",
+  },
+  {
+    t: "계산이 맞는가",
+    tool: "단위 테스트 (Vitest 등)",
+    d: "가격 계산 · 날짜 변환처럼 입력과 결과가 정해진 기능을 수백 가지 경우로 몇 초 만에 확인합니다.",
+  },
+  {
+    t: "사용자 흐름이 되는가",
+    tool: "Playwright 테스트 코드",
+    d: "가입 → 글쓰기 → 저장 → 목록에 보이기. 사람이 하던 순서를 코드로 남겨, 여러 브라우저 · 휴대폰 화면 크기에서 매번 똑같이 돌립니다.",
+  },
+  {
+    t: "처음 온 사람처럼 써 보면",
+    tool: "Playwright MCP · Orca CLI · Claude in Chrome",
+    d: "스크립트 없이 “처음 온 사용자처럼 둘러보고 이상한 점을 알려줘”. 깨진 화면 · 콘솔 오류 · 헷갈리는 버튼을 스크린샷과 함께 찾아옵니다.",
+  },
+  {
+    t: "브라우저 밖까지",
+    tool: "computer-use",
+    d: "데스크톱 앱 · 파일 선택 창 · 휴대폰 시뮬레이터처럼 화면에 보이는 것이면 무엇이든 직접 눌러 봅니다.",
+  },
+  {
+    t: "사람 없이 매번",
+    tool: "/goal · 훅 · GitHub Actions",
+    d: "“테스트가 모두 통과할 때까지”를 완료 조건으로 걸거나, 푸시할 때마다 자동으로 돌려 깨진 코드가 배포되기 전에 막습니다.",
+  },
 ];
 
 export default function ToolsPage() {
@@ -48,8 +83,9 @@ export default function ToolsPage() {
         }
         sub={
           <>
-            오늘 배운 것은 시작일 뿐 — 바이브 코딩을 한 단계 끌어올리는 다섯
-            가지 도구와 습관입니다.
+            오늘 배운 것은 시작일 뿐 — 바이브 코딩을 한 단계 끌어올리는 도구와
+            습관, 그리고 마지막으로 AI가 스스로 확인하게 만드는{" "}
+            <b>테스트 자동화</b>입니다.
           </>
         }
       />
@@ -386,7 +422,8 @@ export default function ToolsPage() {
               <b className="font-mono text-[13.5px]">computer-use</b> ·{" "}
               <b className="font-mono text-[13.5px]">orca-cli</b> 스킬을 쓰면
               Claude가 <b>브라우저를 직접 열고 눌러 보며</b> 테스트합니다 —
-              &ldquo;방금 만든 버튼, 직접 눌러서 확인해줘&rdquo;.
+              &ldquo;방금 만든 버튼, 직접 눌러서 확인해줘&rdquo;. 설치 방법과
+              어디까지 되는지는 마지막 <b>07 테스트 자동화</b>에서 다룹니다.
             </Callout>
           </div>
         </StepCard>
@@ -580,6 +617,345 @@ export default function ToolsPage() {
           <Callout title="오늘의 핵심을 한 문장으로">
             중요한 것은 <b>문제를 정확히 정의하고, 잘게 쪼개서, 명확하게 시키는
             능력</b> — 코딩 밖의 모든 일에도 똑같이 통합니다.
+          </Callout>
+        </StepCard>
+
+        {/* 7. 테스트 자동화 */}
+        <StepCard
+          no={7}
+          total={TOTAL}
+          id="tools-7"
+          title={
+            <>
+              테스트 자동화 — <Blue>AI가 스스로 확인하게</Blue>
+            </>
+          }
+          intro={
+            <>
+              Claude는 <b>&lsquo;다 된 것 같을 때&rsquo;</b> 멈춥니다. 확인할
+              방법을 쥐여 주면, <b>통과할 때까지 스스로 고칩니다</b>.
+            </>
+          }
+        >
+          {/* ① 왜 중요한가 */}
+          <div className="flex flex-col gap-4">
+            <p className="text-[15px] font-extrabold">
+              ① 왜 중요한가 — <Blue>코드가 빨리 바뀔수록</Blue>
+            </p>
+            <p className="text-[14.5px] leading-[1.7] text-[var(--s2-body)]">
+              바이브 코딩에서는 코드가 몇 분 만에 바뀝니다. 만드는 속도가
+              빨라진 만큼, <b>제대로 됐는지 확인하는 일</b>이 가장 느린 단계가
+              됐어요.{" "}
+              <Ext href="https://code.claude.com/docs/en/best-practices">
+                Claude Code 공식 가이드
+              </Ext>
+              도 가장 효과가 큰 습관으로 이것을 꼽습니다 —{" "}
+              <b>확인할 수 없다면, 배포하지 마세요.</b>
+            </p>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="rounded-[16px] border border-[var(--s2-bad-line)] bg-[var(--s2-bad-bg)] p-5">
+                <p className="mb-2 text-[14.5px] font-extrabold text-[var(--s2-bad-ink)]">
+                  확인 방법이 없으면
+                </p>
+                <ul className="flex list-disc flex-col gap-1.5 pl-5 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
+                  <li>
+                    확인하는 사람이 <b>나</b>입니다 — 모든 실수가 내가 발견할
+                    때까지 기다립니다
+                  </li>
+                  <li>기능이 10개면, 고칠 때마다 10개를 다시 눌러 봐야 합니다</li>
+                  <li>
+                    어제 되던 것이 오늘 조용히 깨집니다(
+                    <Tip tip="고친 곳과 상관없어 보이던 기존 기능이 망가지는 것. 기능이 많아질수록 자주, 조용히 일어납니다.">
+                      회귀
+                    </Tip>
+                    )
+                  </li>
+                </ul>
+              </div>
+              <div className="rounded-[16px] border border-[var(--s2-good-line)] bg-[var(--s2-good-bg)] p-5">
+                <p className="mb-2 text-[14.5px] font-extrabold text-[var(--s2-good-ink)]">
+                  확인 방법이 있으면
+                </p>
+                <ul className="flex list-disc flex-col gap-1.5 pl-5 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
+                  <li>
+                    AI가 <b>만들고 → 확인하고 → 고치기</b>를 혼자 반복합니다
+                  </li>
+                  <li>전체 기능 점검이 명령 한 줄, 몇 분이면 끝납니다</li>
+                  <li>
+                    &ldquo;됐어요&rdquo; 대신 <b>테스트 결과 · 스크린샷</b>이라는
+                    증거를 받습니다
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* ② 자동화하면 얻는 것 */}
+          <div className="flex flex-col gap-4">
+            <p className="text-[15px] font-extrabold">
+              ② 자동화하면 <Blue>얻는 것</Blue>
+            </p>
+            <div className="grid gap-4 md:grid-cols-2">
+              {[
+                {
+                  t: "혼자 끝내는 AI",
+                  d: "실패하면 원인을 읽고 고친 뒤 다시 돌립니다. 위 04 Harness의 에이전트 루프에 ‘확인’이 들어가는 순간입니다.",
+                },
+                {
+                  t: "겁 없이 고치기",
+                  d: "고친 뒤 전체 테스트가 통과하면 다른 기능이 안 깨졌다는 뜻. 큰 수정도 안심하고 맡길 수 있습니다.",
+                },
+                {
+                  t: "시간이 남는다",
+                  d: "30번 누르던 확인이 명령 한 줄. 푸시할 때마다, 내가 자는 동안에도 돌릴 수 있습니다.",
+                },
+                {
+                  t: "말 대신 증거",
+                  d: "테스트 결과 · 스크린샷 · 녹화로 확인합니다. 다시 해 볼 필요 없이 결과만 보면 되니 검토가 빨라집니다.",
+                },
+              ].map((c) => (
+                <div
+                  key={c.t}
+                  className="rounded-[20px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-5 shadow-[var(--s2-shadow-md)]"
+                >
+                  <p className="text-[16px] font-extrabold">{c.t}</p>
+                  <p className="mt-2 text-[13px] leading-[1.65] text-[var(--s2-body)]">
+                    {c.d}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <Callout title="설정 없이 오늘 바로 — /verify">
+              Claude Code에 기본으로 들어 있는{" "}
+              <b className="font-mono text-[13.5px]">/verify</b> 는 앱을 직접
+              빌드 · 실행해서 <b>방금 바꾼 것이 정말 되는지</b> 확인합니다.
+              아래 도구를 붙이기 전에 먼저 눌러 보세요.
+            </Callout>
+          </div>
+
+          {/* ③ 세 가지 도구 */}
+          <div className="flex flex-col gap-4">
+            <p className="text-[15px] font-extrabold">
+              ③ 세 가지 도구 — <Blue>무엇으로 확인시킬까</Blue>
+            </p>
+
+            {/* Playwright */}
+            <div className="rounded-[20px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-5 shadow-[var(--s2-shadow-md)] md:p-6">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <p className="text-[17px] font-extrabold">Playwright</p>
+                <span className="rounded-full bg-[var(--s2-blue-soft)] px-2.5 py-0.5 text-[12px] font-bold text-[var(--s2-blue)]">
+                  한 번 적어 두고 매번 돌리기
+                </span>
+              </div>
+              <p className="mt-2 text-[14px] leading-[1.65] text-[var(--s2-body)]">
+                사용자가 할 행동(열기 → 입력 → 클릭 → 확인)을{" "}
+                <b>테스트 코드</b>로 적어 두면, 매번 똑같이 몇 초 만에 다시
+                돌립니다. 크롬 · 파이어폭스 · 사파리 계열 엔진과 휴대폰 화면
+                크기까지 한 번에 확인합니다.
+              </p>
+              <div className="mt-4 flex flex-col gap-3">
+                <CopyBlock
+                  label="터미널 — Claude가 브라우저를 직접 쓰게 연결 (Playwright MCP)"
+                  command="claude mcp add playwright npx @playwright/mcp@latest"
+                />
+                <CopyBlock
+                  label="프로젝트 폴더에서 — 테스트를 계획 · 작성 · 수리하는 에이전트 설치"
+                  command="npx playwright init-agents --loop=claude"
+                />
+                <p className="text-[13px] leading-[1.6] text-[var(--s2-body)]">
+                  두 번째 명령은 <b>planner</b>(무엇을 테스트할지 계획) ·{" "}
+                  <b>generator</b>(테스트 코드 작성) · <b>healer</b>(화면이 바뀌어
+                  깨진 테스트 수리) 세 에이전트를 넣어 줍니다 —{" "}
+                  <Ext href="https://playwright.dev/docs/test-agents">
+                    Playwright Test Agents
+                  </Ext>
+                </p>
+              </div>
+            </div>
+
+            {/* Orca CLI */}
+            <div className="rounded-[20px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-5 shadow-[var(--s2-shadow-md)] md:p-6">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <p className="text-[17px] font-extrabold">Orca CLI</p>
+                <span className="rounded-full bg-[var(--s2-blue-soft)] px-2.5 py-0.5 text-[12px] font-bold text-[var(--s2-blue)]">
+                  이미 쓰는 Orca의 브라우저로
+                </span>
+              </div>
+              <p className="mt-2 text-[14px] leading-[1.65] text-[var(--s2-body)]">
+                실습에서 쓴 Orca에는 작업마다 <b>진짜 크롬(Chromium) 창</b>이
+                붙어 있습니다. <b>orca-cli</b> 스킬을 설치하면 에이전트가 그
+                브라우저를 열고 · 읽고 · 누르고 · 입력하고 · 캡처합니다.
+              </p>
+              <div className="mt-4 flex flex-col gap-3">
+                <CopyBlock
+                  label="터미널 — orca-cli 스킬 설치"
+                  command="npx skills add https://github.com/stablyai/orca --skill orca-cli --global"
+                />
+                <p className="text-[13px] leading-[1.6] text-[var(--s2-body)]">
+                  먼저 Orca <b>설정 → General → Orca CLI</b>에서 명령어 등록을
+                  켜 주세요. 설치하면 에이전트가 이런 명령으로 브라우저를
+                  다룹니다(직접 칠 필요는 없습니다).
+                </p>
+                <Term
+                  title="에이전트가 쓰는 Orca CLI"
+                  lines={[
+                    { text: "orca goto --url http://localhost:3000" },
+                    { dim: true, text: "# 화면의 버튼 · 입력칸 목록을 읽기 (@e1, @e3 …)" },
+                    { text: "orca snapshot" },
+                    { text: "orca fill --element @e1 --value \"홍길동\"" },
+                    { text: "orca click --element @e3" },
+                    { dim: true, text: "# 휴대폰 화면으로 바꿔서 캡처" },
+                    { text: "orca set device --name \"iPhone 12\"" },
+                    { text: "orca screenshot" },
+                  ]}
+                />
+                <p className="text-[12.5px] text-[var(--s2-faint)]">
+                  자세한 명령은{" "}
+                  <Ext href="https://www.onorca.dev/docs/cli/overview">
+                    Orca CLI 문서
+                  </Ext>
+                </p>
+              </div>
+            </div>
+
+            {/* computer-use */}
+            <div className="rounded-[20px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-5 shadow-[var(--s2-shadow-md)] md:p-6">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <p className="font-mono text-[16px] font-extrabold">computer-use</p>
+                <span className="rounded-full bg-[var(--s2-blue-soft)] px-2.5 py-0.5 text-[12px] font-bold text-[var(--s2-blue)]">
+                  화면 전체를 사람처럼
+                </span>
+              </div>
+              <p className="mt-2 text-[14px] leading-[1.65] text-[var(--s2-body)]">
+                브라우저 안만이 아니라 <b>화면 전체</b>를 보고 마우스 · 키보드로
+                조작합니다. 데스크톱 앱, 파일 선택 창, 휴대폰 시뮬레이터처럼 다른
+                도구가 닿지 않는 곳까지 확인할 수 있습니다.
+              </p>
+              <div className="mt-4">
+                <CheckList
+                  items={[
+                    <>
+                      <b>Orca</b> — 같은 스킬 목록의{" "}
+                      <b className="font-mono text-[13px]">computer-use</b> 스킬
+                      (설치는 위 명령에서{" "}
+                      <b className="font-mono text-[13px]">--skill computer-use</b>
+                      )
+                    </>,
+                    <>
+                      <b>Claude Code</b> — macOS 터미널에서{" "}
+                      <b className="font-mono text-[13px]">/mcp</b> →{" "}
+                      <b className="font-mono text-[13px]">computer-use</b> →
+                      Enable (Pro · Max 요금제, 미리보기 기능). Windows는 Claude
+                      데스크톱 앱 설정에서 켭니다 —{" "}
+                      <Ext href="https://code.claude.com/docs/en/computer-use">
+                        공식 문서
+                      </Ext>
+                    </>,
+                  ]}
+                />
+              </div>
+              <div className="mt-4">
+                <Callout tone="warn" title="가장 넓지만, 가장 느린 방법">
+                  내 컴퓨터 화면을 직접 움직이고, 한 동작마다 화면을 보고
+                  판단하느라 느립니다. 그래서 Claude도{" "}
+                  <b>MCP → 터미널 → 브라우저 도구</b>를 먼저 쓰고, 그걸로 안 될
+                  때만 씁니다. 웹 서비스라면 Playwright · Orca CLI로 충분합니다.
+                </Callout>
+              </div>
+            </div>
+          </div>
+
+          {/* ④ 어디까지 가능한가 */}
+          <div className="flex flex-col gap-4">
+            <p className="text-[15px] font-extrabold">
+              ④ 어디까지 <Blue>자동으로 확인할 수 있나</Blue>
+            </p>
+            <p className="text-[14px] leading-[1.65] text-[var(--s2-body)]">
+              아래로 갈수록 넓어지고, 대신 느려집니다. 위에서부터 하나씩 더해
+              가면 됩니다.
+            </p>
+            <ol className="flex flex-col overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)]">
+              {TEST_LADDER.map((l, i) => (
+                <li
+                  key={l.t}
+                  className={`flex gap-4 px-5 py-4 ${
+                    i > 0 ? "border-t border-[var(--s2-line)]" : ""
+                  }`}
+                >
+                  <span className="font-mono flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--s2-blue-soft)] text-[13px] font-bold text-[var(--s2-blue)]">
+                    {i + 1}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-baseline gap-x-2.5 gap-y-1">
+                      <p className="text-[15px] font-extrabold">{l.t}</p>
+                      <span className="font-mono text-[11.5px] text-[var(--s2-faint)]">
+                        {l.tool}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
+                      {l.d}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5">
+              <p className="text-[15px] font-extrabold">
+                그래도 <Blue>사람이 정해야 하는 것</Blue>
+              </p>
+              <div className="mt-3">
+                <CheckList
+                  items={[
+                    <>
+                      <b>무엇이 &lsquo;맞는&rsquo; 결과인지</b> — 기준은 2장
+                      spec.md의 &lsquo;확인 방법&rsquo;에서 옵니다. 테스트는 그
+                      기준을 지키게 할 뿐, 기준을 만들지 않습니다
+                    </>,
+                    <>
+                      <b>쓰기 편한지, 마음이 가는지</b> — 느낌은 5장의 사용자
+                      인터뷰로 확인합니다
+                    </>,
+                    <>
+                      <b>결제 · 실제 메일 발송</b>처럼 되돌릴 수 없는 동작은
+                      테스트용 계정 · 환경에서만
+                    </>,
+                    <>
+                      AI가 직접 눌러 보는 테스트는 느리고 비용이 듭니다 —{" "}
+                      <b>반복할 확인은 Playwright 코드로 굳혀</b> 두세요
+                    </>,
+                  ]}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ⑤ 시켜 보기 */}
+          <div className="flex flex-col gap-3">
+            <p className="text-[15px] font-extrabold">
+              ⑤ 오늘 바로 <Blue>시켜 보기</Blue>
+            </p>
+            <CopyBlock
+              label="Claude Code에 입력 — 핵심 흐름을 테스트로 남기기"
+              command="docs/spec.md 의 확인 방법을 보고, 핵심 사용자 흐름 3개를 Playwright 테스트로 만들어줘. 실행해서 모두 통과할 때까지 고치고, 결과 화면을 캡처해서 보여줘."
+            />
+            <CopyBlock
+              label="Orca에서 — 휴대폰 화면 점검"
+              command="orca-cli 스킬로 내 서비스를 열고 iPhone 12 화면에서 모든 버튼을 눌러 봐. 잘리거나 안 눌리는 곳이 있으면 스크린샷과 함께 알려줘."
+            />
+            <CopyBlock
+              label="완료 조건으로 걸기 — 3장의 /goal"
+              command="/goal npx playwright test 가 모두 통과하고 npm run build 가 오류 없이 끝날 때까지"
+            />
+            <CopyBlock
+              label="CLAUDE.md 의 ‘완료 전에 확인’에 한 줄 더하기"
+              command="- 기능을 바꾸면 npx playwright test 로 확인한다. 실패하면 고친 뒤 다시 돌린다."
+            />
+          </div>
+
+          <Callout title="마지막 한 문장">
+            만드는 건 이제 AI가 몇 분이면 합니다.{" "}
+            <b>&lsquo;제대로 됐다&rsquo;를 무엇으로 확인할지 정해 주는 것</b> —
+            그게 우리가 맡을 일입니다.
           </Callout>
         </StepCard>
       </main>
