@@ -61,7 +61,7 @@ function Login({
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-sm flex-col justify-center px-5 py-12">
+    <div className="mx-auto w-full flex min-h-dvh max-w-sm flex-col justify-center px-5 py-12">
       <p className="font-mono text-[11.5px] tracking-[0.12em] text-[var(--s2-blue)]">
         ADMIN
       </p>
@@ -282,9 +282,9 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
     : 0;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-7 md:px-6">
-      <header className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
+    <div className="mx-auto w-full max-w-2xl px-4 py-7 md:px-6">
+      <header className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
           <p className="font-mono text-[11px] tracking-[0.12em] text-[var(--s2-blue)]">
             ADMIN
           </p>
@@ -332,19 +332,25 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
           [
             ["people", `참가자 ${stats.totalVisitors}`],
             ["steps", "단계별"],
-            ["sessions", stats.running ? "강의 진행 중" : "강의"],
+            ["sessions", "강의"],
           ] as [Tab, string][]
         ).map(([key, label]) => (
           <button
             key={key}
             onClick={() => setTab(key)}
-            className={`flex-1 rounded-full px-3 py-2 text-[13px] font-bold transition-colors ${
+            className={`flex min-w-0 flex-1 items-center justify-center gap-1 overflow-hidden rounded-full px-2 py-2 text-[13px] font-bold transition-colors ${
               tab === key
                 ? "bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
                 : "border border-[var(--s2-line)] text-[var(--s2-gray)]"
             }`}
           >
-            {label}
+            <span className="truncate">{label}</span>
+            {key === "sessions" && stats.running && (
+              <span
+                aria-hidden="true"
+                className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--s2-good-ink)]"
+              />
+            )}
           </button>
         ))}
       </div>
@@ -361,29 +367,13 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
               {stats.visitors.map((v) => (
                 <div
                   key={v.id}
-                  className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
+                  className="overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
                 >
-                  <div className="flex items-center gap-3">
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[15px] font-extrabold">
-                        {v.name ?? "이름 안 밝힘"}
-                      </p>
-                      <p className="mt-1 truncate text-[12.5px] text-[var(--s2-body)]">
-                        {v.currentStep ? (
-                          <>
-                            <span className="text-[var(--s2-faint)]">지금 </span>
-                            {stepLabel(v.currentStep)}
-                          </>
-                        ) : (
-                          <span className="font-bold text-[var(--s2-good-ink)]">
-                            전체 완료
-                          </span>
-                        )}
-                      </p>
-                      <p className="font-mono mt-0.5 truncate whitespace-nowrap text-[11px] text-[var(--s2-faint)]">
-                        {short(v.id)} · {when(v.firstSeen)} 접속
-                      </p>
-                    </div>
+                  {/* 이름과 숫자, 제거는 한 줄. 이름만 줄여서 맞춥니다 */}
+                  <div className="flex items-center gap-2.5">
+                    <p className="min-w-0 flex-1 truncate text-[15px] font-extrabold">
+                      {v.name ?? "이름 안 밝힘"}
+                    </p>
                     <span className="font-mono shrink-0 text-[12.5px] font-bold text-[var(--s2-blue)]">
                       {v.done} / {stats.totalSteps}
                     </span>
@@ -400,6 +390,24 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
                       제거
                     </button>
                   </div>
+
+                  {/* 단계 이름은 길어서 줄바꿈을 허용합니다.
+                      한 줄로 잘라내면 좁은 화면에서 읽을 게 남지 않습니다 */}
+                  <p className="mt-1.5 text-[12.5px] leading-[1.5] text-[var(--s2-body)]">
+                    {v.currentStep ? (
+                      <>
+                        <span className="text-[var(--s2-faint)]">지금 </span>
+                        {stepLabel(v.currentStep)}
+                      </>
+                    ) : (
+                      <span className="font-bold text-[var(--s2-good-ink)]">
+                        전체 완료
+                      </span>
+                    )}
+                  </p>
+                  <p className="font-mono mt-1 truncate text-[11px] text-[var(--s2-faint)]">
+                    {short(v.id)} · {when(v.firstSeen)} 접속
+                  </p>
                   <Bar value={v.done} max={stats.totalSteps} />
                 </div>
               ))}
@@ -486,31 +494,33 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
                         : "border-[var(--s2-line)] bg-[var(--s2-card)]"
                     }`}
                   >
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => {
-                          setViewing(s.id);
-                          void refresh(s.id);
-                        }}
-                        className="min-w-0 flex-1 text-left"
-                      >
-                        <span className="block truncate text-[14.5px] font-extrabold">
-                          {s.name}
-                        </span>
-                        <span className="mt-0.5 block text-[11.5px] text-[var(--s2-faint)]">
-                          {when(s.startedAt ?? s.createdAt)} · 참가자{" "}
-                          {s.visitors}
-                        </span>
-                      </button>
+                    {/* 좁은 화면에서는 이름과 조작 버튼을 줄로 나눕니다.
+                        한 줄에 몰면 이름이 줄어들지 못해 화면을 넘칩니다 */}
+                    <button
+                      onClick={() => {
+                        setViewing(s.id);
+                        void refresh(s.id);
+                      }}
+                      className="block w-full text-left"
+                    >
+                      <span className="block truncate text-[14.5px] font-extrabold">
+                        {s.name}
+                      </span>
+                      <span className="mt-0.5 block truncate text-[11.5px] text-[var(--s2-faint)]">
+                        {when(s.startedAt ?? s.createdAt)} · 참가자 {s.visitors}
+                      </span>
+                    </button>
+
+                    <div className="mt-2.5 flex items-center gap-2">
                       {s.isRunning ? (
-                        <span className="shrink-0 rounded-full bg-[var(--s2-good-bg)] px-2.5 py-1 text-[11px] font-bold text-[var(--s2-good-ink)]">
+                        <span className="rounded-full bg-[var(--s2-good-bg)] px-2.5 py-1 text-[11px] font-bold text-[var(--s2-good-ink)]">
                           진행 중
                         </span>
                       ) : (
                         <button
                           onClick={() => resume(s.id)}
                           disabled={busy}
-                          className="shrink-0 rounded-full border border-[var(--s2-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-gray)]"
+                          className="rounded-full border border-[var(--s2-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-gray)]"
                         >
                           다시 시작
                         </button>
@@ -518,7 +528,7 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
                       <button
                         onClick={() => removeSession(s.id, s.name)}
                         disabled={busy}
-                        className="shrink-0 rounded-full border border-[var(--s2-bad-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-bad-ink)] disabled:opacity-30"
+                        className="ml-auto rounded-full border border-[var(--s2-bad-line)] px-2.5 py-1 text-[11px] font-semibold text-[var(--s2-bad-ink)] disabled:opacity-30"
                       >
                         삭제
                       </button>

@@ -64,7 +64,7 @@ export function PageHero({
 }) {
   return (
     <div className="relative overflow-hidden border-b border-[var(--s2-line)] bg-[var(--s2-tint)]">
-      <div className="relative z-10 mx-auto max-w-5xl px-5 py-14 md:px-8 md:py-20">
+      <div className="relative z-10 mx-auto w-full max-w-5xl px-5 py-14 md:px-8 md:py-20">
         <Badge>{label}</Badge>
         <h1 className="mt-5 text-[32px] font-extrabold leading-[1.2] tracking-[-0.025em] md:text-[46px]">
           {title}
@@ -377,7 +377,7 @@ export function Pager({
   next?: { href: string; label: string };
 }) {
   return (
-    <nav className="mx-auto flex max-w-5xl items-stretch gap-4 px-5 pb-16 pt-4 md:px-8">
+    <nav className="mx-auto w-full flex max-w-5xl items-stretch gap-4 px-5 pb-16 pt-4 md:px-8">
       {prev ? (
         <Link
           href={prev.href}
@@ -417,7 +417,7 @@ export function Pager({
 export function SiteFooter() {
   return (
     <footer className="border-t border-[var(--s2-line)] bg-[var(--s2-card)]">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-6 md:px-8">
+      <div className="mx-auto w-full flex max-w-5xl items-center justify-between px-5 py-6 md:px-8">
         <span className="text-[13px] font-bold tracking-[0.1em] text-[var(--s2-footer)]">
           바이브코딩과 함께 살아남기
         </span>

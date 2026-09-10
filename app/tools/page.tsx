@@ -55,7 +55,7 @@ export default function ToolsPage() {
 
       <StepRail items={RAIL} />
 
-      <main className="mx-auto flex max-w-5xl flex-col gap-8 px-5 py-12 md:px-8">
+      <main className="mx-auto w-full flex max-w-5xl flex-col gap-8 px-5 py-12 md:px-8">
         {/* 1. Supabase 연동 */}
         <StepCard
           no={1}

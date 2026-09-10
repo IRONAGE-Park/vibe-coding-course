@@ -17,7 +17,7 @@ export default function Nav() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--s2-line)] bg-[var(--s2-card)]/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-5 md:px-8">
+      <div className="mx-auto w-full flex h-16 max-w-5xl items-center justify-between px-5 md:px-8">
         <Link href="/" className="flex items-baseline gap-2">
           <span className="text-[15px] font-extrabold tracking-tight">
             VIBE<span className="text-[var(--s2-blue)]">CODING</span>

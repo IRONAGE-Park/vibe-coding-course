@@ -61,7 +61,7 @@ export default function PlanPage() {
 
       <StepRail items={RAIL} />
 
-      <main className="mx-auto flex max-w-5xl flex-col gap-8 px-5 py-12 md:px-8">
+      <main className="mx-auto w-full flex max-w-5xl flex-col gap-8 px-5 py-12 md:px-8">
         {/* 흐름 요약 */}
         <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
           <p className="mb-5 text-[18px] font-extrabold">
