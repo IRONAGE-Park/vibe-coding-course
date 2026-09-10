@@ -224,6 +224,45 @@
   .placeholder { color: #8c6a1d; background: #f6ecd2; border-radius: 4px; padding: 0 8px; }
 
   .toolbar { max-width: 1280px; margin: 20px auto 0; color: #d6d6d6; font-size: 14px; padding: 12px 16px; background: #4a4e56; border-radius: 10px; }
+
+
+
+  /* 사례 속 서비스로 바로 가는 링크 */
+  .svc { display: inline-block; margin-top: 16px; font-family: "Fragment Mono", monospace; font-size: 13px; color: var(--blue); background: #f4f8ff; border: 1px solid #d7e6ff; border-radius: 999px; padding: 5px 13px; text-decoration: none; white-space: nowrap; }
+  .cases.svcs > div { display: flex; flex-direction: column; align-items: flex-start; }
+  .cases.svcs .svc { margin-top: auto; }
+  .cases.svcs .ln { margin-bottom: 16px; }
+
+  /* 7장 — 해마다 넓어지는 막대: 코딩할 수 있는 사람의 폭 */
+  .grow { display: flex; flex-direction: column; gap: 10px; }
+  .grow .gr, .grow .gh { display: grid; grid-template-columns: 76px 1fr 372px; gap: 0 22px; align-items: center; }
+  .grow .gh span { font-family: "Fragment Mono", monospace; font-size: 12.5px; color: var(--faint); }
+  .grow .y { font-family: "Fragment Mono", monospace; font-size: 15px; color: var(--blue); }
+  .grow .track { height: 46px; position: relative; }
+  .grow .track b { position: absolute; left: 0; top: 0; bottom: 0; width: var(--w); background: var(--c); border-radius: 10px; display: flex; align-items: center; padding-left: 18px; font-size: 18px; font-weight: 800; color: var(--ink); white-space: nowrap; }
+  .grow .gr.now .track b { color: #fff; font-size: 19px; }
+  .grow .gr p { font-size: 15.5px; line-height: 1.45; color: var(--body); }
+  .grow .gr p em { font-style: normal; font-weight: 700; color: var(--ink); }
+
+  /* 8장 — 사람의 몫이 AI 쪽으로 옮겨가는 막대 + 오늘 남은 일 */
+  .shift-legend { display: flex; gap: 20px; font-size: 13px; color: var(--gray); margin-bottom: 14px; }
+  .shift-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 7px; vertical-align: -1px; }
+  .shift { display: flex; gap: 18px; }
+  .shift .col { width: 168px; }
+  .shift .bar { height: 150px; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; }
+  .shift .bar i { font-style: normal; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; }
+  .shift .ai, .shift-legend .ai { background: var(--blue); }
+  .shift .me, .shift-legend .me { background: var(--ink); }
+  .shift .y { display: block; margin-top: 14px; font-family: "Fragment Mono", monospace; font-size: 14px; color: var(--blue); }
+  .shift h4 { font-size: 18px; font-weight: 800; margin-top: 4px; }
+  .shift p { font-size: 14.5px; line-height: 1.5; color: var(--body); margin-top: 4px; }
+  .shift .arrow { font-size: 28px; color: var(--faint); margin-top: 58px; }
+  .shift .today { flex: 1; background: #f4f8ff; border: 1px solid #d7e6ff; border-radius: 20px; padding: 24px 26px; }
+  .shift .today .y { margin-top: 0; }
+  .shift .today h4 { font-size: 20px; margin-top: 6px; }
+  .shift .today ol { list-style: none; margin-top: 14px; }
+  .shift .today li { font-size: 19px; font-weight: 800; color: var(--blue); padding: 6px 0; }
+  .shift .today p { margin-top: 12px; }
 </style>
 </head>
 <body>
@@ -383,24 +422,20 @@
 <section class="slide">
   <div class="head">
     <span class="pill"><span class="dot"></span>02 — 코딩의 가치</span>
-    <h2>컴퓨터공학/과학</h2>
+    <h2>코딩하는 사람은 <span class="blue">계속 넓어져</span> 왔습니다</h2>
   </div>
   <div class="body">
-    <div class="blocks">
-      <div class="blk">
-        <h3>코딩은 원래부터 누구나 할 수 있었다</h3>
-        <p>AI가 나오기 전에도 생태계의 성장 덕분에 전공하지 않은 사람이 코딩하는 일은 드물지 않았고, 진입장벽은 꾸준히 낮아지고 있었습니다.</p>
-      </div>
-      <div class="blk">
-        <h3>컴퓨터공학은 코드 작성 그 이상</h3>
-        <p>소프트웨어를 만들어가는 방법, 여러 사람이 합심해 하나의 프로젝트를 수행하는 방법, 수학적 메커니즘으로 버그 없이 원하는 결과를 만드는 알고리즘을 연구하는 학문으로 변화했습니다.</p>
-      </div>
-      <div class="blk">
-        <h3>전공자의 핵심 가치</h3>
-        <p>더 깊고 복잡한 문제를 정의하고 해결하는 것. 단순히 개발만 할 줄 아는 전공자는 일반인과 큰 차이가 없습니다.</p>
-      </div>
+    <p class="verdict">진입장벽은 AI 전에도 <b>60년 동안</b> 낮아지고 있었습니다.</p>
+    <div class="grow">
+      <div class="gh"><span></span><span>코딩할 수 있는 사람의 폭</span><span>무엇이 문턱을 낮췄나</span></div>
+      <div class="gr" style="--w:22%;--c:#e6f0ff"><span class="y">1957</span><div class="track"><b>전공자만</b></div><p><em>FORTRAN</em> — 과학자가 기계에 맞춰 적던 시대</p></div>
+      <div class="gr" style="--w:38%;--c:#cfe1fd"><span class="y">1964</span><div class="track"><b>학생도</b></div><p><em>BASIC</em> — 대학생이 처음 배우도록 만든 언어</p></div>
+      <div class="gr" style="--w:56%;--c:#a9c9fb"><span class="y">1991</span><div class="track"><b>혼자서도</b></div><p><em>Python</em> — 읽기 쉬운 문법, 독학하는 사람이 늘다</p></div>
+      <div class="gr" style="--w:76%;--c:#79aaf8"><span class="y">2008</span><div class="track"><b>물어보면 누구나</b></div><p><em>Stack Overflow</em> — 막히면 검색해서 푸는 시대</p></div>
+      <div class="gr now" style="--w:100%;--c:#3182f6"><span class="y">2021</span><div class="track"><b>AI가 옆에서</b></div><p><em>GitHub Copilot</em> — 다음 줄을 AI가 먼저 적어준다</p></div>
     </div>
   </div>
+  <p class="fnote">그 사이 컴퓨터공학은 코드를 넘어섰습니다 — 남은 전공자의 가치는 <b>더 깊은 문제를 정의하고 푸는 일</b>입니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
@@ -408,24 +443,26 @@
 <section class="slide">
   <div class="head">
     <span class="pill"><span class="dot"></span>02 — 코딩의 가치</span>
-    <h2>생성형 AI(LLM model)와 AI Agent의 등장</h2>
+    <h2>생성형 AI와 AI Agent — <span class="blue">5년의 변화</span></h2>
   </div>
   <div class="body">
-    <div class="blocks">
-      <div class="blk">
-        <h3>코딩을 대신해주는 모델들</h3>
-        <p>ChatGPT와 Claude, 그리고 미국과 중국에서 만들어지는 다양한 모델이 코딩을 해주기 시작했고, 남아 있던 진입장벽을 완전히 허물었습니다.</p>
-      </div>
-      <div class="blk">
-        <h3>'코딩을 어떻게 하지?'라는 고민의 소멸</h3>
-        <p>과거 집안 전선이나 전화기를 연결해주던 기술자가 사라진 것처럼, 숙련자의 분야에 초심자가 바로 접근할 수 있는 도구가 생겼습니다.</p>
-      </div>
-      <div class="blk">
-        <h3>누구나 손을 뻗을 수 있는 영역으로</h3>
-        <p>셀프 인테리어, 차량 개조, 자가진단 키트가 가능해진 것처럼 — 쉽사리 손댈 수 없었던 프로그램 개발도 이제 직접 손댈 수 있는 영역이 됐습니다.</p>
+    <p class="verdict">사람이 하는 일이 <b>'적기'</b>에서 <b>'시키기'</b>로 옮겨왔습니다.</p>
+    <div class="shift-legend"><span><i class="ai"></i>AI가 하는 몫</span><span><i class="me"></i>사람이 하는 몫</span></div>
+    <div class="shift">
+      <div class="col"><div class="bar"><i class="ai" style="height:20%">다음 줄</i><i class="me" style="flex:1">직접 적는다</i></div><span class="y">2021.6</span><h4>한 줄씩</h4><p>Copilot — 쓰던 코드의 다음 줄을 제안한다</p></div>
+      <div class="col"><div class="bar"><i class="ai" style="height:40%">코드 조각</i><i class="me" style="flex:1">복사해 붙인다</i></div><span class="y">2022.11</span><h4>대화로</h4><p>ChatGPT — 물어보면 코드를 짜 준다</p></div>
+      <div class="col"><div class="bar"><i class="ai" style="height:65%">화면 전체</i><i class="me" style="flex:1">말로 설명</i></div><span class="y">2025.2</span><h4>말로</h4><p>'바이브 코딩' — 말로 만든다는 이름이 붙다</p></div>
+      <div class="col"><div class="bar"><i class="ai" style="height:82%">읽고 고치고 실행</i><i class="me" style="flex:1">맡기고 확인</i></div><span class="y">2025.5</span><h4>맡긴다</h4><p>Claude Code — 읽고 고치고 실행까지 한다</p></div>
+      <div class="arrow">→</div>
+      <div class="today">
+        <span class="y">오늘</span>
+        <h4>그래도 사람에게 남은 일</h4>
+        <ol><li>① 무엇을 만들지 고른다</li><li>② 잘 됐는지 확인한다</li></ol>
+        <p>AI가 가져간 것은 <b>적는 일</b>입니다. <b>고르는 일</b>은 그대로 남았습니다</p>
       </div>
     </div>
   </div>
+  <p class="fnote">전선을 잇던 기술자가 사라진 것처럼 — 숙련자의 영역에 <b>초심자가 바로 들어갈 수 있게</b> 됐습니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
@@ -564,6 +601,7 @@
           <li>서울 위주로 제공 — 다른 지역은 그마저도 얇다</li>
           <li>통신사·카드사 데이터는 유료이고 계약이 필요하다</li>
         </ul>
+        <a class="svc" href="https://golmok.seoul.go.kr">서울시 상권분석서비스 golmok.seoul.go.kr ↗</a>
       </div>
       <div class="hi">
         <h3><span class="tag">CUT</span>오늘 되게 자르면</h3>
@@ -689,6 +727,68 @@
     </div>
   </div>
   <p class="fnote">같은 질문에 세 번 다 처음 떠올린 방법이 막혔습니다 — 그래도 풀려던 문제는 저마다 다른 길로 풀렸습니다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 실제로 나는 사고 -->
+<section class="slide">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 시작하기 전에</span>
+    <h2>잘못되는 방식은 <span class="blue">네 가지</span>입니다</h2>
+  </div>
+  <div class="body">
+    <p class="verdict">기술이 모자라서가 아니라, <b>확인하지 않아서</b> 생깁니다.</p>
+    <div class="vs">
+      <div class="no">
+        <h3><span class="tag">BEFORE</span>만들기 전에 이미 걸리는 것</h3>
+        <ul>
+          <li><b>① 하려는 일 자체가 금지된 경우</b><br>표를 자동으로 잡아주는 프로그램은 <b>매크로를 안 써도</b> 금지입니다. 판 금액의 <b>최대 50배</b>를 물 수 있습니다</li>
+          <li><b>② 남이 모아둔 자료를 통째로 가져오는 경우</b><br>공개돼 있다고 마음대로 써도 되는 건 아닙니다. <b>품을 들여 모은 사람</b>에게 따로 권리가 있습니다</li>
+        </ul>
+      </div>
+      <div class="no">
+        <h3><span class="tag">AFTER</span>내놓은 뒤에 터지는 것</h3>
+        <ul>
+          <li><b>③ 받아둔 정보가 새어나가는 경우</b><br>회원가입에서 필요 없는 것까지 받아두면, 새는 날 <b>전부 내 책임</b>이 됩니다. 오늘부터 법이 더 세집니다</li>
+          <li><b>④ 없는 기능을 있다고 적는 경우</b><br>"AI 기반"이라고 썼으면 <b>증명할 자료</b>가 있어야 합니다. 없으면 광고를 내려야 합니다</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">①②는 <b>무엇을 만들지 고를 때</b>, ③④는 <b>내놓기 직전</b>에 한 번씩 되물으면 대부분 걸러집니다</p>
+  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
+</section>
+
+<!-- 실제 사례 -->
+<section class="slide tint">
+  <div class="head">
+    <span class="pill"><span class="dot"></span>02 — 시작하기 전에</span>
+    <h2>말로만 하는 이야기가 <span class="blue">아닙니다</span></h2>
+  </div>
+  <div class="body" style="top:210px">
+    <div class="cases">
+      <div>
+        <span class="n">③ 정보가 샌 경우</span>
+        <h4>AI로 만든 SNS 몰트북, 2026년 1월</h4>
+        <p>창업자가 "코드는 한 줄도 안 썼다"고 밝힌 서비스. 보안 연구자가 <b>몇 분 만에</b> 데이터베이스 전체에 들어갔습니다</p>
+        <p class="ln">이메일 <b>3.5만 건</b>과 이용자 열쇠 <b>150만 개</b>가 누구나 볼 수 있는 상태였습니다</p>
+        <a class="svc" href="https://www.moltbook.com">moltbook.com ↗</a>
+      </div>
+      <div>
+        <span class="n">④ 광고를 부풀린 경우</span>
+        <h4>미국 금융당국, 2024년</h4>
+        <p>AI로 투자 분석을 한다고 광고했지만 <b>그런 기능이 없던</b> 회사 두 곳에 제재가 내려졌습니다</p>
+        <p class="ln">각각 <b>22.5만·17.5만 달러</b>. 한국도 2025년 11월부터 같은 조사를 시작했습니다</p>
+      </div>
+      <div>
+        <span class="n">① 방법이 금지된 경우</span>
+        <h4>공연 입장권, 2026년 8월</h4>
+        <p>예전에는 매크로를 쓸 때만 문제였지만, 이제는 <b>어떻게 잡았든</b> 공정한 절차를 건너뛰면 금지입니다</p>
+        <p class="ln">신고포상금 최대 <b>5,000만 원</b>. "기술로 되니까 해도 된다"가 통하지 않습니다</p>
+      </div>
+    </div>
+  </div>
+  <p class="fnote">셋 다 <b>만드는 능력</b>의 문제가 아니었습니다 — 무엇을 만들지, 무엇을 받을지, 무엇을 적을지 고르는 순간의 문제였습니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
@@ -1022,7 +1122,7 @@
   <div class="center">
     <span class="badge">Chapter 04</span>
     <h1>어떤 <span class="blue">문제</span>를 해결해야 할까</h1>
-    <p class="sub">청년정착 · 관광로컬상권 · 고령자교통약자</p>
+    <p class="sub">반복되는 손작업 · 고객이 떠나는 지점 · 답이 늦는 문의</p>
   </div>
   <div class="ghost">04</div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
@@ -1100,9 +1200,9 @@
 <!-- 인터스티셜: 국내 사례 -->
 <section class="slide tint">
   <div class="center">
-    <span class="badge">04 — 국내 사례</span>
-    <h1>국내 지역문제 해결 사례</h1>
-    <p class="sub">바이브 코딩은 이미 어디까지 왔나 — 성공과 실패</p>
+    <span class="badge">04 — 사례</span>
+    <h1>바이브 코딩은 <span class="blue">어디까지</span> 왔나</h1>
+    <p class="sub">국내와 해외 · 혼자 만든 것부터 인수된 것까지 — 그리고 대부분이 멈추는 지점</p>
   </div>
   <div class="ghost">V</div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
@@ -1111,18 +1211,18 @@
 <!-- 사례 ① 벚꽃 혼잡도 지도 -->
 <section class="slide tint">
   <div class="head">
-    <span class="badge">04 — 국내 사례 ① · 바이브 코딩 제작 확인</span>
+    <span class="badge">04 — 사례 ① · 공개 데이터로 만든 것</span>
     <h2>서울 <span class="blue">벚꽃 혼잡도 지도</span></h2>
   </div>
   <div class="cardbody split2">
     <div class="col">
       <p class="line"><b>문제</b> — 벚꽃 명소 정보는 많지만,<br>'지금 어디가 덜 붐비는지'는 알 수 없다</p>
       <p class="line"><b>해결</b> — 서울시 생활인구 공공데이터와 지도를 결합해<br>명소 30곳의 혼잡도·개화 상태를 60분 주기로 표시</p>
-      <p class="fn">비개발자가 <b>Claude Code를 처음 사용한 날</b> 만든 공개 서비스.<br>오늘 실습과 같은 스택 — Claude로 만들고 Vercel로 배포</p>
+      <p class="fn">공개 데이터 + 지도 + 배포. <b>오늘 실습과 같은 스택</b>으로 만들 수 있는 범위이고,<br>고른 문제가 좁아서 하루 안에 끝나는 크기가 됐습니다</p>
     </div>
     <div>
       <img class="shot" src="assets/case-blossom.png" alt="서울 벚꽃 혼잡도 지도 — 실서비스 화면">
-      <p class="src">2026.08.06 접속 확인 — blossom-map-eight.vercel.app</p>
+      <p class="src">2026.08.06 접속 확인 — <a href="https://blossom-map-eight.vercel.app" style="color:inherit;text-decoration:none">blossom-map-eight.vercel.app</a></p>
     </div>
   </div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
@@ -1131,95 +1231,126 @@
 <!-- 사례 ② 발달장애인 맞춤형 시간표 -->
 <section class="slide tint">
   <div class="head">
-    <span class="badge">04 — 국내 사례 ② · 바이브 코딩 제작 확인</span>
-    <h2>발달장애인 <span class="blue">맞춤형 시간표</span></h2>
+    <span class="pill"><span class="dot"></span>04 — 사례 ② · 국내</span>
+    <h2>하루에서 3주, <span class="blue">지도가 쏟아진 여름</span></h2>
   </div>
-  <div class="cardbody split2">
-    <div class="col">
-      <p class="line"><b>문제</b> — 이용자가 하고 싶은 활동과 순서를 스스로<br>표현하기 어려워, 지원자가 일정을 대신 결정해야 했다</p>
-      <p class="line"><b>해결</b> — 색과 활동을 직접 골라 하루 시간표를 만들고<br>완료 여부를 체크하는 도구. <b>사회복지사가 바이브 코딩으로 제작</b></p>
-      <p class="fn">통합돌봄 현장에서 실제 사용 중이며 활동 결과가 기록으로 축적.<br>작은 대상 · 명확한 행동 · 눈에 보이는 결과</p>
-    </div>
-    <div>
-      <img class="shot" src="assets/case-seoulcbid.png" alt="서울장애인종합복지관 홈페이지">
-      <p class="src">운영기관 — 서울장애인종합복지관 · seoulcbid.or.kr</p>
+  <div class="body" style="top:210px">
+    <div class="cases svcs">
+      <div>
+        <span class="n">하루 미만</span>
+        <h4>러브버그맵</h4>
+        <p>출몰 지점을 이용자가 제보하면 실시간으로 지도에 반영. 공개 첫 주에 <b>제보 6,360건</b>, 목격 인증 76%</p>
+        <p class="ln">데이터를 구하지 않고 <b>사용자에게 받아서</b> 채웠습니다</p>
+        <a class="svc" href="https://xn--2i0bt2q2wd1wb.com">러브버그.com ↗</a>
+      </div>
+      <div>
+        <span class="n">이틀</span>
+        <h4>거지맵</h4>
+        <p>주말 이틀 만에 만들어 공개. 좁고 분명한 쓸모 하나로 <b>누적 246만</b> 이용</p>
+        <p class="ln">기능을 늘리지 않고 <b>한 가지만</b> 했습니다</p>
+        <a class="svc" href="https://xn--v69ak0xskm.com">거지맵.com ↗</a>
+      </div>
+      <div>
+        <span class="n">3주</span>
+        <h4>야장맵</h4>
+        <p>야외 술자리 장소를 모아 보여주는 서비스. 3주 만에 만들어 <b>월 사용자 6만</b></p>
+        <p class="ln">계절과 유행을 <b>지나가기 전에</b> 올렸습니다</p>
+        <a class="svc" href="https://xn--r02bv4soub.kr">야장맵.kr ↗</a>
+      </div>
     </div>
   </div>
+  <p class="fnote">셋 다 <b>개발자가 아니어도</b> 만들 수 있는 크기였습니다 — 한국경제, 2026.6.26</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
-<!-- 사례 ③ 괜찮아마을 -->
-<section class="slide tint">
+<!-- 사례 ③ 해외 -->
+<section class="slide">
   <div class="head">
-    <span class="badge">04 — 국내 사례 ③ · 청년 정착</span>
-    <h2>목포 <span class="blue">괜찮아마을</span></h2>
+    <span class="pill"><span class="dot"></span>04 — 사례 ③ · 해외</span>
+    <h2>혼자서 <span class="blue">어디까지</span> 갔나</h2>
   </div>
-  <div class="cardbody split2">
-    <div class="col">
-      <p class="line"><b>문제</b> — 청년이 지역에 살아볼 이유도,<br>머물 공간도 없다</p>
-      <p class="line"><b>해결</b> — 원도심의 빈 공간에서 외지 청년들이 함께 살며<br>지역 프로젝트·창업·취업으로 연결. 마을호텔·로컬여행으로 확장</p>
-      <p class="fn">정착 시도 약 30명 중 <b>8년이 지난 지금도 20여 명이 지역에 잔류</b>.<br>일부는 결혼·출산·창업으로 이어짐</p>
-    </div>
-    <div>
-      <img class="shot" src="assets/case-dwvil.png" alt="괜찮아마을 홈페이지 — 워크숍·예약 운영 중">
-      <p class="src">2026.08.06 접속 확인 — dwvil.com (예약·워크숍 운영 중)</p>
+  <div class="body">
+    <p class="verdict">천장은 <b>생각보다 높고</b>, 한계는 <b>생각보다 빨리</b> 옵니다.</p>
+    <div class="vs">
+      <div class="hi">
+        <h3><span class="tag">CEILING</span>혼자 4개월</h3>
+        <ul>
+          <li>비개발자용 앱 빌더 <b>Base44</b> — 창업자 혼자 4개월 만에 만들었다</li>
+          <li>출시 첫 달 구독 매출 <b>150만 달러</b></li>
+          <li>넉 달 뒤 Wix가 <b>8,000만 달러</b>에 인수 (2025년 6월)</li>
+        </ul>
+        <a class="svc" href="https://base44.com">base44.com ↗</a>
+      </div>
+      <div class="no">
+        <h3><span class="tag">LIMIT</span>그 대신 치른 값</h3>
+        <ul>
+          <li>서버를 지키려고 <b>2~3시간마다 알람</b>을 맞춰 일어났다</li>
+          <li>월 AI 비용이 <b>직원 급여 수준</b>까지 올라간다</li>
+          <li>NYU 스턴 실험 — AI는 실행과 발상은 도와도,<br><b>전문가들이 모였을 때 나오는 판단</b>은 대신하지 못했다</li>
+        </ul>
+      </div>
     </div>
   </div>
+  <p class="fnote">잘된 사례일수록 <b>치른 값</b>까지 같이 보세요 — Fortune, 2026.5.18</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
-<!-- 사례 ④ 똑버스 -->
+<!-- 사례 ④ 현실 점검 -->
 <section class="slide tint">
   <div class="head">
-    <span class="badge">04 — 국내 사례 ④ · 고령자 교통약자</span>
-    <h2>경기 수요응답형 교통 <span class="blue">똑버스</span></h2>
+    <span class="pill"><span class="dot"></span>04 — 사례 ④ · 현실 점검</span>
+    <h2>그런데 <span class="blue">대부분은</span> 왜 멈출까</h2>
   </div>
-  <div class="cardbody split2">
-    <div class="col">
-      <p class="line"><b>문제</b> — 버스가 드문 농촌·외곽 지역의 고령자는<br>병원과 시장에 가기 어렵다</p>
-      <p class="line"><b>해결</b> — 호출하면 AI가 실시간으로 경로를 구성하는<br>수요응답형 버스. 앱이 어려운 어르신을 위해 <b>전화호출 병행</b></p>
-      <p class="fn">누적 이용 1,197만 명 · 여주 가남읍 하루 이용 224명 → 504명.<br>성공 요인은 기술이 아니라 비디지털 대체수단을 함께 둔 것</p>
-    </div>
-    <div>
-      <img class="shot" src="assets/case-ddokta.png" alt="똑타 앱 — Google Play, 다운로드 50만+">
-      <p class="src">Google Play — 다운로드 50만+ (2026.08.06 확인)</p>
+  <div class="body">
+    <p class="verdict">만드는 일은 <b>싸졌습니다.</b> 멈추는 곳은 <b>다른 데</b>입니다.</p>
+    <div class="cases">
+      <div>
+        <span class="n">01 — 출시까지 못 간다</span>
+        <h4>3,100만 개 중 0.4%</h4>
+        <p>AI로 만들어진 앱 가운데 실제로 세상에 나온 비율. 만드는 것과 내놓는 것은 다른 일입니다</p>
+      </div>
+      <div>
+        <span class="n">02 — 나와도 안 쓴다</span>
+        <h4>폐업 사유 1위권, 43%</h4>
+        <p>2023년 이후 문 닫은 스타트업 431곳 중 <b>제품-시장 적합성 부족</b>을 든 비율 (CB Insights, 2026.3)</p>
+      </div>
+      <div>
+        <span class="n">03 — 그래서 남는 질문</span>
+        <h4>무엇을 만들 것인가</h4>
+        <p>갈린 지점은 만드는 능력이 아니라, <b>무엇을 만들지 고른 판단</b>이었습니다</p>
+      </div>
     </div>
   </div>
+  <p class="fnote">"AI가 실행을 상품화했다" — 만들기가 흔해질수록 고르는 일의 값이 올라갑니다 (HBR, 2026.8)</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 성공·실패 대비 3쌍 -->
 <section class="slide">
   <div class="head">
-    <span class="pill"><span class="dot"></span>04 — 국내 사례</span>
-    <h2>같은 주제, 다른 결과</h2>
+    <span class="pill"><span class="dot"></span>04 — 사례 정리</span>
+    <h2>무엇을 <span class="blue">세느냐</span>가 결과를 가릅니다</h2>
   </div>
   <div class="body" style="top:210px">
     <div class="cases">
       <div>
-        <span class="n">청년 정착</span>
-        <h4>괜찮아마을 ↔ 달빛포레스트</h4>
-        <p class="ln"><span class="m">O</span>목포 — 정착 시도 30명 중 8년 뒤에도 20여 명이 지역에 잔류</p>
-        <p class="ln"><span class="m x">X</span>영암 — 참가자 118명 중 실제 전입은 2명</p>
-        <p class="q">참가자 수가 아니라, 주거와 소득을 확보하고 남은 사람이 몇 명인가?</p>
+        <span class="n">쉬운 숫자</span>
+        <h4>가입자 · 다운로드 · 방문</h4>
+        <p>늘리기 쉽고 보고하기 좋습니다. 그런데 <b>다음 주에도 왔는지</b>는 말해주지 않습니다</p>
       </div>
       <div>
-        <span class="n">관광 · 로컬 상권</span>
-        <h4>스마트 마켓 메이커 ↔ 대형 플랫폼</h4>
-        <p class="ln"><span class="m">O</span>서초 — 사진+설명을 상세페이지로 바꿔주는 한 가지 문제에 집중</p>
-        <p class="ln"><span class="m x">X</span>전환 측정 없는 대규모 플랫폼은 효과 판단이 어려움</p>
-        <p class="q">몇 개를 만들었는가가 아니라, 실제 주문과 방문으로 이어졌는가?</p>
+        <span class="n">어려운 숫자</span>
+        <h4>다시 온 사람 · 끝까지 간 사람</h4>
+        <p>같은 사람이 <b>두 번째로</b> 썼는가. 시작한 일을 <b>끝냈는가</b>. 돈을 냈는가</p>
       </div>
       <div>
-        <span class="n">고령자 · 교통약자</span>
-        <h4>똑버스 ↔ 은평모두로</h4>
-        <p class="ln"><span class="m">O</span>경기 — 누적 1,197만 명, 앱과 <b>전화호출</b>을 함께 제공</p>
-        <p class="ln"><span class="m x">X</span>은평 — 6억 원 투입, 반년간 다운로드 10여 건</p>
-        <p class="q">기능이 많은가가 아니라, 대상자가 실제로 호출하고 이동을 완료하는가?</p>
+        <span class="n">오늘 정할 것</span>
+        <h4>측정할 한 가지</h4>
+        <p>MVP를 만들기 전에 <b>무엇이 늘면 성공인지</b> 한 문장으로 정해두세요</p>
       </div>
     </div>
   </div>
-  <p class="fnote">출처 — 국내 지역문제 바이브코딩·디지털 서비스 사례집 (2026.08.05 기준 공개자료)</p>
+  <p class="fnote">만들기 전에 정하지 않으면, 만든 뒤에는 <b>잘된 것처럼 보이는 숫자</b>를 고르게 됩니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
@@ -1246,32 +1377,32 @@
 <!-- 세 주제에 적합한 작은 과제 -->
 <section class="slide">
   <div class="head">
-    <span class="pill"><span class="dot"></span>04 — 국내 사례</span>
-    <h2>세 주제에 적합한 작은 과제</h2>
+    <span class="pill"><span class="dot"></span>04 — 오늘 만들 것</span>
+    <h2>오늘 하루에 <span class="blue">끝나는 크기</span>의 과제</h2>
   </div>
   <div class="body" style="top:210px">
     <div class="cases">
       <div>
-        <span class="n">청년 정착</span>
-        <h4>정착 후속관리 도구</h4>
-        <p>참가자의 주거·일자리·프로젝트를 매칭하고 30·90·180일 체류를 관리하는 도구</p>
-        <p class="q">신청자 수가 아니라 실제 전입 · 잔류 · 소득활동을 측정</p>
+        <span class="n">반복되는 손작업</span>
+        <h4>붙여넣기를 없애는 화면</h4>
+        <p>매주 손으로 옮기던 표 하나를 <b>붙여넣으면 정리해주는</b> 페이지로 바꿉니다</p>
+        <p class="q">그 일에 쓰던 <b>시간이 줄었는가?</b></p>
       </div>
       <div>
-        <span class="n">관광 · 로컬 상권</span>
-        <h4>지금 열려있는 가게 지도</h4>
-        <p>현재 위치 기준 영업 중인 점포·체험·화장실 정보를 보여주고 QR 쿠폰을 발급하는 웹앱</p>
-        <p class="q">QR 발급 → 실제 방문 → 구매로 이어지는지 측정</p>
+        <span class="n">고객이 떠나는 지점</span>
+        <h4>어디서 멈추는지 보는 화면</h4>
+        <p>우리 흐름의 <b>세 단계</b>만 골라 각 단계에서 몇 명이 남는지 보여줍니다</p>
+        <p class="q">다음 단계로 <b>넘어간 비율</b>이 올랐는가?</p>
       </div>
       <div>
-        <span class="n">고령자 · 교통약자</span>
-        <h4>이동 요청 운영도구</h4>
-        <p>전화로 받은 이동 요청을 지도에 표시하고 마을버스·봉사차량 운행표를 만드는 도구</p>
-        <p class="q">요청 대비 완료율 · 평균 대기시간 · 전화 이용 비율을 측정</p>
+        <span class="n">답이 늦는 문의</span>
+        <h4>같은 답을 자동으로</h4>
+        <p>자주 오는 질문 <b>열 개</b>만 넣고, 물어보면 답을 찾아주는 페이지를 만듭니다</p>
+        <p class="q">사람이 <b>다시 답한 비율</b>이 줄었는가?</p>
       </div>
     </div>
   </div>
-  <p class="fnote">가장 잘 맞는 문제의 형태 — 범위가 작고, 결과를 곧바로 확인할 수 있는 문제</p>
+  <p class="fnote">잘 맞는 문제의 형태 — 범위가 작고, <b>오늘 안에 결과를 확인할 수 있는</b> 문제입니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
