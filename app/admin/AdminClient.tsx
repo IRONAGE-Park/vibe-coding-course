@@ -3,7 +3,15 @@
 import { useCallback, useEffect, useState } from "react";
 import type { FormEvent, ReactNode } from "react";
 import { useRouter } from "next/navigation";
-import { CHAPTERS, TOTAL_STEPS, stepLabel } from "@/app/lib/steps";
+import {
+  CHAPTERS,
+  TOTAL_STEPS,
+  pageLabel,
+  pageOrder,
+  stepLabel,
+} from "@/app/lib/steps";
+import { FEEDBACK_KINDS } from "@/app/lib/feedback";
+import type { ChapterNotes } from "@/app/lib/lecture-notes";
 import type { Stats, VisitorRow } from "@/app/lib/stats-types";
 
 const REFRESH_MS = 10_000;
@@ -12,15 +20,18 @@ export default function AdminClient({
   initialAuthed,
   configured,
   initialStats,
+  notes,
 }: {
   initialAuthed: boolean;
   configured: boolean;
   initialStats: Stats | null;
+  /** 강사 노트 — 로그인한 경우에만 서버가 내려줍니다 */
+  notes: ChapterNotes[] | null;
 }) {
   const router = useRouter();
 
   if (initialAuthed && initialStats) {
-    return <Dashboard initialStats={initialStats} />;
+    return <Dashboard initialStats={initialStats} notes={notes ?? []} />;
   }
   return <Login configured={configured} onSuccess={() => router.refresh()} />;
 }
@@ -107,9 +118,80 @@ function Login({
 
 /* ── 대시보드 ───────────────────────────────────────────── */
 
-type Tab = "people" | "steps" | "sessions";
+/* ── 강사 노트 ─────────────────────────────────────────────
+   참가자 화면에서 뺀 배경 설명 · 사례 · 진행 요령을 장별로 봅니다. */
 
-function Dashboard({ initialStats }: { initialStats: Stats }) {
+function NotesView({ notes }: { notes: ChapterNotes[] }) {
+  const [chapter, setChapter] = useState(CHAPTERS[0].key);
+  const current = notes.find((n) => n.key === chapter);
+
+  return (
+    <section className="mt-7">
+      {/* 강의 중에는 지금 장만 빠르게 골라 봅니다 */}
+      <div className="flex flex-wrap gap-1.5">
+        {CHAPTERS.map((c) => (
+          <button
+            key={c.key}
+            onClick={() => setChapter(c.key)}
+            className={`rounded-full px-3 py-1.5 text-[12.5px] font-bold transition-colors ${
+              chapter === c.key
+                ? "bg-[var(--s2-ink)] text-[var(--s2-on-ink)]"
+                : "border border-[var(--s2-line)] text-[var(--s2-gray)]"
+            }`}
+          >
+            {c.num} {c.label}
+          </button>
+        ))}
+      </div>
+
+      {!current || current.sections.length === 0 ? (
+        <div className="mt-4">
+          <Empty>이 장에는 노트가 없습니다.</Empty>
+        </div>
+      ) : (
+        <div className="mt-4 flex flex-col gap-2.5">
+          {current.sections.map((s) => (
+            <details
+              key={s.title}
+              open
+              className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
+            >
+              <summary className="cursor-pointer text-[14.5px] font-extrabold">
+                {s.title}
+              </summary>
+              <ul className="mt-2.5 flex flex-col gap-1.5">
+                {s.points.map((p) => (
+                  <li
+                    key={p}
+                    className="flex gap-2 text-[13.5px] leading-[1.6] text-[var(--s2-body)]"
+                  >
+                    <span className="mt-[0.6em] h-1 w-1 shrink-0 rounded-full bg-[var(--s2-blue)]" />
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </div>
+      )}
+
+      <p className="mt-4 text-[11.5px] leading-[1.5] text-[var(--s2-faint)]">
+        참가자 화면에서 뺀 배경 설명 · 사례 · 진행 요령입니다. 근거 자료는
+        docs/research 에 있습니다.
+      </p>
+    </section>
+  );
+}
+
+type Tab = "people" | "inbox" | "steps" | "time" | "notes" | "sessions";
+
+function Dashboard({
+  initialStats,
+  notes,
+}: {
+  initialStats: Stats;
+  notes: ChapterNotes[];
+}) {
   const router = useRouter();
   const [stats, setStats] = useState<Stats>(initialStats);
   const [viewing, setViewing] = useState<string | null>(null);
@@ -274,8 +356,30 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
     }
   }
 
+  async function resolveFeedback(id: number, resolved: boolean) {
+    if (
+      await call("/api/admin/feedback", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, resolved }),
+      })
+    ) {
+      await refresh();
+    }
+  }
+
   const viewed = stats.sessions.find((s) => s.id === stats.session?.id);
   const isViewingRunning = viewed?.isRunning ?? false;
+
+  const unresolved = stats.feedback.filter((f) => !f.resolvedAt).length;
+  const names = new Map(stats.visitors.map((v) => [v.id, v.name]));
+
+  const pages = [...stats.pageTimes].sort(
+    (a, b) => pageOrder(a.path) - pageOrder(b.path)
+  );
+  const clicks = [...stats.nextClicks].sort(
+    (a, b) => pageOrder(a.path) - pageOrder(b.path) || b.visitors - a.visitors
+  );
 
   const avgPct = stats.totalSteps
     ? Math.round((stats.averageDone / stats.totalSteps) * 100)
@@ -327,11 +431,15 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
       </div>
 
       {/* ── 탭 ────────────────────────────────────────── */}
-      <div className="mt-6 flex gap-1.5">
+      {/* 탭이 여섯 개라 좁은 화면에서는 두 줄로 나눕니다 */}
+      <div className="mt-6 grid grid-cols-3 gap-1.5 sm:flex">
         {(
           [
             ["people", `참가자 ${stats.totalVisitors}`],
+            ["inbox", unresolved > 0 ? `문의 ${unresolved}` : "문의"],
             ["steps", "단계별"],
+            ["time", "시간"],
+            ["notes", "강사 노트"],
             ["sessions", "강의"],
           ] as [Tab, string][]
         ).map(([key, label]) => (
@@ -416,12 +524,81 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
         </Section>
       )}
 
+      {tab === "inbox" && (
+        <Section title="문의 · 개선 제안" note="새것이 위에 옵니다">
+          {stats.feedback.length === 0 ? (
+            <Empty>아직 받은 문의가 없습니다.</Empty>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {stats.feedback.map((f) => {
+                const resolved = f.resolvedAt !== null;
+                return (
+                  <div
+                    key={f.id}
+                    className={`overflow-hidden rounded-[16px] border p-4 ${
+                      resolved
+                        ? "border-[var(--s2-divider)] bg-[var(--s2-tint)] opacity-70"
+                        : "border-[var(--s2-line)] bg-[var(--s2-card)]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                          f.kind === "question"
+                            ? "bg-[var(--s2-info-bg)] text-[var(--s2-blue)]"
+                            : "bg-[var(--s2-warn-bg)] text-[var(--s2-warn-ink)]"
+                        }`}
+                      >
+                        {FEEDBACK_KINDS[f.kind]}
+                      </span>
+                      <p className="min-w-0 flex-1 truncate text-[14.5px] font-extrabold">
+                        {names.get(f.visitorId) ?? "이름 안 밝힘"}
+                      </p>
+                      <span className="font-mono shrink-0 text-[11px] text-[var(--s2-faint)]">
+                        {when(f.createdAt)}
+                      </span>
+                    </div>
+
+                    {/* 보낼 때 보고 있던 곳. 강사가 바로 그 단계로 찾아갈 수 있게 합니다 */}
+                    <p className="mt-1.5 text-[12px] leading-[1.5] text-[var(--s2-faint)]">
+                      {f.context}
+                    </p>
+                    <p className="mt-2 whitespace-pre-wrap break-words text-[14px] leading-[1.6] text-[var(--s2-strong)]">
+                      {f.body}
+                    </p>
+
+                    <div className="mt-3 flex justify-end">
+                      <button
+                        onClick={() => resolveFeedback(f.id, !resolved)}
+                        disabled={busy}
+                        className={`rounded-full px-3 py-1 text-[12px] font-semibold disabled:opacity-40 ${
+                          resolved
+                            ? "border border-[var(--s2-line)] text-[var(--s2-gray)]"
+                            : "bg-[var(--s2-blue)] text-[var(--s2-on-blue)]"
+                        }`}
+                      >
+                        {resolved ? "확인 취소" : "확인했어요"}
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </Section>
+      )}
+
       {tab === "steps" &&
-        CHAPTERS.map((c) => (
-          <Section key={c.key} title={`${c.num} ${c.label}`}>
+        CHAPTERS.filter((c) => c.steps.length > 0).map((c, ci) => (
+          <Section
+            key={c.key}
+            title={`${c.num} ${c.label}`}
+            note={ci === 0 ? "걸린 시간 · 완료 인원" : undefined}
+          >
             <div className="overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)]">
               {c.steps.map((s, i) => {
                 const n = stats.stepCounts[s.id] ?? 0;
+                const t = stats.stepTimes[s.id];
                 return (
                   <div
                     key={s.id}
@@ -431,6 +608,12 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
                   >
                     <span className="flex-1 text-[13.5px] leading-[1.45]">
                       {s.title}
+                    </span>
+                    <span
+                      title="앞 단계를 끝낸 때부터 이 단계를 끝낸 때까지 (중앙값)"
+                      className="font-mono w-14 shrink-0 text-right text-[11.5px] text-[var(--s2-faint)]"
+                    >
+                      {t ? duration(t.medianS * 1000) : "–"}
                     </span>
                     <span className="w-16 shrink-0">
                       <Bar
@@ -448,6 +631,72 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
             </div>
           </Section>
         ))}
+
+      {tab === "time" && (
+        <>
+          <Section title="페이지별 머문 시간" note="탭을 보고 있던 시간 · 중앙값">
+            {pages.length === 0 ? (
+              <Empty>아직 기록이 없습니다.</Empty>
+            ) : (
+              <div className="overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)]">
+                {pages.map((p, i) => (
+                  <div
+                    key={p.path}
+                    className={`flex items-center gap-3 px-4 py-3 ${
+                      i > 0 ? "border-t border-[var(--s2-line)]" : ""
+                    }`}
+                  >
+                    <span className="min-w-0 flex-1 truncate text-[13.5px]">
+                      {pageLabel(p.path)}
+                    </span>
+                    <span className="font-mono shrink-0 text-[11.5px] text-[var(--s2-faint)]">
+                      {p.visitors}명 · 평균 {duration(p.avgMs)}
+                    </span>
+                    <span className="font-mono w-16 shrink-0 text-right text-[13px] font-bold text-[var(--s2-blue)]">
+                      {duration(p.medianMs)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Section>
+
+          <Section title="다음 장으로 넘어간 시점" note="처음 누른 때 기준">
+            {clicks.length === 0 ? (
+              <Empty>아직 페이지 아래 &lsquo;다음&rsquo;을 누른 사람이 없습니다.</Empty>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {clicks.map((c) => (
+                  <div
+                    key={`${c.path}>${c.target}`}
+                    className="overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-4"
+                  >
+                    <div className="flex items-center gap-2.5">
+                      <p className="min-w-0 flex-1 truncate text-[14.5px] font-extrabold">
+                        {pageLabel(c.path)} → {pageLabel(c.target)}
+                      </p>
+                      <span className="font-mono shrink-0 text-[12.5px] font-bold text-[var(--s2-blue)]">
+                        {c.visitors} / {stats.totalVisitors}
+                      </span>
+                    </div>
+                    <p className="mt-1.5 text-[12.5px] leading-[1.5] text-[var(--s2-body)]">
+                      <span className="text-[var(--s2-faint)]">페이지에 머문 시간 </span>
+                      {duration(c.medianMs)}
+                      <span className="text-[var(--s2-faint)]"> (중앙값)</span>
+                    </p>
+                    <p className="font-mono mt-1 truncate text-[11px] text-[var(--s2-faint)]">
+                      첫 클릭 {when(c.firstAt)} · 중앙값 {when(c.medianAt)}
+                    </p>
+                    <Bar value={c.visitors} max={Math.max(stats.totalVisitors, 1)} />
+                  </div>
+                ))}
+              </div>
+            )}
+          </Section>
+        </>
+      )}
+
+      {tab === "notes" && <NotesView notes={notes} />}
 
       {tab === "sessions" && (
         <Section title="강의">
@@ -549,6 +798,15 @@ function Dashboard({ initialStats }: { initialStats: Stats }) {
 }
 
 /* ── 조각들 ─────────────────────────────────────────────── */
+
+/** 걸린 시간 표시 — 45초 · 4분 · 1시간 5분 */
+function duration(ms: number): string {
+  const s = Math.round(ms / 1000);
+  if (s < 60) return `${s}초`;
+  const m = Math.round(s / 60);
+  if (m < 60) return `${m}분`;
+  return `${Math.floor(m / 60)}시간 ${m % 60}분`;
+}
 
 function short(id: string): string {
   return id.slice(0, 8);

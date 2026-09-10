@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import StepShell from "./StepShell";
+import NextLink from "./NextLink";
 import { isTrackedStep } from "@/app/lib/steps";
 
 /* ── 라벨/뱃지 ─────────────────────────────────────────── */
@@ -167,6 +168,35 @@ export function MiniSteps({ items }: { items: ReactNode[] }) {
           </span>
           <span className="text-[15px] leading-[1.6] text-[var(--s2-strong)]">
             {item}
+          </span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/* ── 시간표 목록 (인터뷰 대본처럼 몇 분 · 무엇 · 어떻게) ──── */
+
+export function TimedList({
+  rows,
+}: {
+  rows: { t: string; k: string; v: ReactNode }[];
+}) {
+  return (
+    <ol className="flex flex-col rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)]">
+      {rows.map((r) => (
+        <li
+          key={r.k}
+          className="grid grid-cols-[3.5rem_1fr] gap-x-3 gap-y-1 border-b border-[var(--s2-divider)] px-4 py-3 last:border-b-0 md:grid-cols-[4rem_9rem_1fr]"
+        >
+          <span className="font-mono text-[13px] font-bold text-[var(--s2-blue)]">
+            {r.t}
+          </span>
+          <span className="text-[14px] font-extrabold text-[var(--s2-strong)]">
+            {r.k}
+          </span>
+          <span className="col-span-2 text-[13.5px] leading-[1.6] text-[var(--s2-body)] md:col-span-1">
+            {r.v}
           </span>
         </li>
       ))}
@@ -394,7 +424,7 @@ export function Pager({
         <span className="flex-1" />
       )}
       {next ? (
-        <Link
+        <NextLink
           href={next.href}
           className="group flex flex-1 flex-col items-end gap-1 rounded-[18px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-5 text-right transition-colors hover:border-[var(--s2-blue)]"
         >
@@ -404,7 +434,7 @@ export function Pager({
           <span className="text-[15.5px] font-extrabold text-[var(--s2-strong)] group-hover:text-[var(--s2-blue)]">
             {next.label}
           </span>
-        </Link>
+        </NextLink>
       ) : (
         <span className="flex-1" />
       )}

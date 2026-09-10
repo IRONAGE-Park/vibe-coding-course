@@ -173,21 +173,75 @@ export function toggleDone(stepId: string): boolean {
   return next;
 }
 
+/* ── 페이지에 머문 시간 ─────────────────────────────────── */
+
+/**
+ * 탭이 보이는 동안만 셉니다. 다른 탭에 가 있던 시간은 빠지고,
+ * 이 탭을 띄워둔 채 옆 창(터미널 등)에서 따라 하던 시간은 들어갑니다.
+ * total 은 이 페이지에 들어온 뒤 전체, sent 는 그중 이미 서버에 보낸 만큼입니다.
+ */
+const clock = { total: 0, sent: 0, since: null as number | null };
+
+/** 새 페이지에 들어왔을 때 0부터 다시 셉니다 */
+export function startPageClock() {
+  clock.total = 0;
+  clock.sent = 0;
+  clock.since = document.hidden ? null : performance.now();
+}
+
+/** 탭으로 돌아왔을 때 다시 셉니다 */
+export function resumePageClock() {
+  clock.since ??= performance.now();
+}
+
+/** 이 페이지에 들어온 뒤 지금까지 머문 시간(ms) */
+export function pageElapsed(): number {
+  return clock.total + (clock.since === null ? 0 : performance.now() - clock.since);
+}
+
+/** 시계를 멈추고, 아직 보내지 않은 만큼을 돌려줍니다 */
+export function takeUnsentPageTime(): number {
+  clock.total = pageElapsed();
+  clock.since = null;
+  const unsent = clock.total - clock.sent;
+  clock.sent = clock.total;
+  return unsent;
+}
+
 /* ── 서버 전송 ──────────────────────────────────────────── */
 
 type TrackEvent = "visit" | "complete" | "uncomplete";
+type TimeEvent = "page" | "next";
 
 /** 집계 전송 — 실패해도 사용자 화면에는 영향을 주지 않습니다 */
 export async function track(event: TrackEvent, stepId?: string) {
+  await send({ event, stepId });
+}
+
+/**
+ * 머문 시간 전송.
+ *   page : 이 페이지에서 탭을 보고 있던 시간 (탭을 떠날 때 · 다른 페이지로 갈 때)
+ *   next : 페이지 아래 "다음" 을 누름. target 은 넘어가는 곳입니다.
+ */
+export async function trackTime(
+  event: TimeEvent,
+  path: string,
+  ms: number,
+  target?: string
+) {
+  await send({ event, path, target, ms: Math.round(ms) });
+}
+
+async function send(detail: Record<string, unknown>) {
   try {
+    // keepalive 라서 페이지를 닫는 순간에 보낸 요청도 끝까지 갑니다.
     const res = await fetch("/api/track", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         visitorId: getVisitorId(),
         name: getName(),
-        event,
-        stepId,
+        ...detail,
       }),
       keepalive: true,
     });

@@ -47,4 +47,9 @@ export const TABLES = {
   loginAttempts: "login_attempts",
   stepCounts: "step_counts",
   visitorProgress: "visitor_progress",
+  events: "events",
+  pageTimeStats: "page_time_stats",
+  nextClickStats: "next_click_stats",
+  stepTimeStats: "step_time_stats",
+  feedback: "feedback",
 } as const;

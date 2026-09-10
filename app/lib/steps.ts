@@ -31,10 +31,10 @@ export const CHAPTERS: Chapter[] = [
     label: "문제 정의",
     href: "/plan",
     steps: [
-      { id: "plan-1", title: "Claude Code 열고 대화 시작하기" },
+      { id: "plan-1", title: "AI에게 인터뷰받기" },
       { id: "plan-2", title: "문제 정의 — 한 문장으로" },
-      { id: "plan-3", title: "기획서 만들기" },
-      { id: "plan-4", title: "요구사항 명세" },
+      { id: "plan-3", title: "intent.md 만들기" },
+      { id: "plan-4", title: "spec.md 만들기" },
       { id: "plan-5", title: "개발 지시 — 초안 만들기" },
     ],
   },
@@ -65,8 +65,16 @@ export const CHAPTERS: Chapter[] = [
     ],
   },
   {
-    key: "tools",
+    /* 강의가 끝난 뒤 스스로 하는 장 — 완료 집계 단계는 두지 않습니다 */
+    key: "learn",
     num: "05",
+    label: "배우는 법",
+    href: "/learn",
+    steps: [],
+  },
+  {
+    key: "tools",
+    num: "06",
     label: "유용한 도구들",
     href: "/tools",
     steps: [
@@ -149,4 +157,23 @@ export function stepStateOf(id: string, done: Set<string>): StepState {
 export function nextStepId(id: string): string | null {
   const i = STEP_IDS.indexOf(id);
   return i >= 0 && i + 1 < STEP_IDS.length ? STEP_IDS[i + 1] : null;
+}
+
+/* ── 페이지 ─────────────────────────────────────────────── */
+
+/** 참가자 화면의 페이지 순서 — 홈, 각 장, 막혔을 때 */
+export const PAGES: { href: string; label: string }[] = [
+  { href: "/", label: "홈" },
+  ...CHAPTERS.map((c) => ({ href: c.href, label: `${c.num} ${c.label}` })),
+  { href: "/help", label: "막혔을 때" },
+];
+
+export function pageOrder(path: string): number {
+  const i = PAGES.findIndex((p) => p.href === path);
+  return i < 0 ? PAGES.length : i;
+}
+
+/** "01 환경 설정" 같은 페이지 이름. 모르는 주소면 주소를 그대로 돌려줍니다. */
+export function pageLabel(path: string): string {
+  return PAGES.find((p) => p.href === path)?.label ?? path;
 }

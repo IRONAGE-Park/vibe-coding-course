@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { isAdmin } from "@/app/lib/auth";
 import { getStats } from "@/app/lib/stats";
+import { LECTURE_NOTES } from "@/app/lib/lecture-notes";
 import AdminClient from "./AdminClient";
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default async function AdminPage() {
       initialAuthed={authed}
       configured={Boolean(process.env.ADMIN_PASSWORD)}
       initialStats={authed ? await getStats() : null}
+      notes={authed ? LECTURE_NOTES : null}
     />
   );
 }

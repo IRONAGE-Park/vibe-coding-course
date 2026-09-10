@@ -5,6 +5,9 @@ import { Noto_Sans_KR, Fragment_Mono } from "next/font/google";
 import "./globals.css";
 import JoinGate from "./components/JoinGate";
 import { ParticipationProvider } from "./components/Participation";
+import VercelMonitoring from "./components/VercelMonitoring";
+import PageTimer from "./components/PageTimer";
+import FeedbackButton from "./components/FeedbackButton";
 import { getParticipation } from "./lib/participation";
 
 const notoSansKr = Noto_Sans_KR({
@@ -59,7 +62,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <ParticipationProvider value={participation}>
           {children}
           <JoinGate />
+          <PageTimer />
+          <FeedbackButton />
         </ParticipationProvider>
+        <VercelMonitoring />
       </body>
     </html>
   );
