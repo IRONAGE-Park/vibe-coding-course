@@ -493,7 +493,7 @@ function Dashboard({
       )}
 
       {tab === "steps" &&
-        CHAPTERS.map((c) => (
+        CHAPTERS.filter((c) => c.steps.length > 0).map((c) => (
           <Section key={c.key} title={`${c.num} ${c.label}`}>
             <div className="overflow-hidden rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)]">
               {c.steps.map((s, i) => {

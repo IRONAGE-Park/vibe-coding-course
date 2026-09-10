@@ -855,7 +855,7 @@ export default function SetupPage() {
             <p className="mt-3 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
               내용이 마음에 안 들면 언제든 이 파일을 고치면 됩니다. 규칙을
               바꾸는 것도 여러분의 몫입니다 — 자세한 활용법은{" "}
-              <b>5장 유용한 도구들</b>에서 다룹니다.
+              <b>6장 유용한 도구들</b>에서 다룹니다.
             </p>
           </div>
         </StepCard>

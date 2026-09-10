@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Nav from "../components/Nav";
 import CopyBlock from "../components/CopyBlock";
 import SdlcLoop from "../components/SdlcLoop";
-import StageCycle from "../components/StageCycle";
 import StepRail from "../components/StepRail";
 import Tip from "../components/Tip";
 import {
@@ -18,7 +17,6 @@ import {
   SiteFooter,
   StepCard,
   Term,
-  TimedList,
 } from "../components/ui";
 
 export const metadata: Metadata = {
@@ -43,61 +41,6 @@ const RULES = [
   { k: "기존 기능 80 : 새 기능 20", v: "출시 직후엔 있는 기능을 다듬는 데 시간을 씁니다." },
   { k: "기능이 늘면 핵심이 흐려진다", v: "2장의 핵심 가치 한 줄이 묻힙니다." },
   { k: "한 번에 하나만", v: "여러 개를 바꾸면 무엇이 통했는지 모릅니다." },
-];
-
-const LEARN_PARTS = ["① 무엇을 볼지", "② 모으기", "③ 읽기", "④ 강화하기"];
-
-const FUNNEL = [
-  { k: "알게 됨", en: "획득", v: "첫 화면에서 목록을 내려 본다" },
-  { k: "첫 가치", en: "활성화", v: "조건에 맞는 공고 1개를 누른다 — 핵심 행동" },
-  { k: "다시 옴", en: "유지", v: "일주일 안에 다시 온다 · 알림을 신청한다" },
-  { k: "돈", en: "수익", v: "유료 전환 · 선결제 (아직이면 연락처로 대신)" },
-  { k: "추천", en: "추천", v: "링크를 다른 창업팀에 공유한다" },
-];
-
-const CHANNELS = [
-  {
-    k: "행동 기록",
-    tag: "숫자 · 무엇이",
-    v: "①의 행동이 일어날 때마다 남기고, 첫 방문 주별로 묶어 봅니다.",
-  },
-  {
-    k: "보여주며 관찰",
-    tag: "사람 · 왜",
-    v: "인터뷰했던 첫 고객에게 먼저 보여주고 옆에서 봅니다.",
-  },
-  {
-    k: "의견 창구",
-    tag: "사람 · 왜",
-    v: "모든 화면에 연락 방법을 두고 직접 받습니다. 투표로 기능을 정하지 않습니다.",
-  },
-  {
-    k: "떠난 사람 · 남은 사람",
-    tag: "사람 · 왜",
-    v: "떠난 사람에겐 이유를, 남은 사람에겐 왜 쓰는지를 묻습니다.",
-  },
-];
-
-const MVP_INTERVIEW = [
-  { t: "2분", k: "인사", v: "화면을 보며 떠오르는 생각을 소리 내어 말해 달라고 합니다." },
-  { t: "2분", k: "첫 화면만", v: "누르지 말고, 무엇을 하는 서비스 같은지 말해 달라고 합니다." },
-  { t: "3분", k: "가격", v: "가격을 보여주고 반응을 적습니다. 없으면 알림 신청을 부탁합니다." },
-  { t: "15분", k: "가입 · 핵심 행동", v: "직접 해 보게 하고, 도와주지 말고 멈칫하는 곳을 적습니다." },
-  { t: "2분", k: "마무리", v: "‘일주일 뒤 다시 연락드려도 될까요?’" },
-  { t: "5분", k: "바로 기록", v: "가장 큰 문제 3가지를 적습니다." },
-];
-
-const REINFORCE = [
-  { k: "말을 고객의 말로", v: "인터뷰에서 들은 표현으로 첫 화면을 다시 씁니다." },
-  { k: "원한 결과에 맞추기", v: "기능을 늘리기보다, 고객이 원한 결과에 가까워지게 고칩니다." },
-  { k: "내 취향 말고 반응으로", v: "이름·문구·디자인은 여러 안을 보여주고 반응 좋은 쪽을 남깁니다." },
-  { k: "있는 기능을 더 깊게", v: "가장 많이 빠지는 칸을 다듬고, 효과 없는 기능은 뺍니다." },
-];
-
-const DECISIONS = [
-  { k: "계속", v: "신호가 좋다 → 가장 큰 구멍을 계속 메운다" },
-  { k: "방향 전환", v: "다른 고객·문제에서 반응이 더 좋다 → intent.md의 대상·문제부터 다시" },
-  { k: "멈춤", v: "신호가 없거나, 오래 풀고 싶은 문제가 아니다 → 배운 것을 남기고 새 아이디어로" },
 ];
 
 export default function UpdatePage() {
@@ -155,7 +98,7 @@ export default function UpdatePage() {
           </div>
           <p className="mt-5 text-[14.5px] leading-[1.65] text-[var(--s2-body)]">
             배포는 이제 <b>하루에 몇 번씩 하는 일</b>입니다. 한 바퀴의 끝은
-            배포가 아니라 <b>배운 것</b> — 뒤쪽 &lsquo;배우는 법&rsquo;에서
+            배포가 아니라 <b>배운 것</b> — 5장 &lsquo;배우는 법&rsquo;에서
             다룹니다.
           </p>
           <div className="mt-6">
@@ -469,288 +412,6 @@ export default function UpdatePage() {
           </Callout>
         </StepCard>
 
-        {/* 배우는 법 — 개요 */}
-        <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
-          <Badge>배우는 법</Badge>
-          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
-            배포는 끝이 아니다 — <Blue>배운 것</Blue>이 생겨야 끝
-          </h2>
-          <p className="mt-3 text-[15px] leading-[1.7] text-[var(--s2-body)]">
-            앱이 생긴 지금은 사이클의 3·4단계입니다.
-          </p>
-          <div className="mt-5">
-            <StageCycle current={[2, 3]} />
-          </div>
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            {LEARN_PARTS.map((s, i) => (
-              <span key={s} className="flex items-center gap-2">
-                <span className="rounded-full border border-[var(--s2-line)] bg-[var(--s2-tint)] px-3.5 py-1.5 text-[13.5px] font-bold text-[var(--s2-strong)]">
-                  {s}
-                </span>
-                {i < LEARN_PARTS.length - 1 && (
-                  <span className="font-mono text-[13px] text-[var(--s2-arrow)]">
-                    -&gt;
-                  </span>
-                )}
-              </span>
-            ))}
-            <span className="font-mono rounded-full bg-[var(--s2-blue-soft)] px-3 py-1.5 text-[12px] text-[var(--s2-blue)]">
-              ↻ 매주
-            </span>
-          </div>
-        </section>
-
-        {/* ① 무엇을 볼지 */}
-        <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
-          <Badge>배우는 법 ①</Badge>
-          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
-            무엇을 볼지 — <Blue>단계마다 행동 하나</Blue>
-          </h2>
-          <p className="mt-3 text-[15px] leading-[1.7] text-[var(--s2-body)]">
-            칸마다 행동 하나를 정하면 <b>어디서 사람이 빠지는지</b> 보입니다.
-          </p>
-          <ol className="mt-5 flex flex-col rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)]">
-            {FUNNEL.map((f, i) => (
-              <li
-                key={f.k}
-                className="grid grid-cols-[2rem_1fr] gap-x-3 gap-y-0.5 border-b border-[var(--s2-divider)] px-4 py-3 last:border-b-0 md:grid-cols-[2rem_8rem_1fr]"
-              >
-                <span className="font-mono text-[13px] font-bold text-[var(--s2-blue)]">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <span className="text-[14px] font-extrabold text-[var(--s2-strong)]">
-                  {f.k}{" "}
-                  <span className="font-mono text-[11px] font-normal text-[var(--s2-faint)]">
-                    {f.en}
-                  </span>
-                </span>
-                <span className="col-span-2 text-[13.5px] leading-[1.6] text-[var(--s2-body)] md:col-span-1">
-                  {f.v}
-                </span>
-              </li>
-            ))}
-          </ol>
-          <div className="mt-5">
-            <CheckList
-              items={[
-                <>
-                  <b>이번 주에 볼 숫자는 하나만</b>
-                </>,
-                <>
-                  방문자 수 같은{" "}
-                  <Tip tip="오르기만 하고 무엇을 고칠지는 알려주지 않는 숫자. 방문자 수 · 다운로드 수가 대표적입니다. 특정 행동과 이어진 숫자를 보세요.">
-                    허영 지표
-                  </Tip>
-                  에 속지 않기
-                </>,
-              ]}
-            />
-          </div>
-        </section>
-
-        {/* ② 모으기 */}
-        <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
-          <Badge>배우는 법 ②</Badge>
-          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
-            모으기 — <Blue>숫자는 무엇이, 사람은 왜</Blue>
-          </h2>
-          <p className="mt-3 text-[15px] leading-[1.7] text-[var(--s2-body)]">
-            사용자가 적은 지금은 <b>사람 쪽이 훨씬 빠릅니다</b>.
-          </p>
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            {CHANNELS.map((c) => (
-              <div
-                key={c.k}
-                className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5"
-              >
-                <p className="font-mono text-[11.5px] text-[var(--s2-blue)]">
-                  {c.tag}
-                </p>
-                <p className="mt-1 text-[15.5px] font-extrabold">{c.k}</p>
-                <p className="mt-1.5 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
-                  {c.v}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3">
-            <Term
-              title="행동 기록 켜기 — 5장 Supabase 연동 후"
-              lines={[
-                {
-                  dim: true,
-                  text: "> 핵심 행동(조건에 맞는 공고 클릭)이 일어날 때마다 기록을 남겨줘.",
-                },
-                {
-                  dim: true,
-                  text: "> 남길 것: 시각 · 화면 · 어디서 왔는지. 이름·연락처 같은 개인정보는 빼고.",
-                },
-                {
-                  dim: true,
-                  text: "> 주별로 몇 명이 처음 왔고, 그중 몇 명이 핵심 행동을 했는지 볼 수 있게.",
-                },
-              ]}
-            />
-            <CopyBlock
-              label="의견 창구 달기"
-              command="모든 화면 오른쪽 아래에 '의견 보내기' 버튼을 달고, 누르면 내 이메일로 보내는 메일 창이 열리게 해줘"
-            />
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3">
-            <p className="text-[15px] font-extrabold">
-              보여주며 관찰하기 — <Blue>20~30분 대본</Blue>
-            </p>
-            <TimedList rows={MVP_INTERVIEW} />
-          </div>
-
-          <div className="mt-6">
-            <Callout title="사용자가 쌓이면 한 가지 질문">
-              <b>
-                &ldquo;더 이상 못 쓰게 되면 얼마나 실망하시겠어요?&rdquo;
-              </b>{" "}
-              &lsquo;매우 실망&rsquo;이 40%를 넘으면 꼭 필요한 제품이 되어 가는
-              신호입니다.
-            </Callout>
-          </div>
-        </section>
-
-        {/* ③ 읽기 */}
-        <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
-          <Badge>배우는 법 ③</Badge>
-          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
-            읽기 — <Blue>가장 큰 구멍 하나</Blue>부터
-          </h2>
-          <div className="mt-5">
-            <CheckList
-              items={[
-                <>
-                  <b>가장 많이 빠지는 칸 하나부터</b> — 여러 곳을 동시에 고치지
-                  않습니다
-                </>,
-                <>
-                  <b>사람이 적을 땐 강한 신호만</b> — 첫 결과 하나에 방향을
-                  통째로 바꾸지 않습니다
-                </>,
-                <>
-                  <b>말보다 행동</b> — &ldquo;좋아요&rdquo;보다 다시 왔는지,
-                  연락처를 남겼는지
-                </>,
-                <>
-                  숫자가 <b>무엇</b>을 가리키면, 사람에게 <b>왜</b>를 묻습니다
-                </>,
-              ]}
-            />
-          </div>
-        </section>
-
-        {/* ④ 강화하기 */}
-        <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
-          <Badge>배우는 법 ④</Badge>
-          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
-            배운 것으로 <Blue>강화하기</Blue>
-          </h2>
-          <p className="mt-3 text-[15px] leading-[1.7] text-[var(--s2-body)]">
-            방향은 <b>내 생각이 아니라 고객의 반응</b>이 정합니다.
-          </p>
-          <div className="mt-5 grid gap-4 md:grid-cols-2">
-            {REINFORCE.map((r, i) => (
-              <div
-                key={r.k}
-                className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-tint)] p-5"
-              >
-                <p className="font-mono text-[12px] text-[var(--s2-blue)]">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
-                <p className="mt-1 text-[15.5px] font-extrabold">{r.k}</p>
-                <p className="mt-1.5 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
-                  {r.v}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3">
-            <Term
-              title="배포 직후 — 배운 것 남기기"
-              lines={[
-                {
-                  dim: true,
-                  text: "> 방금 배포한 변경을 docs/learning.md 에 추가해줘.",
-                },
-                { dim: true, text: ">   - 바꾼 것:" },
-                { dim: true, text: ">   - 예상한 것: (1단계에서 적은 가설)" },
-                { dim: true, text: ">   - 실제로 본 것: (숫자 + 만난 사람의 말)" },
-                { dim: true, text: ">   - 다음에 할 것:" },
-              ]}
-            />
-            <Term
-              title="한 주가 끝나면 — intent.md 로 되돌리기"
-              lines={[
-                {
-                  dim: true,
-                  text: "> docs/learning.md 를 읽고, docs/intent.md 에서 바뀌어야 할 칸과",
-                },
-                {
-                  dim: true,
-                  text: "> 그 근거가 된 기록을 짝지어 보여줘. 내가 확인하면 반영해줘.",
-                },
-              ]}
-            />
-          </div>
-
-          <div className="mt-6 flex flex-col gap-3">
-            <p className="text-[15px] font-extrabold">
-              몇 바퀴 돌았다면 — <Blue>계속, 전환, 멈춤</Blue>
-            </p>
-            <div className="grid gap-4 md:grid-cols-3">
-              {DECISIONS.map((d) => (
-                <div
-                  key={d.k}
-                  className="rounded-[16px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-5"
-                >
-                  <p className="text-[15.5px] font-extrabold">{d.k}</p>
-                  <p className="mt-1.5 text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
-                    {d.v}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 매주 한 번 */}
-        <section className="rounded-[24px] border border-[var(--s2-line)] bg-[var(--s2-card)] p-7 shadow-[var(--s2-shadow-lg)] md:p-9">
-          <Badge>매주 한 번</Badge>
-          <h2 className="mt-4 text-[22px] font-extrabold leading-[1.4] md:text-[26px]">
-            배우는 리듬 — <Blue>일주일에 한 바퀴</Blue>
-          </h2>
-          <div className="mt-5">
-            <MiniSteps
-              items={[
-                <>
-                  <b>숫자 보기</b> — 가장 많이 빠지는 칸 찾기
-                </>,
-                <>
-                  <b>사람 만나기</b> — 그 칸에서 빠진 사람에게 이유 묻기
-                </>,
-                <>
-                  <b>가설 한 줄</b> — [이렇게 바꾸면] → [이 숫자가 오를 것이다]
-                </>,
-                <>
-                  <b>작게 바꿔 배포</b> — 이번 주엔 하나만
-                </>,
-                <>
-                  <b>기록</b> —{" "}
-                  <span className="font-mono text-[13.5px]">learning.md</span> →{" "}
-                  <span className="font-mono text-[13.5px]">intent.md</span>
-                </>,
-              ]}
-            />
-          </div>
-        </section>
-
         {/* 마무리 */}
         <section className="rounded-[24px] border border-[var(--s2-info-line)] bg-[var(--s2-info-bg)] p-7 md:p-9">
           <p className="text-[18px] font-extrabold leading-[1.5] md:text-[20px]">
@@ -758,14 +419,15 @@ export default function UpdatePage() {
           </p>
           <p className="mt-3 text-[14.5px] leading-[1.7] text-[var(--s2-body)]">
             요청 → 확인 → 커밋·푸시 → 자동 배포 → 배운 것 기록. 오늘 밤 열 번쯤
-            돌려보세요. <b>완벽해질 때까지 기다리지 마세요.</b>
+            돌려보세요. <b>완벽해질 때까지 기다리지 마세요.</b> 배포한 뒤
+            무엇을 지켜보고 누구에게 물을지는 5장에서 이어집니다.
           </p>
         </section>
       </main>
 
       <Pager
         prev={{ href: "/build", label: "03 초기 구축 · 첫 배포" }}
-        next={{ href: "/tools", label: "05 유용한 도구들" }}
+        next={{ href: "/learn", label: "05 배우는 법" }}
       />
       <SiteFooter />
     </div>

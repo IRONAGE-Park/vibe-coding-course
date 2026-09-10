@@ -18,7 +18,7 @@ const FAQ = [
   },
   {
     q: "대화가 길어져서 AI가 느려지고 엉뚱해져요",
-    a: "새 세션을 여세요. 프로젝트 규칙을 CLAUDE.md에 적어뒀다면 새 세션에서도 Claude가 바로 맥락을 잡습니다. (5장의 CLAUDE.md 참고)",
+    a: "새 세션을 여세요. 프로젝트 규칙을 CLAUDE.md에 적어뒀다면 새 세션에서도 Claude가 바로 맥락을 잡습니다. (6장의 CLAUDE.md 참고)",
   },
   {
     q: "팀원들과 어떻게 분업하나요?",
@@ -72,7 +72,7 @@ export default function HelpPage() {
       </main>
 
       <Pager
-        prev={{ href: "/tools", label: "05 유용한 도구들" }}
+        prev={{ href: "/tools", label: "06 유용한 도구들" }}
         next={{ href: "/", label: "홈 — 실습 목차" }}
       />
       <SiteFooter />

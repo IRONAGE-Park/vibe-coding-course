@@ -18,7 +18,7 @@ import {
 } from "../components/ui";
 
 export const metadata: Metadata = {
-  title: "05 유용한 도구들 | 바이브코딩과 함께 살아남기",
+  title: "06 유용한 도구들 | 바이브코딩과 함께 살아남기",
   description:
     "CLAUDE.md, Skills, Harness, 프로젝트 참고와 뉴스, AI 에이전트 활용 — 다음 단계로 가는 다섯 가지.",
 };
@@ -39,8 +39,8 @@ export default function ToolsPage() {
     <div>
       <Nav />
       <PageHero
-        num="05"
-        label="Chapter 05"
+        num="06"
+        label="Chapter 06"
         title={
           <>
             앞으로 알아야 할 <Blue>유용한 도구들</Blue>

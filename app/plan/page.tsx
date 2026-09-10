@@ -1025,7 +1025,7 @@ export default function PlanPage() {
               ]}
             />
             <p className="text-[13px] text-[var(--s2-gray)]">
-              이메일 저장은 5장 Supabase 연동 후에 됩니다.
+              이메일 저장은 6장 Supabase 연동 후에 됩니다.
             </p>
           </div>
         </section>

@@ -65,8 +65,16 @@ export const CHAPTERS: Chapter[] = [
     ],
   },
   {
-    key: "tools",
+    /* 강의가 끝난 뒤 스스로 하는 장 — 완료 집계 단계는 두지 않습니다 */
+    key: "learn",
     num: "05",
+    label: "배우는 법",
+    href: "/learn",
+    steps: [],
+  },
+  {
+    key: "tools",
+    num: "06",
     label: "유용한 도구들",
     href: "/tools",
     steps: [

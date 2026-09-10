@@ -51,9 +51,9 @@ const STAGES = [
     en: "Maintain",
     k: "운영",
     doc: "새 intent.md ↻",
-    ch: "4장",
+    ch: "5장",
     what: "쓰면서 드러난 문제를 문서로 적어 다시 1단계로",
-    ours: "배운 것 → docs/learning.md → intent.md 고치기",
+    ours: "모니터링 · 인터뷰 → docs/learning.md → intent.md 고치기",
     human: "다음에 고칠 것 하나를 고름",
   },
 ];

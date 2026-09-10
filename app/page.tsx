@@ -29,8 +29,14 @@ const CHAPTERS = [
     desc: "고치고 푸시하면 자동 반영 — 수정·롤백 사이클",
   },
   {
-    href: "/tools",
+    href: "/learn",
     num: "05",
+    title: "배우는 법",
+    desc: "모니터링으로 지켜보고, 사용자 인터뷰로 듣고, 배운 것으로 강화하는 매주의 루프",
+  },
+  {
+    href: "/tools",
+    num: "06",
     title: "유용한 도구들",
     desc: "CLAUDE.md · Skills · Harness — 다음 단계로 가는 도구",
   },
