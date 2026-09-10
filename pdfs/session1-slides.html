@@ -537,11 +537,12 @@
 </section>
 
 <!-- 연습 ① 질문 -->
+<!-- 연습 ① 질문 -->
 <section class="slide tint">
   <div class="center">
     <span class="badge">02 — 연습 ① · 함께 생각해봅시다</span>
-    <h1>진주의 축제·행사 일정을<br><span class="blue">한 페이지에 모아 보여주는</span> 웹사이트</h1>
-    <p class="sub">기관마다 흩어진 일정을 모아 달력으로 보여줍니다 — 만들 수 있을까요?</p>
+    <h1>우리 가게 앞을 하루에 몇 명이<br><span class="blue">지나가는지 보여주는</span> 대시보드</h1>
+    <p class="sub">유동인구 데이터는 공개돼 있으니 금방 되겠죠 — 만들 수 있을까요?</p>
   </div>
   <div class="ghost">Q1</div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
@@ -551,29 +552,30 @@
 <section class="slide">
   <div class="head">
     <span class="pill"><span class="dot"></span>02 — 연습 ①</span>
-    <h2>축제·행사 일정 모음 사이트</h2>
+    <h2>가게 앞 유동인구 대시보드</h2>
   </div>
   <div class="body">
+    <p class="verdict">판단 — 데이터는 <b>있습니다.</b> 그런데 <b>우리 가게 앞</b>은 없습니다.</p>
     <div class="vs">
-      <div class="hi">
-        <h3><span class="tag">WHY</span>왜 바로 가능한가</h3>
+      <div class="no">
+        <h3><span class="tag">GAP</span>공개 데이터가 못 채우는 것</h3>
         <ul>
-          <li>필요한 데이터가 이미 공개되어 있다 — 시청·축제 홈페이지의 일정</li>
-          <li>모아서 보기 좋게 보여주는 일은 컴퓨터의 본업</li>
-          <li>화면 밖에서 누군가 행동해줄 필요가 없다</li>
+          <li>서울시 상권분석은 <b>행정동·상권 단위</b> — 가게 하나 앞은 없다</li>
+          <li>서울 위주로 제공 — 다른 지역은 그마저도 얇다</li>
+          <li>통신사·카드사 데이터는 유료이고 계약이 필요하다</li>
         </ul>
       </div>
-      <div>
-        <h3><span class="tag">SAME TYPE</span>같은 유형의 아이디어</h3>
+      <div class="hi">
+        <h3><span class="tag">CUT</span>오늘 되게 자르면</h3>
         <ul>
-          <li>팀 벤치마킹 사진·메모 아카이브 페이지</li>
-          <li>지역 가게 메뉴판·소개 웹페이지</li>
-          <li>청년 지원사업 마감일 모음 페이지</li>
+          <li>목표 해상도를 낮춘다 — <b>행정동 단위 비교</b>면 오늘 된다</li>
+          <li>직접 만든다 — 3일간 시간대별로 센 숫자를 입력받는 화면</li>
+          <li>대신 답할 질문을 바꾼다 — "몇 명"이 아니라 "언제 몰리나"</li>
         </ul>
       </div>
     </div>
   </div>
-  <p class="fnote">세 가지 질문을 모두 통과 — 데이터가 있고 · 써도 되고 · 정보 접근 문제를 실제로 해결합니다</p>
+  <p class="fnote">"데이터가 있다"와 "내 문제를 풀 만큼 있다"는 다릅니다 — 해상도·범위·가격을 먼저 확인하세요</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
@@ -581,8 +583,8 @@
 <section class="slide tint">
   <div class="center">
     <span class="badge">02 — 연습 ② · 함께 생각해봅시다</span>
-    <h1>동네의 위험한 보도블록을<br><span class="blue">자동으로 찾아주는</span> 서비스</h1>
-    <p class="sub">실행만 하면 위험 지점이 지도에 표시됩니다 — 만들 수 있을까요?</p>
+    <h1>경쟁사 사이트를 자동으로 훑어<br><span class="blue">가격과 신제품을 추적하는</span> 도구</h1>
+    <p class="sub">누구나 볼 수 있게 공개된 정보입니다 — 만들 수 있을까요?</p>
   </div>
   <div class="ghost">Q2</div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
@@ -592,110 +594,72 @@
 <section class="slide">
   <div class="head">
     <span class="pill"><span class="dot"></span>02 — 연습 ②</span>
-    <h2>위험한 보도블록 자동 탐지</h2>
+    <h2>경쟁사 가격 자동 추적 도구</h2>
   </div>
-  <div class="body" style="top:196px">
-    <p class="verdict">판단 — <b>조건부로 가능</b>합니다. 컴퓨터가 '볼 수 있게' 만들어줘야 합니다.</p>
+  <div class="body">
+    <p class="verdict">판단 — <b>만들 수는 있습니다.</b> 써도 되는지는 <b>별개의 문제</b>입니다.</p>
     <div class="vs">
-      <div class="no">
-        <h3><span class="tag">WHY NOT</span>컴퓨터가 할 수 없는 것</h3>
+      <div>
+        <h3><span class="tag">TECH</span>기술적으로는 쉽다</h3>
         <ul>
-          <li>동네를 직접 돌아다니며 보도블록을 보는 일</li>
-          <li>아무 데이터 없이 위험 지점을 알아내는 일</li>
+          <li>페이지를 주기적으로 받아 와 어제와 비교하면 끝</li>
+          <li>주말 하나면 동작하는 것을 만들 수 있다</li>
         </ul>
       </div>
-      <div class="hi">
-        <h3><span class="tag">HOW</span>데이터가 있다면 가능</h3>
+      <div class="no">
+        <h3><span class="tag">LAW</span>공개 ≠ 자유 이용</h3>
         <ul>
-          <li>주민이 촬영한 사진 + 위치 신고</li>
-          <li>사진에서 파손 흔적을 분석</li>
-          <li>신고가 많은 위치를 지도에 표시</li>
+          <li>저작권법 제93조 — <b>데이터베이스 제작자의 권리</b></li>
+          <li>대법원은 양·질 양쪽으로 "상당한 부분"인지를 본다</li>
+          <li>개인정보가 섞이면 개인정보보호법이 따로 걸린다</li>
+          <li>이용약관·robots.txt 위반은 별도로 남는다</li>
         </ul>
       </div>
     </div>
   </div>
-  <p class="fnote">바꿔볼 아이디어 — 주민 신고 앱 · 사진 분석 프로그램 · 신고 밀집 지도 · 담당 부서 전달 시스템</p>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
-</section>
-
-<!-- 연습 ② 질문 -->
-<section class="slide tint">
-  <div class="center">
-    <span class="badge">02 — 연습 ③ · 함께 생각해봅시다</span>
-    <h1>인기 공연의 취소표를<br><span class="blue">자동으로 결제까지</span> 해주는 프로그램</h1>
-    <p class="sub">사람이 새로고침하는 일을 컴퓨터가 대신하면 될 것 같은데 — 만들 수 있을까요?</p>
-  </div>
-  <div class="ghost">Q3</div>
-  <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
-</section>
-
-<!-- 연습 ② 판단 -->
-<section class="slide">
-  <div class="head">
-    <span class="pill"><span class="dot"></span>02 — 연습 ③</span>
-    <h2>취소표 자동 구매 프로그램</h2>
-  </div>
-  <div class="body" style="top:196px">
-    <p class="verdict">판단 — 만들 수는 있습니다. 하지만 <b>써도 되는가는 다른 문제</b>입니다.</p>
-    <div class="vs">
-      <div class="hi">
-        <h3><span class="tag">TECH</span>기술적으로는 가능</h3>
-        <ul>
-          <li>브라우저 자동 조작, 좌석 선택, 결제까지 코드로 구현 가능</li>
-        </ul>
-      </div>
-      <div class="no">
-        <h3><span class="tag">POLICY</span>정책이 막습니다</h3>
-        <ul>
-          <li>예매처 약관이 매크로·자동 구매를 금지</li>
-          <li>일반 사용자의 공정한 이용을 방해</li>
-          <li>적발 시 계정 정지 · 예매 취소 · 결제 제한</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <p class="fnote">자동으로 알려주는 것과 자동으로 구매하는 것은 서로 다른 문제 — 취소표 알림까지만 만들고, 결제는 사람이 직접</p>
+  <p class="fnote">접근할 수 있다와 써도 된다는 다릅니다 — 공식 API 범위 안에서, 또는 우리 채널 데이터부터 시작하세요</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 연습 ③ 질문 -->
 <section class="slide tint">
   <div class="center">
-    <span class="badge">02 — 연습 ④ · 함께 생각해봅시다</span>
-    <h1>농촌 어르신을 위한<br><span class="blue">실시간 버스 도착정보</span> 앱</h1>
-    <p class="sub">버스가 언제 오는지 몰라 불편합니다 — 앱을 만들면 문제가 해결될까요?</p>
+    <span class="badge">02 — 연습 ③ · 함께 생각해봅시다</span>
+    <h1>예약 부도(노쇼)를 줄이는<br><span class="blue">알림 보내주는</span> 예약 앱</h1>
+    <p class="sub">전날 문자로 한 번 더 알려주면 됩니다 — 앱을 만들면 문제가 해결될까요?</p>
   </div>
-  <div class="ghost">Q4</div>
+  <div class="ghost">Q3</div>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
 <!-- 연습 ③ 판단 -->
 <section class="slide">
   <div class="head">
-    <span class="pill"><span class="dot"></span>02 — 연습 ④</span>
-    <h2>실시간 버스 도착정보 앱</h2>
+    <span class="pill"><span class="dot"></span>02 — 연습 ③</span>
+    <h2>노쇼를 줄이는 예약 앱</h2>
   </div>
-  <div class="body" style="top:196px">
-    <p class="verdict">판단 — '언제 오는지 모르는 문제'는 풀지만, <b>'버스가 없는 문제'는 그대로</b>입니다.</p>
+  <div class="body">
+    <p class="verdict">판단 — 알림만으로는 <b>안 줄어듭니다.</b> 규칙이 바뀌어야 <b>코드가 일을 합니다.</b></p>
     <div class="vs">
-      <div class="hi">
-        <h3><span class="tag">SOLVED</span>앱이 해결하는 것</h3>
+      <div class="no">
+        <h3><span class="tag">WHY NOT</span>알림이 못 푸는 것</h3>
         <ul>
-          <li>도착 시간의 불확실성</li>
-          <li>정류장에서 무작정 기다리는 시간</li>
+          <li>리마인더는 이미 대부분의 가게가 보내고 있다</li>
+          <li>안 오는 이유는 몰라서가 아니라 <b>안 와도 손해가 없어서</b></li>
+          <li>외식업체 65%가 노쇼 경험 · 1회 평균 손실 44만 원</li>
         </ul>
       </div>
-      <div class="no">
-        <h3><span class="tag">UNSOLVED</span>앱이 풀지 못하는 것</h3>
+      <div class="hi">
+        <h3><span class="tag">LEVER</span>실제로 움직인 것</h3>
         <ul>
-          <li>하루 두세 번뿐인 운행 횟수</li>
-          <li>원하는 시간에 병원·시장에 갈 수 없는 현실</li>
-          <li>스마트폰 사용이 어려운 어르신에게는 앱 자체가 장벽</li>
+          <li>2025.12 공정위 기준 개정 — 위약금 상한 <b>20%, 예약형은 40%</b></li>
+          <li>단, 위약금을 받으려면 <b>사전 고지</b>가 있어야 한다</li>
+          <li>여기서 코드가 할 일이 생긴다 — 고지·동의·예약금 링크</li>
         </ul>
       </div>
     </div>
   </div>
-  <p class="fnote">진짜 해결책과 함께 가야 합니다 — 수요응답형 교통 · 마을택시 연계 · 전화 예약 병행</p>
+  <p class="fnote">화면 뒤에서 현실의 규칙이 바뀌어야 문제가 풀립니다 — 코드는 그 규칙을 집행 가능하게 만드는 역할입니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
@@ -703,31 +667,28 @@
 <section class="slide">
   <div class="head">
     <span class="pill"><span class="dot"></span>02 — 연습문제 정리</span>
-    <h2>바이브코딩을 시작하기 전에</h2>
+    <h2>세 번 다 다른 곳에서 막혔습니다</h2>
   </div>
-  <div class="body" style="top:250px">
-    <div class="stats">
+  <div class="body" style="top:210px">
+    <div class="cases">
       <div>
-        <div class="n">연습 ① · ②</div>
-        <div class="cat">기술과 데이터</div>
-        <div class="name">만들 수 있는가?</div>
-        <p>컴퓨터가 알 수 있는 데이터가 있는가 — 없다면 사진·센서·사람의 입력으로 채워야 합니다</p>
+        <span class="n">연습 ① — 기술과 데이터</span>
+        <h4>만들 수 있는가?</h4>
+        <p>컴퓨터가 알 수 있는 데이터가 <b>내 문제를 풀 만큼</b> 있는가 — 해상도·범위·가격까지 확인해야 합니다</p>
       </div>
       <div>
-        <div class="n">연습 ③</div>
-        <div class="cat">정책과 권한</div>
-        <div class="name">만들어도 되는가?</div>
-        <p>약관 · 개인정보 · 권한 — 코드를 작성할 수 있다는 것과 사용해도 된다는 것은 다른 문제입니다</p>
+        <span class="n">연습 ② — 정책과 권한</span>
+        <h4>만들어도 되는가?</h4>
+        <p>법 · 약관 · 개인정보 — <b>코드를 짤 수 있다는 것</b>과 <b>써도 된다는 것</b>은 다른 문제입니다</p>
       </div>
       <div>
-        <div class="n">연습 ④</div>
-        <div class="cat">현실의 변화</div>
-        <div class="name">만들면 해결되는가?</div>
-        <p>프로그램 뒤에 현실의 행동이 이어져야 문제가 풀립니다 — 앱은 해결책의 일부입니다</p>
+        <span class="n">연습 ③ — 현실의 변화</span>
+        <h4>만들면 해결되는가?</h4>
+        <p>화면 뒤에서 <b>현실의 규칙</b>이 바뀌어야 합니다 — 코드는 그 규칙을 집행 가능하게 만듭니다</p>
       </div>
     </div>
   </div>
-  <p class="fnote">이 세 가지를 구분할 수 있을 때, 바이브 코딩은 현실의 문제를 해결하는 도구가 됩니다</p>
+  <p class="fnote">세 아이디어 모두 "기술적으로 가능"했습니다 — 갈린 지점은 데이터의 해상도 · 이용 권한 · 현실의 규칙이었습니다</p>
   <div class="foot"><span class="logo">(주)인바이즈</span><span class="pg"></span></div>
 </section>
 
@@ -1101,19 +1062,19 @@
   <div class="body" style="top:210px">
     <div class="cases">
       <div>
-        <span class="n">01 — 청년 정착</span>
-        <h4>흩어진 청년 지원 정보</h4>
-        <p>"진주의 청년 지원 정책은 기관마다 흩어져 있어, 20대 구직자가 받을 수 있는 지원을 한자리에서 확인할 수 없다"</p>
+        <span class="n">01 — 반복되는 손작업</span>
+        <h4>매주 되풀이되는 정산</h4>
+        <p>"3인 팀의 운영 담당자는 매주 월요일 오전을 통째로 써서, 채널 네 곳의 주문 내역을 손으로 옮겨 붙인다"</p>
       </div>
       <div>
-        <span class="n">02 — 관광 · 로컬 상권</span>
-        <h4>진주성 다음이 없는 여행</h4>
-        <p>"진주성을 둘러본 관광객은 다음 행선지 정보를 찾지 못해, 근처 상권을 놓친 채 도시를 일찍 떠난다"</p>
+        <span class="n">02 — 고객이 떠나는 지점</span>
+        <h4>결제 직전에 사라지는 사람들</h4>
+        <p>"장바구니까지 온 고객의 절반이 배송비를 확인하는 순간 창을 닫는데, 어느 화면에서 떠났는지 알 수 없다"</p>
       </div>
       <div>
-        <span class="n">03 — 고령자 · 교통약자</span>
-        <h4>기약 없는 저상버스 기다림</h4>
-        <p>"거동이 불편한 어르신은 저상버스가 언제 오는지 알 수 없어, 정류장에서 무작정 기다린다"</p>
+        <span class="n">03 — 답이 늦는 문의</span>
+        <h4>같은 질문을 매일 다시 받는다</h4>
+        <p>"문의의 다수가 이미 공지에 있는 내용인데, 담당자가 하루에 수십 번 같은 답을 다시 쓴다"</p>
       </div>
     </div>
   </div>
