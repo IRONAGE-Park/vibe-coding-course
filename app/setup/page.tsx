@@ -21,7 +21,7 @@ import {
 export const metadata: Metadata = {
   title: "01 환경 설정 | 바이브코딩과 함께 살아남기",
   description:
-    "Node.js, Claude Code, GitHub, Git, Supabase, Vercel, Orca — 실습에 필요한 도구 7가지 설치와 가입.",
+    "Node.js, Claude Code, GitHub, Git, GitHub CLI, Vercel, Orca — 실습에 필요한 도구 7가지 설치와 가입.",
 };
 
 const TOTAL = 10;
@@ -30,8 +30,8 @@ const RAIL = [
   { id: "setup-1", num: "01", label: "Node.js" },
   { id: "setup-2", num: "02", label: "Claude Code" },
   { id: "setup-3", num: "03", label: "GitHub 가입" },
-  { id: "setup-4", num: "04", label: "Git · GitHub CLI" },
-  { id: "setup-5", num: "05", label: "Supabase" },
+  { id: "setup-4", num: "04", label: "Git" },
+  { id: "setup-gh", num: "05", label: "GitHub CLI" },
   { id: "setup-6", num: "06", label: "Vercel" },
   { id: "setup-7", num: "07", label: "Orca" },
   { id: "setup-check", num: "✓", label: "중간 점검" },
@@ -39,6 +39,9 @@ const RAIL = [
   { id: "setup-9", num: "09", label: "Claude 열기" },
   { id: "setup-10", num: "10", label: "AI 가이드라인" },
 ];
+
+/* Windows 참가자가 '터미널'을 PowerShell로 알아듣지 못하는 경우가 많아 매번 적어 둡니다 */
+const PASTE_LABEL = "터미널에 붙여넣기 — Windows는 PowerShell";
 
 /* 단계별 "잘 됐는지 확인" 블록 */
 function Verify({
@@ -59,7 +62,7 @@ function Verify({
         잘 됐는지 확인
       </p>
       <div className="flex flex-col gap-3">
-        <CopyBlock label={label ?? "터미널에 붙여넣기"} command={command} />
+        <CopyBlock label={label ?? PASTE_LABEL} command={command} />
         <Term title="실제 실행 결과 — 진행자 PC" lines={lines} />
       </div>
     </div>
@@ -98,6 +101,33 @@ export default function SetupPage() {
           title="Node.js 설치"
           tag="이미 설치돼 있다면 건너뛰기"
         >
+          <Callout title="이 페이지의 ‘터미널’ = Windows에서는 PowerShell">
+            <ul className="flex flex-col gap-1.5">
+              <li>
+                <b>Windows</b> — 키보드의 <b>Windows 키</b>를 누르고{" "}
+                <code className="font-mono text-[13px] text-[var(--s2-blue)]">
+                  powershell
+                </code>{" "}
+                입력 → <b>Windows PowerShell</b> 클릭. 창 맨 앞 줄이{" "}
+                <code className="font-mono whitespace-nowrap text-[13px]">
+                  PS C:\Users\내이름&gt;
+                </code>{" "}
+                처럼 <b>PS</b>로 시작하면 제대로 연 것입니다. (명령 프롬프트
+                · Git Bash가 아니에요)
+              </li>
+              <li>
+                <b>macOS</b> — <b>⌘ + Space</b> →{" "}
+                <code className="font-mono text-[13px] text-[var(--s2-blue)]">
+                  터미널
+                </code>{" "}
+                입력 → Enter.
+              </li>
+              <li>
+                붙여넣기는 <b>Ctrl+V</b>(맥은 ⌘+V), 안 되면 창 안에서{" "}
+                <b>마우스 오른쪽 클릭</b> → <b>Enter</b>로 실행합니다.
+              </li>
+            </ul>
+          </Callout>
           <div className="flex flex-col gap-5">
             <Shot
               src="/captures/setup/nodejs-download.png"
@@ -131,7 +161,8 @@ export default function SetupPage() {
                   </>,
                   <>
                     받은 파일 실행 후 <b>Next만 계속</b> 눌러 설치. 끝나면
-                    터미널(Windows는 PowerShell)을 <b>새로</b> 여세요.
+                    터미널(Windows는 <b>PowerShell</b>)을 <b>새로</b> 열어 아래
+                    명령어를 붙여넣습니다.
                   </>,
                 ]}
               />
@@ -163,6 +194,28 @@ export default function SetupPage() {
               command="curl -fsSL https://claude.ai/install.sh | bash"
             />
           </div>
+          <Callout tone="warn" title="Windows에서 winget을 찾을 수 없다고 나오면">
+            <p>
+              <code className="font-mono text-[12.5px]">
+                &apos;winget&apos; 용어가 cmdlet, 함수, 스크립트 파일 또는 실행할
+                수 있는 프로그램 이름으로 인식되지 않습니다
+              </code>{" "}
+              같은 빨간 글씨가 나오면 이 PC에 winget이 없는 것입니다. 대신 아래
+              공식 설치 명령을 <b>PowerShell</b>에 붙여넣으세요.
+            </p>
+            <div className="mt-3">
+              <CopyBlock
+                label="Windows — winget이 없을 때 PowerShell에 붙여넣기"
+                command="irm https://claude.ai/install.ps1 | iex"
+              />
+            </div>
+            <p className="mt-3">
+              끝나면 PowerShell을 <b>새로</b> 열어 아래 확인을 합니다. 새 창에서도{" "}
+              <code className="font-mono text-[12.5px]">claude</code>를 못
+              찾는다면 설치 마지막 줄에 나온 안내를 따르거나 진행자를 불러
+              주세요.
+            </p>
+          </Callout>
           <div className="flex flex-col gap-5">
             <Shot
               src="/captures/setup/claude-code-quickstart.png"
@@ -259,12 +312,13 @@ export default function SetupPage() {
           </div>
         </StepCard>
 
-        {/* 4. Git & GitHub CLI */}
+        {/* 4. Git */}
         <StepCard
           no={4}
           total={TOTAL}
           id="setup-4"
-          title="Git · GitHub CLI 설치 + 로그인"
+          title="Git 설치"
+          tag="Windows만 — 맥은 확인만"
         >
           <Callout title="macOS는 Git이 이미 있을 확률이 높아요">
             터미널에{" "}
@@ -272,68 +326,158 @@ export default function SetupPage() {
               git
             </code>{" "}
             입력 → 사용법이 주르륵 나오면 설치돼 있는 것. 설치 창이 뜨면
-            안내대로 설치하고, 바로 ②로 넘어가세요.
+            안내대로 설치하고, 바로 5단계로 넘어가세요.
           </Callout>
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-3">
-              <p className="text-[15px] font-extrabold">
-                ① Git — <Blue>Windows만</Blue> 설치
-              </p>
-              <Shot
-                src="/captures/setup/git-windows.png"
-                width={1443}
-                height={1922}
-                alt="Git for Windows 다운로드 페이지"
-                url="git-scm.com/downloads/win"
-                href="https://git-scm.com/downloads/win"
-                highlight={{
-                  top: "18.2%",
-                  left: "28.5%",
-                  width: "19%",
-                  height: "2.4%",
-                  label: "여기 클릭",
-                }}
-              />
-              <p className="text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
-                <Ext href="https://git-scm.com/downloads/win">
-                  git-scm.com/downloads/win
-                </Ext>
-                에서 <b>Click here to download</b> → 받은 설치 파일에서 전부
-                기본값으로 <b>Next</b>만.
-              </p>
-              <Verify
-                command="git --version"
-                lines={[
-                  { prompt: true, text: "git --version" },
-                  { text: "git version 2.50.1.windows.1" },
-                ]}
-              />
+          <div className="flex flex-col gap-3">
+            <Shot
+              src="/captures/setup/git-windows.png"
+              width={1443}
+              height={1922}
+              alt="Git for Windows 다운로드 페이지"
+              url="git-scm.com/downloads/win"
+              href="https://git-scm.com/downloads/win"
+              highlight={{
+                top: "18.2%",
+                left: "28.5%",
+                width: "19%",
+                height: "2.4%",
+                label: "여기 클릭",
+              }}
+            />
+            <p className="text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
+              <Ext href="https://git-scm.com/downloads/win">
+                git-scm.com/downloads/win
+              </Ext>
+              에서 <b>Click here to download</b> → 받은 설치 파일에서 전부
+              기본값으로 <b>Next</b>만.
+            </p>
+            <Verify
+              command="git --version"
+              lines={[
+                { prompt: true, text: "git --version" },
+                { text: "git version 2.50.1.windows.1" },
+              ]}
+            />
+          </div>
+        </StepCard>
+
+        {/* 5. GitHub CLI */}
+        <StepCard
+          no={5}
+          total={TOTAL}
+          id="setup-gh"
+          title="GitHub CLI 설치 + 로그인"
+          intro={
+            <>
+              터미널에서 GitHub에 로그인하게 해 주는 도구입니다. 설치 파일이{" "}
+              <b>페이지 맨 아래 목록</b>에 섞여 있어서 가장 많이 헤매는
+              단계예요 — 아래 그림의 파일만 받으면 됩니다.
+            </>
+          }
+        >
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] font-extrabold">
+              ① 설치 파일 받기 — <Blue>맨 아래 Assets</Blue>에서
+            </p>
+            <Shot
+              src="/captures/setup/github-cli-assets.png"
+              width={1390}
+              height={1700}
+              alt="GitHub CLI 릴리스 페이지 맨 아래의 Assets 목록 — windows amd64 installer와 macOS universal 표시"
+              url="github.com/cli/cli/releases/latest"
+              href="https://github.com/cli/cli/releases/latest"
+              highlight={[
+                {
+                  top: "62.6%",
+                  left: "4.2%",
+                  width: "30%",
+                  height: "3.9%",
+                  label: "macOS는 이것",
+                  labelSide: "right",
+                },
+                {
+                  top: "74.2%",
+                  left: "4.2%",
+                  width: "37%",
+                  height: "3.9%",
+                  label: "Windows는 이것",
+                  labelSide: "right",
+                },
+              ]}
+            />
+            <MiniSteps
+              items={[
+                <>
+                  <Ext href="https://github.com/cli/cli/releases/latest">
+                    github.com/cli/cli/releases/latest
+                  </Ext>{" "}
+                  접속 → 위쪽의 긴 영어 변경 내역은 무시하고{" "}
+                  <b>페이지 맨 아래까지</b> 내립니다.
+                </>,
+                <>
+                  <b>Assets</b> 목록에서 내 컴퓨터에 맞는 파일 <b>하나</b>만
+                  클릭합니다. 목록이 접혀 있으면 <b>▸ Assets</b>를 눌러
+                  펼치세요.
+                </>,
+                <>
+                  받은 파일을 실행해 전부 기본값으로 설치 → 터미널을{" "}
+                  <b>새로</b> 엽니다.
+                </>,
+              ]}
+            />
+            <div className="overflow-x-auto rounded-[14px] border border-[var(--s2-line)]">
+              <table className="w-full text-left text-[13.5px]">
+                <thead className="bg-[var(--s2-tint)] text-[12.5px] text-[var(--s2-gray)]">
+                  <tr>
+                    <th className="px-4 py-2.5 font-bold">내 컴퓨터</th>
+                    <th className="px-4 py-2.5 font-bold">목록에서 찾을 이름</th>
+                    <th className="px-4 py-2.5 font-bold">받아지는 파일</th>
+                  </tr>
+                </thead>
+                <tbody className="text-[var(--s2-strong)]">
+                  <tr className="border-t border-[var(--s2-divider)]">
+                    <td className="px-4 py-3 font-bold">Windows (대부분)</td>
+                    <td className="px-4 py-3">
+                      GitHub CLI … <b>windows amd64 installer</b>
+                    </td>
+                    <td className="px-4 py-3 font-mono text-[12.5px]">
+                      gh_…_windows_amd64.msi
+                    </td>
+                  </tr>
+                  <tr className="border-t border-[var(--s2-divider)]">
+                    <td className="px-4 py-3 font-bold">macOS (M칩 · 인텔 모두)</td>
+                    <td className="px-4 py-3">
+                      GitHub CLI … <b>macOS universal</b>
+                    </td>
+                    <td className="px-4 py-3 font-mono text-[12.5px]">
+                      gh_…_macOS_universal.pkg
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div className="flex flex-col gap-3">
-              <p className="text-[15px] font-extrabold">② GitHub CLI 설치</p>
-              <p className="text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
-                <Ext href="https://github.com/cli/cli/releases/latest">
-                  github.com/cli/cli/releases/latest
-                </Ext>{" "}
-                에서 설치 파일을 받아 실행합니다 — <b>Windows</b>는{" "}
-                <b>windows_amd64.msi</b>, <b>맥</b>은 <b>macOS_arm64.pkg</b>.
-                (winget · brew를 쓸 줄 안다면 그걸로 설치해도 됩니다 —{" "}
-                <Ext href="https://cli.github.com/">cli.github.com</Ext> 참고)
-              </p>
-              <Verify
-                command="gh --version"
-                lines={[
-                  { prompt: true, text: "gh --version" },
-                  { text: "gh version 2.91.0 (2026-04-22)" },
-                ]}
-              />
-            </div>
+            <Callout tone="warn" title="이름이 비슷한 파일이 많아요">
+              Windows는 이름 끝이 <b>installer</b>인 것을 고르세요 —{" "}
+              <b>installer</b>가 없는 &ldquo;windows amd64&rdquo;는 압축 파일이라
+              설치가 되지 않습니다. 버전 숫자(2.100.0 등)는 달라도 괜찮습니다.
+              (Snapdragon 같은 ARM 노트북이면 <b>windows arm64 installer</b>.
+              winget · brew를 쓸 줄 안다면{" "}
+              <Ext href="https://cli.github.com/">cli.github.com</Ext>의 명령으로
+              설치해도 됩니다)
+            </Callout>
+            <Verify
+              command="gh --version"
+              lines={[
+                { prompt: true, text: "gh --version" },
+                { text: "gh version 2.91.0 (2026-04-22)" },
+              ]}
+            />
           </div>
           <div className="flex flex-col gap-3">
             <p className="text-[15px] font-extrabold">
-              ③ 로그인 — 터미널과 GitHub 계정 연결
+              ② 로그인 — 터미널과 GitHub 계정 연결
             </p>
-            <CopyBlock label="터미널에 붙여넣기" command="gh auth login" />
+            <CopyBlock label={PASTE_LABEL} command="gh auth login" />
             <p className="text-[13.5px] leading-[1.6] text-[var(--s2-body)]">
               질문이 나오면 전부 <b>Enter로 기본값 선택</b> → 브라우저가 열리면
               터미널에 표시된 <b>일회용 코드</b> 입력 → 완료.
@@ -353,70 +497,12 @@ export default function SetupPage() {
           </div>
         </StepCard>
 
-        {/* 5. Supabase */}
-        <StepCard
-          no={5}
-          total={TOTAL}
-          id="setup-5"
-          title="Supabase 가입 — GitHub 계정으로"
-          tag="이미 계정이 있다면 건너뛰기"
-        >
-          <div className="flex flex-col gap-5">
-            <Shot
-              src="/captures/setup/supabase-signup.png"
-              width={1443}
-              height={1922}
-              alt="Supabase 가입 화면"
-              url="supabase.com/dashboard/sign-up"
-              href="https://supabase.com/dashboard/sign-up"
-              highlight={{
-                top: "35.8%",
-                left: "29%",
-                width: "42%",
-                height: "3.8%",
-                label: "GitHub으로 가입!",
-              }}
-            />
-            <div className="flex flex-col gap-4">
-              <MiniSteps
-                items={[
-                  <>
-                    데이터베이스 서비스입니다 —{" "}
-                    <Ext href="https://supabase.com/dashboard/sign-up">
-                      supabase.com/dashboard/sign-up
-                    </Ext>{" "}
-                    접속.
-                  </>,
-                  <>
-                    이메일 가입 대신{" "}
-                    <Tip tip="비밀번호가 늘지 않고, 나중에 저장소를 연결할 때 권한이 클릭 한 번으로 이어집니다.">
-                      <b>Continue with GitHub</b>
-                    </Tip>{" "}
-                    → <b>Authorize</b> 승인하면 끝.
-                  </>,
-                  <>
-                    확인:{" "}
-                    <Ext href="https://supabase.com/dashboard">
-                      supabase.com/dashboard
-                    </Ext>
-                    가 열리고 <b>New project</b> 버튼이 보이면 성공.
-                  </>,
-                ]}
-              />
-              <Callout title="왜 GitHub으로?">
-                비밀번호가 늘지 않고, 저장소 연결 시 권한이 클릭 한 번으로
-                이어집니다.
-              </Callout>
-            </div>
-          </div>
-        </StepCard>
-
         {/* 6. Vercel */}
         <StepCard
           no={6}
           total={TOTAL}
           id="setup-6"
-          title="Vercel 가입 — 역시 GitHub 계정으로"
+          title="Vercel 가입 — GitHub 계정으로"
           tag="이미 계정이 있다면 건너뛰기"
         >
           <div className="flex flex-col gap-5">
@@ -432,7 +518,7 @@ export default function SetupPage() {
                 left: "29%",
                 width: "42%",
                 height: "3.6%",
-                label: "여기도 GitHub!",
+                label: "GitHub으로 가입!",
               }}
             />
             <MiniSteps
@@ -443,8 +529,11 @@ export default function SetupPage() {
                   접속.
                 </>,
                 <>
-                  <b>Continue with GitHub</b> → <b>Authorize</b>. 플랜은{" "}
-                  <b>Hobby(무료)</b>.
+                  이메일 가입 대신{" "}
+                  <Tip tip="비밀번호가 늘지 않고, 나중에 저장소를 연결할 때 권한이 클릭 한 번으로 이어집니다.">
+                    <b>Continue with GitHub</b>
+                  </Tip>{" "}
+                  → <b>Authorize</b>. 플랜은 <b>Hobby(무료)</b>.
                 </>,
                 <>
                   확인:{" "}
@@ -455,6 +544,10 @@ export default function SetupPage() {
                 </>,
               ]}
             />
+            <Callout title="왜 GitHub으로?">
+              비밀번호가 늘지 않고, 3장에서 내 저장소를 연결할 때 권한이 클릭
+              한 번으로 이어집니다. 6장의 Supabase도 같은 방법으로 가입합니다.
+            </Callout>
           </div>
         </StepCard>
 
@@ -508,7 +601,7 @@ export default function SetupPage() {
           </p>
           <div className="flex flex-col gap-3">
             <CopyBlock
-              label="터미널에 붙여넣기"
+              label={PASTE_LABEL}
               command="node -v; git --version; gh auth status; claude --version"
             />
             <Term

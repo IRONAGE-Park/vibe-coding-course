@@ -270,6 +270,8 @@ export type Highlight = {
   width: string;
   height: string;
   label?: string;
+  /** 라벨 위치 — 기본은 상자 위. 촘촘한 목록에서는 윗줄을 가리지 않게 오른쪽으로 */
+  labelSide?: "top" | "right";
 };
 
 export function Shot({
@@ -288,9 +290,15 @@ export function Shot({
   alt: string;
   url?: string;
   href?: string;
-  highlight?: Highlight;
+  /** 강조 상자 — 하나 또는 여러 개 (예: Windows · macOS 파일을 한 캡처에서) */
+  highlight?: Highlight | Highlight[];
   eager?: boolean;
 }) {
+  const highlights = highlight
+    ? Array.isArray(highlight)
+      ? highlight
+      : [highlight]
+    : [];
   return (
     <figure className="flex flex-col gap-2.5">
       <div className="overflow-hidden rounded-[14px] border border-[var(--s2-line)] shadow-[var(--s2-shadow-md)]">
@@ -324,23 +332,30 @@ export function Shot({
             sizes="(max-width: 1024px) 100vw, 880px"
             className="w-full"
           />
-          {highlight && (
+          {highlights.map((h, i) => (
             <div
+              key={i}
               className="pointer-events-none absolute rounded-[8px] border-[3px] border-dashed border-[var(--s2-blue)]"
               style={{
-                top: highlight.top,
-                left: highlight.left,
-                width: highlight.width,
-                height: highlight.height,
+                top: h.top,
+                left: h.left,
+                width: h.width,
+                height: h.height,
               }}
             >
-              {highlight.label && (
-                <span className="absolute -top-8 left-0 whitespace-nowrap rounded-full bg-[var(--s2-blue)] px-3 py-1 text-[12px] font-bold text-[var(--s2-on-blue)] shadow-md">
-                  {highlight.label}
+              {h.label && (
+                <span
+                  className={`absolute ${
+                    h.labelSide === "right"
+                      ? "top-1/2 left-full ml-2 -translate-y-1/2"
+                      : "-top-8 left-0"
+                  } whitespace-nowrap rounded-full bg-[var(--s2-blue)] px-3 py-1 text-[12px] font-bold text-[var(--s2-on-blue)] shadow-md`}
+                >
+                  {h.label}
                 </span>
               )}
             </div>
-          )}
+          ))}
         </div>
       </div>
     </figure>

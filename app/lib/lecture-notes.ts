@@ -18,8 +18,15 @@ export const LECTURE_NOTES: ChapterNotes[] = [
         title: "진행 전체",
         points: [
           "목표 약 20분. 이미 되어 있는 항목은 건너뛰게 합니다.",
-          "원칙은 하나 — 계정은 GitHub 하나로 통일. Supabase · Vercel 모두 GitHub로 가입합니다.",
+          "원칙은 하나 — 계정은 GitHub 하나로 통일. Vercel(과 6장의 Supabase)도 GitHub로 가입합니다.",
           "막힌 사람은 ‘참가자’ 탭 맨 위부터 찾아갑니다(진행이 느린 순).",
+        ],
+      },
+      {
+        title: "1. Node.js — ‘터미널’이 무엇인지부터",
+        points: [
+          "Windows 참가자는 ‘터미널에 붙여넣기’를 PowerShell로 알아듣지 못하는 경우가 많았습니다. 시작 전에 Windows 키 → powershell 로 여는 것을 화면으로 한 번 보여주세요.",
+          "맞게 열었는지는 창 맨 앞의 PS C:\\Users\\… 로 확인합니다. PS가 없으면 명령 프롬프트(cmd)입니다.",
         ],
       },
       {
@@ -27,6 +34,7 @@ export const LECTURE_NOTES: ChapterNotes[] = [
         points: [
           "설치 확인(claude --version)만 하고 넘깁니다. 실행과 로그인은 9단계에서 Orca로 합니다.",
           "설치 후 터미널을 새로 열어야 명령어가 잡힙니다 — 가장 흔한 막힘입니다.",
+          "드물게 winget이 없는 PC가 있습니다(‘winget 용어가 … 인식되지 않습니다’). 페이지의 대체 명령 irm https://claude.ai/install.ps1 | iex 로 설치하게 합니다.",
         ],
       },
       {
@@ -36,10 +44,17 @@ export const LECTURE_NOTES: ChapterNotes[] = [
         ],
       },
       {
-        title: "5 · 6. Supabase · Vercel 가입",
+        title: "5. GitHub CLI 설치",
         points: [
-          "GitHub로 가입하는 이유: 비밀번호가 늘지 않고, 저장소 연결 권한이 클릭 한 번으로 이어집니다.",
-          "Supabase는 6장에서 씁니다. 오늘은 가입만. Vercel은 3장에서 다시 옵니다.",
+          "예전에는 Git과 한 단계로 묶여 있어 설치 파일 받는 곳을 못 찾는 사람이 많았습니다. 그래서 따로 뺐습니다.",
+          "릴리스 페이지 맨 아래 Assets 목록에서 Windows는 ‘windows amd64 installer’(.msi), 맥은 ‘macOS universal’(.pkg). installer가 없는 windows amd64는 zip이라 설치가 안 됩니다.",
+        ],
+      },
+      {
+        title: "6. Vercel 가입",
+        points: [
+          "GitHub로 가입하는 이유: 비밀번호가 늘지 않고, 저장소 연결 권한이 클릭 한 번으로 이어집니다. Vercel은 3장에서 다시 옵니다.",
+          "Supabase 가입은 6장 ‘Supabase 연동’으로 옮겼습니다 — 필요한 사람만 그때 가입합니다.",
         ],
       },
       {
@@ -361,6 +376,7 @@ export const LECTURE_NOTES: ChapterNotes[] = [
         title: "1. Supabase 연동",
         points: [
           "필수가 아님을 먼저 강조합니다 — 안내 · 지도 · 계산기처럼 보여주기만 하는 서비스는 건너뜁니다.",
+          "가입은 1장에서 여기로 옮겼습니다. Vercel처럼 Continue with GitHub로 가입하게 합니다.",
           "Vercel 연동을 안 하면 배포할 때마다 주소와 키를 손으로 옮겨 적어야 합니다.",
           "Database password는 따로 저장하게 합니다(나중에 재설정 가능). Region은 Seoul 또는 Tokyo.",
         ],

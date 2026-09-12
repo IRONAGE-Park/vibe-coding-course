@@ -117,7 +117,49 @@ export default function ToolsPage() {
 
           <div className="flex flex-col gap-5">
             <p className="text-[15px] font-extrabold">
-              ① <Blue>조직(Organization)</Blue> 만들기
+              ① <Blue>GitHub 계정으로</Blue> 가입
+            </p>
+            <Shot
+              src="/captures/setup/supabase-signup.png"
+              width={1443}
+              height={1922}
+              alt="Supabase 가입 화면"
+              url="supabase.com/dashboard/sign-up"
+              href="https://supabase.com/dashboard/sign-up"
+              highlight={{
+                top: "35.8%",
+                left: "29%",
+                width: "42%",
+                height: "3.8%",
+                label: "GitHub으로 가입!",
+              }}
+            />
+            <MiniSteps
+              items={[
+                <>
+                  <Ext href="https://supabase.com/dashboard/sign-up">
+                    supabase.com/dashboard/sign-up
+                  </Ext>{" "}
+                  접속 — 이미 계정이 있다면 ②로 넘어가세요.
+                </>,
+                <>
+                  이메일 가입 대신 <b>Continue with GitHub</b> →{" "}
+                  <b>Authorize</b>. 1장의 Vercel과 같은 방법입니다.
+                </>,
+                <>
+                  확인:{" "}
+                  <Ext href="https://supabase.com/dashboard">
+                    supabase.com/dashboard
+                  </Ext>
+                  가 열리면 성공.
+                </>,
+              ]}
+            />
+          </div>
+
+          <div className="flex flex-col gap-5">
+            <p className="text-[15px] font-extrabold">
+              ② <Blue>조직(Organization)</Blue> 만들기
             </p>
             <Shot
               src="/captures/supabase/1-organizations.png"
@@ -142,7 +184,7 @@ export default function ToolsPage() {
 
           <div className="flex flex-col gap-5">
             <p className="text-[15px] font-extrabold">
-              ② 이름과 <Blue>Free 플랜</Blue> 선택
+              ③ 이름과 <Blue>Free 플랜</Blue> 선택
             </p>
             <Shot
               src="/captures/supabase/2-new-organization.png"
@@ -159,7 +201,7 @@ export default function ToolsPage() {
 
           <div className="flex flex-col gap-5">
             <p className="text-[15px] font-extrabold">
-              ③ <Blue>프로젝트</Blue> 만들기 — 여기가 진짜 데이터베이스
+              ④ <Blue>프로젝트</Blue> 만들기 — 여기가 진짜 데이터베이스
             </p>
             <Shot
               src="/captures/supabase/3-new-project.png"
@@ -192,7 +234,7 @@ export default function ToolsPage() {
 
           <div className="flex flex-col gap-5">
             <p className="text-[15px] font-extrabold">
-              ④ <Blue>Healthy</Blue>가 뜨면 준비 완료
+              ⑤ <Blue>Healthy</Blue>가 뜨면 준비 완료
             </p>
             <Shot
               src="/captures/supabase/4-project-created.png"
@@ -210,7 +252,7 @@ export default function ToolsPage() {
 
           <div className="flex flex-col gap-5">
             <p className="text-[15px] font-extrabold">
-              ⑤ <Blue>Vercel과 연결</Blue> — 환경 변수 자동 동기화
+              ⑥ <Blue>Vercel과 연결</Blue> — 환경 변수 자동 동기화
             </p>
             <Shot
               src="/captures/supabase/5-vercel-integration.png"
@@ -249,7 +291,7 @@ export default function ToolsPage() {
 
           <div className="flex flex-col gap-5">
             <p className="text-[15px] font-extrabold">
-              ⑥ 내 서비스에 붙이기 — <Blue>Connect</Blue> 버튼
+              ⑦ 내 서비스에 붙이기 — <Blue>Connect</Blue> 버튼
             </p>
             <Shot
               src="/captures/supabase/6-connect-app.png"
@@ -275,7 +317,7 @@ export default function ToolsPage() {
             <code className="font-mono text-[13px]">.env.local</code> 파일에
             넣습니다 — 1장에서 붙여넣은 CLAUDE.md에도 적어둔 규칙이에요. 이
             파일은 GitHub에 올라가지 않으니, <b>Vercel에는 프로젝트 설정의
-            Environment Variables</b>에 같은 값을 넣어주면 됩니다. (⑤번 연동을
+            Environment Variables</b>에 같은 값을 넣어주면 됩니다. (⑥번 연동을
             해두면 이것도 자동입니다)
           </Callout>
         </StepCard>

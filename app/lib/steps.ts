@@ -16,8 +16,10 @@ export const CHAPTERS: Chapter[] = [
       { id: "setup-1", title: "Node.js 설치" },
       { id: "setup-2", title: "Claude Code CLI 설치 + 로그인" },
       { id: "setup-3", title: "GitHub 가입" },
-      { id: "setup-4", title: "Git · GitHub CLI 설치 + 로그인" },
-      { id: "setup-5", title: "Supabase 가입" },
+      { id: "setup-4", title: "Git 설치" },
+      /* 예전 "setup-5"(Supabase 가입)는 6장으로 옮겼습니다. 지난 강의 기록과
+         섞이지 않도록 이 단계에는 새 id 를 씁니다. */
+      { id: "setup-gh", title: "GitHub CLI 설치 + 로그인" },
       { id: "setup-6", title: "Vercel 가입" },
       { id: "setup-7", title: "Orca 설치" },
       { id: "setup-8", title: "내 프로젝트 만들고 Orca에 연결" },
